@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QLD Rehab MOC · Stakeholder Planning Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --qg: #00843D; --qg-l: #E8F5EE; --qg-m: #1D9E5C; --qg-d: #005C2A;
+  --gold: #F2A900; --gold-l: #FEF6E0;
+  --maroon: #5C1F3B;
+  --ink: #1A1A2E; --ink-m: #4A4A6A; --ink-l: #8888AA;
+  --surf: #F7F7FC; --white: #fff; --border: #E2E2EE;
+  --r: 12px; --rs: 8px;
+  --hi: #C8352A; --hi-b: #FEF0EF;
+  --me: #C47A1B; --me-b: #FEF6E0;
+  --lo: #1D7A4A; --lo-b: #E8F5EE;
+  --bl: #1565C0; --bl-b: #E3F0FF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--surf);color:var(--ink);min-height:100vh;font-size:15px}
+.shell{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:256px;background:var(--ink);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-logo{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sb-logo .badge{font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
+.sb-logo h2{font-family:'DM Serif Display',serif;color:#fff;font-size:16px;line-height:1.3;font-weight:400}
+.sb-logo p{font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px}
+.nav{padding:12px 10px;flex:1}
+.nav-grp{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:0 10px;margin:14px 0 5px}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--rs);cursor:pointer;color:rgba(255,255,255,0.55);font-size:13px;transition:all .15s;margin-bottom:1px;line-height:1.2}
+.ni:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.9)}
+.ni.active{background:var(--qg);color:#fff;font-weight:500}
+.ni svg{width:16px;height:16px;flex-shrink:0}
+.ni .nb{margin-left:auto;font-size:11px;background:rgba(255,255,255,0.15);color:#fff;padding:1px 6px;border-radius:8px}
+.ni.active .nb{background:rgba(255,255,255,0.25)}
+.sb-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08)}
+.code-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--rs);padding:9px 12px;text-align:center}
+.code-box .cl{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase}
+.code-box .cv{font-size:20px;font-weight:600;color:var(--gold);letter-spacing:4px}
+
+/* MAIN */
+.main{margin-left:256px;flex:1;display:flex;flex-direction:column}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:13px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-title{font-size:17px;font-weight:500;color:var(--ink)}
+.tb-sub{font-size:12px;color:var(--ink-l);margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:10px}
+.live{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--qg);font-weight:500}
+.live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--qg);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.pchip{background:var(--qg-l);color:var(--qg);border-radius:20px;padding:4px 13px;font-size:13px;font-weight:500}
+
+.content{padding:28px 32px;flex:1}
+.panel{display:none;animation:fi .2s ease}
+.panel.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:18px}
+.card-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.card-sub{font-size:13px;color:var(--ink-l);margin-bottom:16px}
+.divider{height:1px;background:var(--border);margin:14px 0}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.stat.dark{background:var(--ink)}
+.stat-lbl{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-l);margin-bottom:6px}
+.stat.dark .stat-lbl{color:rgba(255,255,255,.45)}
+.stat-val{font-size:28px;font-weight:300;color:var(--ink);line-height:1;font-family:'DM Serif Display',serif}
+.stat.dark .stat-val{color:var(--gold)}
+.stat-det{font-size:12px;color:var(--ink-l);margin-top:3px}
+.stat.dark .stat-det{color:rgba(255,255,255,.35)}
+
+/* GRID LAYOUTS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:3fr 2fr;gap:18px}
+.g-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+
+/* PRINCIPLES */
+.principle-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.principle-num{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--qg);margin-bottom:4px}
+.principle-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.principle-body{font-size:13px;color:var(--ink-m);line-height:1.6}
+.sub-topics{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.subtopic{font-size:11px;padding:3px 9px;border-radius:10px;background:var(--qg-l);color:var(--qg);border:1px solid #9FE1CB}
+
+/* SCOPE */
+.scope-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+.scope-item:last-child{border-bottom:none}
+.scope-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:11px;font-weight:700}
+.si-in{background:var(--qg-l);color:var(--qg)}
+.si-out{background:#f0f0f8;color:var(--ink-l)}
+.si-tbc{background:var(--gold-l);color:#7A5000}
+.scope-txt{font-size:13px;color:var(--ink);line-height:1.4}
+.scope-note{font-size:11px;color:var(--ink-l);margin-top:2px}
+
+/* AGENDA */
+.agenda-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.agenda-item:last-child{border-bottom:none}
+.a-time{font-size:11px;color:var(--ink-l);min-width:48px;padding-top:2px}
+.a-dot-col{display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:4px}
+.a-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.a-line{width:1px;background:var(--border);flex:1;min-height:18px}
+.a-body{flex:1}
+.a-title{font-size:14px;font-weight:500;color:var(--ink)}
+.a-detail{font-size:12px;color:var(--ink-l);margin-top:2px}
+
+/* PILLS */
+.pill{display:inline-block;padding:5px 13px;border-radius:20px;font-size:13px;border:1px solid var(--border);background:var(--surf);color:var(--ink-m);margin:3px}
+.pill.confirmed{background:var(--qg-l);color:var(--qg);border-color:#9FE1CB;font-weight:500}
+.pill.discuss{background:var(--gold-l);color:#7A5000;border-color:#FAC775}
+
+/* VOTING */
+.del-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:14px;display:flex;align-items:center;gap:14px;transition:all .15s;margin-bottom:8px}
+.del-card.voted{background:var(--qg-l);border-color:#9FE1CB}
+.del-body{flex:1}
+.del-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.ptag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;display:inline-block}
+.p-h{background:var(--hi-b);color:var(--hi)}
+.p-m{background:var(--me-b);color:var(--me)}
+.p-l{background:var(--lo-b);color:var(--lo)}
+.p-n{background:var(--bl-b);color:var(--bl)}
+.vote-area{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.vc{font-size:18px;font-weight:600;color:var(--ink);min-width:26px;text-align:center;font-family:'DM Serif Display',serif}
+.vbtn{padding:7px 16px;font-size:13px;font-weight:500;border-radius:var(--rs);cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--ink-m);transition:all .15s;font-family:'DM Sans',sans-serif}
+.vbtn:hover:not(:disabled){border-color:var(--qg);color:var(--qg)}
+.vbtn.voted{background:var(--qg);color:#fff;border-color:var(--qg)}
+.vbtn:disabled{opacity:.3;cursor:not-allowed}
+
+/* CARE SETTINGS */
+.setting-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.setting-header{display:flex;align-items:center;gap:12px;cursor:pointer}
+.setting-icon{width:36px;height:36px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.setting-name{font-size:15px;font-weight:600;color:var(--ink)}
+.setting-desc{font-size:13px;color:var(--ink-m)}
+.setting-body{display:none;border-top:1px solid var(--border);padding-top:16px;margin-top:14px}
+.setting-body.open{display:block}
+.sec-del{background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:13px;margin-bottom:8px}
+.sec-del-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sec-del-name{font-size:14px;font-weight:500;color:var(--ink);flex:1;min-width:120px}
+.sec-votes{font-size:16px;font-weight:600;color:var(--ink);min-width:24px;text-align:center;font-family:'DM Serif Display',serif}
+.inc-btn{padding:6px 14px;font-size:12px;font-weight:600;border-radius:var(--rs);cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--ink-m);transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.inc-btn:hover{border-color:var(--qg);color:var(--qg)}
+.inc-yes{background:var(--qg);color:#fff;border-color:var(--qg)}
+.inc-yes:hover{background:var(--qg-d);border-color:var(--qg-d);color:#fff}
+.notes-btn{padding:6px 12px;font-size:12px;font-weight:500;border-radius:var(--rs);cursor:pointer;border:1px solid var(--border);background:var(--surf);color:var(--ink-m);font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .15s}
+.notes-btn:hover{border-color:var(--ink-m);color:var(--ink)}
+.notes-area{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.notes-area.open{display:block}
+.notes-area textarea{min-height:70px}
+
+/* FORMS */
+.field-lbl{font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px;letter-spacing:.3px}
+.field-lbl.req::after{content:' *';color:var(--hi)}
+input[type=text],select,textarea{width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:#fff;transition:border-color .15s;outline:none}
+input[type=text]:focus,select:focus,textarea:focus{border-color:var(--qg)}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:10px}
+.submit-btn{padding:10px 24px;background:var(--qg);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.submit-btn:hover{background:var(--qg-d)}
+.sec-btn{padding:8px 18px;background:#fff;color:var(--ink-m);border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.sec-btn:hover{border-color:var(--qg);color:var(--qg)}
+
+/* IDEAS FEED */
+.idea-item{background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:13px;margin-bottom:8px;animation:fi .3s ease}
+.idea-cat{font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--qg-l);color:var(--qg);display:inline-block;margin-bottom:7px}
+.idea-txt{font-size:14px;color:var(--ink);line-height:1.5}
+.idea-meta{font-size:12px;color:var(--ink-l);margin-top:5px}
+.empty{text-align:center;padding:32px 20px;color:var(--ink-l);font-size:14px}
+
+/* PROGRESS BARS */
+.prog-row{margin-bottom:12px}
+.prog-hdr{display:flex;justify-content:space-between;margin-bottom:4px}
+.prog-name{font-size:14px;font-weight:500;color:var(--ink)}
+.prog-pct{font-size:13px;font-weight:600;color:var(--qg)}
+.prog-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--qg);border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* TIMELINE / PROJECT PLAN */
+.timeline-table{width:100%;border-collapse:collapse;font-size:13px}
+.timeline-table th{text-align:left;padding:10px 12px;background:var(--surf);border:1px solid var(--border);font-weight:600;color:var(--ink-m);font-size:12px}
+.timeline-table td{padding:10px 12px;border:1px solid var(--border);vertical-align:top;color:var(--ink)}
+.timeline-table tr:hover td{background:var(--surf)}
+.phase-badge{font-size:11px;font-weight:600;padding:2px 9px;border-radius:8px;white-space:nowrap}
+.ph-1{background:#E3F0FF;color:#1565C0}
+.ph-2{background:var(--gold-l);color:#7A5000}
+.ph-3{background:var(--qg-l);color:var(--qg)}
+.ph-4{background:#F3E8FF;color:#6B21A8}
+.status-badge{font-size:11px;font-weight:600;padding:2px 9px;border-radius:8px}
+.s-active{background:var(--qg-l);color:var(--qg)}
+.s-planned{background:var(--gold-l);color:#7A5000}
+.s-done{background:#f0f0f8;color:var(--ink-l)}
+.s-tbc{background:var(--hi-b);color:var(--hi)}
+
+/* ADD TASK */
+.add-task-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* GANTT */
+.gantt-wrap{overflow-x:auto;margin-top:8px}
+.gantt-table{border-collapse:collapse;min-width:900px;width:100%}
+.gantt-table th,.gantt-table td{border:1px solid var(--border);padding:8px 10px;font-size:12px}
+.gantt-table th{background:var(--surf);font-weight:600;color:var(--ink-m)}
+.gantt-table td{color:var(--ink)}
+.gantt-bar{height:16px;border-radius:4px;display:inline-block;min-width:8px}
+
+/* IMPLEMENTATION */
+.impl-phase{background:#fff;border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.impl-phase-hdr{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;background:var(--surf)}
+.impl-phase-hdr:hover{background:#efeffa}
+.impl-phase-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.impl-phase-title{font-size:15px;font-weight:600;color:var(--ink);flex:1}
+.impl-phase-status{font-size:12px;color:var(--ink-l)}
+.impl-phase-body{padding:18px 20px;border-top:1px solid var(--border);display:none}
+.impl-phase-body.open{display:block}
+.impl-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.impl-step:last-child{border-bottom:none}
+.impl-step-dot{width:24px;height:24px;border-radius:50%;background:var(--qg-l);color:var(--qg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;margin-top:1px}
+.impl-step-title{font-size:14px;font-weight:500;color:var(--ink)}
+.impl-step-detail{font-size:12px;color:var(--ink-l);margin-top:2px;line-height:1.5}
+.checklist{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-m);line-height:1.4}
+.check-item input[type=checkbox]{margin-top:2px;accent-color:var(--qg);width:14px;height:14px;flex-shrink:0}
+
+/* LOCAL ADAPT */
+.adapt-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.adapt-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.adapt-body{font-size:13px;color:var(--ink-m);line-height:1.6}
+.adapt-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.matrix-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:10px}
+.matrix-cell{padding:14px;border-radius:var(--rs);font-size:13px}
+.mc-qw{background:#E8F5EE;color:#165c2e}
+.mc-plan{background:#E3F0FF;color:#1a3c6b}
+.mc-con{background:var(--gold-l);color:#7A5000}
+.mc-rec{background:#f0f0f8;color:var(--ink-m)}
+.mc-label{font-size:11px;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.mc-text{font-size:12px;line-height:1.4}
+
+/* JOIN */
+.qr-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.qr-wrap{background:#fff;padding:10px;border:1px solid var(--border);border-radius:8px}
+.join-code{font-size:34px;font-weight:600;letter-spacing:6px;color:var(--qg);text-align:center}
+.link-box{background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:9px 13px;font-size:13px;color:var(--ink-m);word-break:break-all;width:100%;text-align:center}
+.step-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.step-num{width:30px;height:30px;border-radius:50%;background:var(--qg-l);color:var(--qg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.step-title{font-size:14px;font-weight:500;color:var(--ink)}
+.step-detail{font-size:12px;color:var(--ink-l);margin-top:2px}
+
+/* ADMIN */
+.res-bar-item{margin-bottom:12px}
+.res-hdr{display:flex;justify-content:space-between;margin-bottom:3px}
+.res-label{font-size:13px;color:var(--ink);font-weight:500;max-width:72%}
+.res-votes{font-size:13px;font-weight:600;color:var(--qg)}
+.res-track{height:9px;background:var(--border);border-radius:5px;overflow:hidden}
+.res-fill{height:100%;background:var(--qg);border-radius:5px;transition:width .6s ease}
+
+/* RESPONSIVE */
+@media(max-width:900px){.sidebar{width:200px}.main{margin-left:200px}.stat-grid{grid-template-columns:repeat(2,1fr)}.g2,.g3,.form-row{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0}.shell{flex-direction:column}.content{padding:18px 14px}.topbar{padding:12px 16px}.stat-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="badge">Queensland Health</div>
+    <h2>Rehab Clinical Network</h2>
+    <p>Model of Care · Planning Hub</p>
+  </div>
+  <div class="nav">
+    <div class="nav-grp">Session</div>
+    <div class="ni active" onclick="showPanel('overview',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg>
+      Overview
+    </div>
+    <div class="ni" onclick="showPanel('join',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/></svg>
+      Join via QR
+    </div>
+
+    <div class="nav-grp">Participate</div>
+    <div class="ni" onclick="showPanel('principles',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>
+      Principles & scope
+    </div>
+    <div class="ni" onclick="showPanel('vote',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 10l4 4 6-7"/><rect x="2" y="2" width="16" height="16" rx="2"/></svg>
+      Deliverables vote
+      <span class="nb" id="vbadge">10</span>
+    </div>
+    <div class="ni" onclick="showPanel('settings',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h14M10 3v14"/><circle cx="10" cy="10" r="7"/></svg>
+      Care settings
+      <span class="nb" id="sbadge">0</span>
+    </div>
+    <div class="ni" onclick="showPanel('ideas',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="8" r="4"/><path d="M10 12v5M7 17h6"/></svg>
+      Ideas & gaps
+      <span class="nb" id="ibadge">0</span>
+    </div>
+
+    <div class="nav-grp">Plan</div>
+    <div class="ni" onclick="showPanel('timeline',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="13" rx="1.5"/><path d="M6 2v4M14 2v4M2 9h16"/></svg>
+      Project timeline
+    </div>
+    <div class="ni" onclick="showPanel('implementation',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h12M4 10h8M4 14h5"/></svg>
+      Implementation plan
+    </div>
+    <div class="ni" onclick="showPanel('localadapt',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="M2 10h16M10 3c-2 3-2 11 0 14M10 3c2 3 2 11 0 14"/></svg>
+      Local adaptation
+    </div>
+
+    <div class="nav-grp">Admin</div>
+    <div class="ni" onclick="showPanel('admin',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h14M3 10h10M3 15h6"/></svg>
+      Live results
+    </div>
+  </div>
+  <div class="sb-foot">
+    <div class="code-box">
+      <div class="cl">Session code</div>
+      <div class="cv">QR-2608</div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+<div class="topbar">
+  <div>
+    <div class="tb-title" id="tb-title">QLD Rehabilitation MOC · Overview</div>
+    <div class="tb-sub">Thursday 3 April 2025 · Statewide Teams meeting</div>
+  </div>
+  <div class="tb-right">
+    <div class="live">Live</div>
+    <div class="pchip" id="pchip">24 participants</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview">
+  <div class="stat-grid">
+    <div class="stat dark"><div class="stat-lbl">Participants joined</div><div class="stat-val" id="s-participants">24</div><div class="stat-det">Across QLD HHS</div></div>
+    <div class="stat"><div class="stat-lbl">Deliverables under review</div><div class="stat-val">10</div><div class="stat-det">Vote open now</div></div>
+    <div class="stat"><div class="stat-lbl">Ideas submitted</div><div class="stat-val" id="s-ideas">0</div><div class="stat-det">Growing in real time</div></div>
+    <div class="stat"><div class="stat-lbl">Principles confirmed</div><div class="stat-val">7</div><div class="stat-det">Across QLD & lifespan</div></div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">Meeting agenda</div>
+      <div class="card-sub">Thursday 3 April · Statewide Teams call</div>
+      <div class="agenda-item"><div class="a-time">9:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Welcome & context setting</div><div class="a-detail">Chair opens · review confirmed principles & scope</div></div></div>
+      <div class="agenda-item"><div class="a-time">9:15 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Live deliverables prioritisation vote</div><div class="a-detail">20 min · Stakeholders vote via this platform</div></div></div>
+      <div class="agenda-item"><div class="a-time">9:35 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Care settings — gaps & ideas</div><div class="a-detail">25 min · Submit ideas by setting</div></div></div>
+      <div class="agenda-item"><div class="a-time">10:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Breakout discussion — top priorities</div><div class="a-detail">25 min · Teams breakout rooms · report back</div></div></div>
+      <div class="agenda-item"><div class="a-time">10:25 am</div><div class="a-dot-col"><div class="a-dot" style="background:#ccc"></div></div><div class="a-body"><div class="a-title">Wrap-up & next steps</div><div class="a-detail">Confirm priorities · assign leads · close</div></div></div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Confirmed principles</div>
+        <div class="card-sub">7 principles — finalised Feb 2026</div>
+        <div class="pill confirmed">Person-centred & goal-based</div>
+        <div class="pill confirmed">Holistic & inclusive care</div>
+        <div class="pill confirmed">Equitable & timely access</div>
+        <div class="pill confirmed">Integrated & coordinated delivery</div>
+        <div class="pill confirmed">Sustainable workforce & expertise</div>
+        <div class="pill confirmed">Evidence, data & evaluation</div>
+        <div class="pill confirmed">Innovation & technology</div>
+      </div>
+      <div class="card">
+        <div class="card-title">MOC development progress</div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Principles</span><span class="prog-pct">100%</span></div><div class="prog-track"><div class="prog-fill" style="width:100%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Scope</span><span class="prog-pct">80%</span></div><div class="prog-track"><div class="prog-fill" style="width:80%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Deliverables</span><span class="prog-pct">30%</span></div><div class="prog-track"><div class="prog-fill" style="width:30%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Stakeholder engagement</span><span class="prog-pct">55%</span></div><div class="prog-track"><div class="prog-fill" style="width:55%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Evidence review</span><span class="prog-pct">40%</span></div><div class="prog-track"><div class="prog-fill" style="width:40%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINCIPLES & SCOPE -->
+<div class="panel" id="panel-principles">
+  <div class="g2" style="margin-bottom:18px">
+    <div>
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:14px;color:var(--ink)">Queensland Rehabilitation Principles of Care</h3>
+      <p style="font-size:13px;color:var(--ink-m);margin-bottom:16px;line-height:1.6">Developed through thematic review of NSW, Victoria, Scotland, Netherlands, WHO and NHS England frameworks, and feedback from the August 2025 Qld Rehab Clinical Network Forum.</p>
+
+      <div class="principle-card">
+        <div class="principle-num">Principle 1</div>
+        <div class="principle-title">Person-centred and goal-based rehabilitation</div>
+        <div class="principle-body">Rehabilitation should be tailored to the individual across their lifespan including consideration of their goals, values, and context, involving carers and families in a respectful partnership.</div>
+        <div class="sub-topics"><span class="subtopic">Shared decision-making</span><span class="subtopic">Person-centred goal setting</span><span class="subtopic">Culturally & linguistically safe</span><span class="subtopic">Paediatric transition</span><span class="subtopic">Developmentally appropriate</span></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">Principle 2</div>
+        <div class="principle-title">Holistic and inclusive care</div>
+        <div class="principle-body">Rehabilitation should take a holistic and individualised approach that addresses the unique aspects of a person, including their physical, psychological, cognitive-communication, cultural and social needs.</div>
+        <div class="sub-topics"><span class="subtopic">Trauma-informed care</span><span class="subtopic">Self-management</span><span class="subtopic">Health literacy</span><span class="subtopic">Carer inclusion</span><span class="subtopic">Culturally safe care</span></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">Principle 3</div>
+        <div class="principle-title">Equitable and timely access to rehabilitation</div>
+        <div class="principle-body">Rehabilitation services must be accessible, equitable, delivered in a timely and appropriate manner. Services should be available across the state and close to home including rural and remote Queensland.</div>
+        <div class="sub-topics"><span class="subtopic">Value-based care</span><span class="subtopic">Early rehabilitation</span><span class="subtopic">In-reach</span><span class="subtopic">Telehealth & outreach</span><span class="subtopic">Rural & remote</span><span class="subtopic">Screening tools</span></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">Principle 4</div>
+        <div class="principle-title">Integrated and coordinated service delivery</div>
+        <div class="principle-body">Rehabilitation should be integrated across the continuum of care, coordinated across settings and teams, flexible to changing needs, and foster collaboration across sectors and disciplines.</div>
+        <div class="sub-topics"><span class="subtopic">Patient flow</span><span class="subtopic">Clinical services planning</span><span class="subtopic">Interdisciplinary care</span><span class="subtopic">Public/private collaboration</span></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">Principle 5</div>
+        <div class="principle-title">Sustainable and specialised workforce and expertise</div>
+        <div class="principle-body">A skilled, adaptable, and well-supported interdisciplinary workforce is essential for high-quality rehabilitation. This requires adequate resourcing, clear alignment of tasks and skills, proactive workforce planning, and recognition of rehabilitation as a specialist field.</div>
+        <div class="sub-topics"><span class="subtopic">ANSNAP V5 & AFRM standards</span><span class="subtopic">Multidisciplinary teams</span><span class="subtopic">Advanced scope roles</span><span class="subtopic">Professional development</span></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">Principle 6</div>
+        <div class="principle-title">Use of evidence, data, and evaluation</div>
+        <div class="principle-body">Rehabilitation should be guided by evidence, informed by data, and continuously evaluated for improvement.</div>
+        <div class="sub-topics"><span class="subtopic">AROC FIM/WeeFIM</span><span class="subtopic">Outcome measures</span><span class="subtopic">Accreditation</span><span class="subtopic">Continuous improvement</span><span class="subtopic">Benchmarking</span></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">Principle 7</div>
+        <div class="principle-title">Innovation and technology</div>
+        <div class="principle-body">Embracing innovation and digital tools enhances access, efficiency, and patient engagement.</div>
+        <div class="sub-topics"><span class="subtopic">Tele-rehabilitation</span><span class="subtopic">Digital equity</span><span class="subtopic">Co-design</span><span class="subtopic">Cyber security</span><span class="subtopic">Ethical use of technology</span></div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:14px;color:var(--ink)">Scope of the QLD Rehab MOC</h3>
+      <div class="card">
+        <div class="card-title">In scope ✓</div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div><div class="scope-txt">Adult and paediatric multidisciplinary rehabilitation across all Queensland HHS</div><div class="scope-note">Lifespan approach — key difference from NSW MOC</div></div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Inpatient, ambulatory, community, home-based and virtual care settings</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Aboriginal and Torres Strait Islander populations — culturally safe care</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div><div class="scope-txt">Rural, regional and remote access equity across Queensland</div><div class="scope-note">Including outreach and telehealth models</div></div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Workforce planning, role delineation and professional development</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Referral pathways and cross-sector service integration</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Outcome measurement, data and service evaluation</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Digital health, tele-rehabilitation and innovation</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Out of scope ✗</div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Mental health rehabilitation services (separate workstream)</div></div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">NDIS-funded community services</div></div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Primary care single-discipline rehabilitation programs</div></div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Private providers (noting aspects of MOC may apply)</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">To confirm Thursday</div>
+        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">Cardiac and pulmonary rehabilitation — in or out?</div></div>
+        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">Drug and alcohol rehabilitation services</div></div>
+        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">Transitional Aged Care Program (TACP) short-term restorative care</div></div>
+        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">ACCHS-delivered rehabilitation programs — inclusion criteria</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VOTE -->
+<div class="panel" id="panel-vote">
+  <div class="card">
+    <div class="card-title">Prioritise the deliverables</div>
+    <div class="card-sub">Vote for up to 3 deliverables you believe should be prioritised for the QLD Rehab MOC. Results update live and are visible to all participants.</div>
+    <div id="del-list"></div>
+    <p style="font-size:12px;color:var(--ink-l);text-align:center;margin-top:10px" id="vote-note">Select up to 3 · <span id="v-remaining">3 votes remaining</span></p>
+  </div>
+</div>
+
+<!-- CARE SETTINGS -->
+<div class="panel" id="panel-settings">
+  <div class="card" style="margin-bottom:8px">
+    <div class="card-title">Care settings — sections, votes & ideas</div>
+    <div class="card-sub">Expand each care setting to vote on which sections to include in the QLD MOC, note what's important against each, add extra sections, and suggest resources.</div>
+  </div>
+  <div id="settings-list"></div>
+</div>
+
+<!-- IDEAS & GAPS (general) -->
+<div class="panel" id="panel-ideas">
+  <div class="card">
+    <div class="card-title">Submit an idea or gap</div>
+    <div class="card-sub">General ideas and gaps — use the Care Settings tab for setting-specific feedback.</div>
+    <div class="field">
+      <div class="field-lbl req">Category</div>
+      <select id="i-cat">
+        <option>Deliverable suggestion</option><option>Gap in scope</option><option>Workforce consideration</option>
+        <option>Rural & remote access</option><option>Technology / tele-rehabilitation</option>
+        <option>Cultural safety — ATSI</option><option>Governance & accountability</option>
+        <option>Data & outcomes measurement</option><option>Consumer & carer engagement</option>
+        <option>Paediatric / lifespan considerations</option><option>Other</option>
+      </select>
+    </div>
+    <div class="field"><div class="field-lbl req">Your idea or feedback</div><textarea id="i-text" placeholder="Share what you think should be included, addressed, or changed..."></textarea></div>
+    <button class="submit-btn" onclick="submitIdea()">Submit idea</button>
+  </div>
+  <div>
+    <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px">Submitted ideas <span id="i-count-lbl" style="color:var(--ink-l);font-weight:400">(0)</span></div>
+    <div id="ideas-list"><div class="empty">No ideas yet — be the first!</div></div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="panel" id="panel-timeline">
+  <div class="card">
+    <div class="card-title">Project timeline & responsibilities</div>
+    <div class="card-sub">Track deliverables, owners and milestones. Add tasks using the form below — edit inline by clicking a row.</div>
+
+    <div style="overflow-x:auto">
+      <table class="timeline-table" id="tl-table">
+        <thead>
+          <tr>
+            <th style="min-width:200px">Deliverable / task</th>
+            <th>Phase</th>
+            <th style="min-width:110px">Lead</th>
+            <th>Start</th>
+            <th>Due</th>
+            <th>Status</th>
+            <th style="min-width:160px">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tl-body"></tbody>
+      </table>
+    </div>
+
+    <div class="add-task-row">
+      <div style="flex:2;min-width:140px"><div class="field-lbl">Task / deliverable</div><input type="text" id="tl-task" placeholder="e.g. Develop referral pathway tool"></div>
+      <div style="flex:1;min-width:90px"><div class="field-lbl">Phase</div>
+        <select id="tl-phase">
+          <option value="ph-1">Phase 1 · Scoping</option>
+          <option value="ph-2">Phase 2 · Development</option>
+          <option value="ph-3">Phase 3 · Consultation</option>
+          <option value="ph-4">Phase 4 · Finalisation</option>
+        </select>
+      </div>
+      <div style="flex:1;min-width:90px"><div class="field-lbl">Lead</div><input type="text" id="tl-lead" placeholder="Name / role"></div>
+      <div style="flex:1;min-width:90px"><div class="field-lbl">Start</div><input type="text" id="tl-start" placeholder="e.g. Apr 2025"></div>
+      <div style="flex:1;min-width:90px"><div class="field-lbl">Due</div><input type="text" id="tl-due" placeholder="e.g. Jun 2025"></div>
+      <div style="flex:1;min-width:80px"><div class="field-lbl">Status</div>
+        <select id="tl-status"><option value="s-planned">Planned</option><option value="s-active">Active</option><option value="s-done">Done</option><option value="s-tbc">TBC</option></select>
+      </div>
+      <div style="align-self:flex-end"><button class="submit-btn" onclick="addTask()">Add</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">High-level project phases</div>
+    <div class="card-sub">Queensland Rehabilitation MOC — estimated timeline</div>
+    <div class="gantt-wrap">
+      <table class="gantt-table">
+        <thead><tr><th style="width:200px">Phase</th><th>Q1 2025</th><th>Q2 2025</th><th>Q3 2025</th><th>Q4 2025</th><th>Q1 2026</th><th>Q2 2026</th><th>Q3 2026</th><th>Q4 2026</th></tr></thead>
+        <tbody>
+          <tr><td><span class="phase-badge ph-1">Phase 1 · Scoping & evidence</span></td>
+            <td><div class="gantt-bar" style="width:90%;background:#1565C0;opacity:.7">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:50%;background:#1565C0;opacity:.7">&nbsp;</div></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="phase-badge ph-2">Phase 2 · Development</span></td>
+            <td></td>
+            <td><div class="gantt-bar" style="width:50%;background:var(--gold);opacity:.8">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:100%;background:var(--gold);opacity:.8">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:60%;background:var(--gold);opacity:.8">&nbsp;</div></td>
+            <td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="phase-badge ph-3">Phase 3 · Consultation</span></td>
+            <td></td><td></td><td></td>
+            <td><div class="gantt-bar" style="width:40%;background:var(--qg);opacity:.7">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:100%;background:var(--qg);opacity:.7">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:30%;background:var(--qg);opacity:.7">&nbsp;</div></td>
+            <td></td><td></td></tr>
+          <tr><td><span class="phase-badge ph-4">Phase 4 · Finalisation & launch</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td><div class="gantt-bar" style="width:70%;background:#6B21A8;opacity:.7">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:100%;background:#6B21A8;opacity:.7">&nbsp;</div></td>
+            <td><div class="gantt-bar" style="width:30%;background:#6B21A8;opacity:.7">&nbsp;</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- IMPLEMENTATION PLAN -->
+<div class="panel" id="panel-implementation">
+  <div style="background:var(--ink);color:#fff;border-radius:var(--r);padding:16px 20px;margin-bottom:18px">
+    <div style="font-size:15px;font-weight:600">Implementation plan — QLD Rehabilitation MOC</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:3px">Three-phase approach adapted from ACI Implementation Framework · Expand each phase below</div>
+  </div>
+
+  <div class="impl-phase">
+    <div class="impl-phase-hdr" onclick="togglePhase('ph1')">
+      <div class="impl-phase-num" style="background:#E3F0FF;color:#1565C0">1</div>
+      <div class="impl-phase-title">Phase 1 — Plan</div>
+      <span class="phase-badge ph-1">Active · Apr–Jun 2025</span>
+    </div>
+    <div class="impl-phase-body" id="ph1">
+      <div class="impl-step"><div class="impl-step-dot">A</div><div><div class="impl-step-title">Establish executive sponsorship & governance</div><div class="impl-step-detail">Identify executive sponsor (ideally HHS or Queensland Health executive). Establish Clinical Advisory Group with Network Executive. Define steering committee with Aboriginal Health and consumer representation.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">B</div><div><div class="impl-step-title">Identify project lead & team</div><div class="impl-step-detail">Appoint dedicated project lead for the implementation period. Establish working groups for key deliverables. Include heads of department, senior allied health, nursing, and clinical services planning representatives.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">C</div><div><div class="impl-step-title">Define goals, objectives & scope</div><div class="impl-step-detail">Agree on shared vision statement. Document project scope, objectives, timelines, stakeholder map, communications plan and risk log. Confirm in/out of scope Thursday 3 April.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">D</div><div><div class="impl-step-title">Stakeholder engagement plan</div><div class="impl-step-detail">Map all Queensland HHS rehabilitation leads. Identify consumer and carer representatives. Plan for Aboriginal and Torres Strait Islander community co-design. Engage Primary Health Networks and ACCHS partners.</div></div></div>
+      <div class="checklist">
+        <div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px;margin-top:8px">Phase 1 checklist</div>
+        <label class="check-item"><input type="checkbox"> Executive sponsor identified</label>
+        <label class="check-item"><input type="checkbox"> Clinical Advisory Group established</label>
+        <label class="check-item"><input type="checkbox"> Project lead appointed</label>
+        <label class="check-item"><input type="checkbox"> Scope confirmed (Thursday 3 April)</label>
+        <label class="check-item"><input type="checkbox"> Steering committee formed (including ATSI & consumer reps)</label>
+        <label class="check-item"><input type="checkbox"> Communications plan drafted</label>
+        <label class="check-item"><input type="checkbox"> Risk register initiated</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="impl-phase">
+    <div class="impl-phase-hdr" onclick="togglePhase('ph2')">
+      <div class="impl-phase-num" style="background:var(--gold-l);color:#7A5000">2</div>
+      <div class="impl-phase-title">Phase 2 — Assess</div>
+      <span class="phase-badge ph-2">Planned · Jun–Oct 2025</span>
+    </div>
+    <div class="impl-phase-body" id="ph2">
+      <div class="impl-step"><div class="impl-step-dot">A</div><div><div class="impl-step-title">Current state assessment</div><div class="impl-step-detail">Review existing Queensland rehabilitation services across all HHS. Map current care settings, referral pathways and patient flows. Analyse AROC data, service activity data and patient outcomes. Review workforce distribution and gaps across Queensland.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">B</div><div><div class="impl-step-title">Identify gaps & priorities</div><div class="impl-step-detail">Use the Rehabilitation Service Delivery Audit Tool (ACI 2023) adapted for Queensland context. Identify HHS-level gaps in care settings, workforce, and access. Map disparities in rural, regional and remote service availability.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">C</div><div><div class="impl-step-title">Evidence review</div><div class="impl-step-detail">Review peer-reviewed literature and grey literature for Queensland-specific context. Reference NSW, Victorian and international MOC evidence reports. Triangulate empirical data with stakeholder consultation findings.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">D</div><div><div class="impl-step-title">Consumer & community consultation</div><div class="impl-step-detail">Conduct consumer surveys and lived experience interviews. Hold community forums including ATSI community representatives. Engage carers and families across urban and regional Queensland.</div></div></div>
+      <div class="checklist">
+        <div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px;margin-top:8px">Phase 2 checklist</div>
+        <label class="check-item"><input type="checkbox"> Service mapping survey sent to all HHS rehab leads</label>
+        <label class="check-item"><input type="checkbox"> AROC data extraction and analysis completed</label>
+        <label class="check-item"><input type="checkbox"> Workforce distribution mapping completed</label>
+        <label class="check-item"><input type="checkbox"> Evidence review commenced</label>
+        <label class="check-item"><input type="checkbox"> Consumer & carer consultation planned</label>
+        <label class="check-item"><input type="checkbox"> ATSI community co-design sessions scheduled</label>
+        <label class="check-item"><input type="checkbox"> Gap analysis report drafted</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="impl-phase">
+    <div class="impl-phase-hdr" onclick="togglePhase('ph3')">
+      <div class="impl-phase-num" style="background:var(--qg-l);color:var(--qg)">3</div>
+      <div class="impl-phase-title">Phase 3 — Develop & consult</div>
+      <span class="phase-badge ph-3">Planned · Oct 2025–Mar 2026</span>
+    </div>
+    <div class="impl-phase-body" id="ph3">
+      <div class="impl-step"><div class="impl-step-dot">A</div><div><div class="impl-step-title">Draft MOC development</div><div class="impl-step-detail">Develop each section of the MOC document: principles, care settings, workforce, referral pathways, data and outcomes, implementation guidance. Include Queensland-specific case studies for each care setting.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">B</div><div><div class="impl-step-title">Statewide consultation</div><div class="impl-step-detail">Distribute draft MOC to all Queensland HHS for formal consultation. Hold targeted consultation sessions with specialty groups (brain injury, spinal cord injury, paediatrics). Seek feedback from primary care, ACCHS and private sector partners.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">C</div><div><div class="impl-step-title">Incorporate feedback & peer review</div><div class="impl-step-detail">Collate and analyse all consultation feedback. Revise draft MOC accordingly. Commission independent peer review panel. Present revised draft to steering committee for endorsement.</div></div></div>
+      <div class="checklist">
+        <div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px;margin-top:8px">Phase 3 checklist</div>
+        <label class="check-item"><input type="checkbox"> Draft MOC structure agreed by steering committee</label>
+        <label class="check-item"><input type="checkbox"> Case studies commissioned from each HHS</label>
+        <label class="check-item"><input type="checkbox"> Draft MOC distributed for statewide consultation</label>
+        <label class="check-item"><input type="checkbox"> Consultation feedback collated and analysed</label>
+        <label class="check-item"><input type="checkbox"> Peer review panel convened</label>
+        <label class="check-item"><input type="checkbox"> Revised draft endorsed by steering committee</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="impl-phase">
+    <div class="impl-phase-hdr" onclick="togglePhase('ph4')">
+      <div class="impl-phase-num" style="background:#F3E8FF;color:#6B21A8">4</div>
+      <div class="impl-phase-title">Phase 4 — Finalise & launch</div>
+      <span class="phase-badge ph-4">Planned · Apr–Sep 2026</span>
+    </div>
+    <div class="impl-phase-body" id="ph4">
+      <div class="impl-step"><div class="impl-step-dot">A</div><div><div class="impl-step-title">Final approvals & publication</div><div class="impl-step-detail">Obtain executive endorsement and Queensland Health approval. Finalise design and layout. Publish MOC on Queensland Health website with supporting resources and implementation toolkit.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">B</div><div><div class="impl-step-title">Launch & communications</div><div class="impl-step-detail">Coordinate statewide launch event. Develop communication strategy for clinicians, health managers, executives and consumers. Present at relevant Queensland conferences and network forums.</div></div></div>
+      <div class="impl-step"><div class="impl-step-dot">C</div><div><div class="impl-step-title">Evaluation & monitoring framework</div><div class="impl-step-detail">Establish key performance indicators and baseline data. Develop evaluation plan with 2-yearly review cycle. Set up Community of Practice to support local implementation across HHS. Identify quick wins for early implementation.</div></div></div>
+      <div class="checklist">
+        <div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px;margin-top:8px">Phase 4 checklist</div>
+        <label class="check-item"><input type="checkbox"> Final MOC approved by executive</label>
+        <label class="check-item"><input type="checkbox"> MOC published on Queensland Health website</label>
+        <label class="check-item"><input type="checkbox"> Implementation toolkit finalised</label>
+        <label class="check-item"><input type="checkbox"> Statewide launch event held</label>
+        <label class="check-item"><input type="checkbox"> Community of Practice established</label>
+        <label class="check-item"><input type="checkbox"> KPI baseline data collected</label>
+        <label class="check-item"><input type="checkbox"> Evaluation plan in place</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOCAL ADAPTATION -->
+<div class="panel" id="panel-localadapt">
+  <div class="g2">
+    <div>
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:14px;color:var(--ink)">Adapting the MOC to local needs</h3>
+      <p style="font-size:13px;color:var(--ink-m);margin-bottom:16px;line-height:1.6">The Queensland Rehab MOC is designed as a statewide framework. Each HHS will need to tailor implementation based on local context, existing services, workforce and community need. This section guides that process.</p>
+
+      <div class="adapt-card">
+        <div class="adapt-title">1. Understand your local context</div>
+        <div class="adapt-body">Before implementing the MOC, each HHS should assess current service configuration, patient flow, workforce capacity and community demographics. Consider: What services do you currently have? What are the gaps? What are the biggest access barriers for your population?</div>
+        <div class="adapt-actions">
+          <button class="sec-btn" onclick="submitIdea2('Local context gap','What are the key local context factors your HHS needs the MOC to address?')">Add your HHS context ↗</button>
+        </div>
+      </div>
+
+      <div class="adapt-card">
+        <div class="adapt-title">2. Workforce and infrastructure considerations</div>
+        <div class="adapt-body">Care settings required across Queensland will vary based on community need, existing services and local workforce. Options for areas where specialist care is not locally available include virtual care, networked arrangements with tertiary services, outreach/hub-and-spoke models, and agreements with ACCHS and private providers.</div>
+      </div>
+
+      <div class="adapt-card">
+        <div class="adapt-title">3. Rural, regional and remote Queensland</div>
+        <div class="adapt-body">The MOC must be workable for all Queensland contexts — from tertiary metro services to small regional hospitals. For rural and remote areas: prioritise tele-rehabilitation pathways, develop outreach service models, consider fly-in fly-out specialist models, and establish formal networked arrangements with regional referral centres.</div>
+        <div class="adapt-actions">
+          <button class="sec-btn" onclick="submitIdea2('Rural & remote access','What would make the MOC work for your rural or remote service?')">Share rural ideas ↗</button>
+        </div>
+      </div>
+
+      <div class="adapt-card">
+        <div class="adapt-title">4. Aboriginal and Torres Strait Islander communities</div>
+        <div class="adapt-body">Closing the Gap in health outcomes is a Queensland Health commitment. Local adaptation must include co-design with Aboriginal and Torres Strait Islander communities, engagement with local ACCHS, inclusion of Aboriginal Health Practitioners/Workers in rehabilitation MDTs, and culturally safe care protocols tailored to local community needs.</div>
+      </div>
+
+      <div class="adapt-card">
+        <div class="adapt-title">5. Paediatric and lifespan considerations</div>
+        <div class="adapt-body">Unlike NSW, the Queensland MOC includes a lifespan approach. Services must plan for paediatric-to-adult transitions, developmentally appropriate care across age groups, and pathways that support people with congenital conditions into adulthood. HHS with paediatric rehabilitation services should document their transition protocols.</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-title">Solution prioritisation matrix</div>
+        <div class="card-sub">Use this to sequence your local implementation</div>
+        <div class="matrix-grid">
+          <div class="matrix-cell mc-qw">
+            <div class="mc-label">Quick wins</div>
+            <div class="mc-text">High impact · Low effort<br><br>• Automated referral protocols<br>• Rehab rep at bed meetings<br>• AROC membership / data use<br>• Tele-rehab for simple cases</div>
+          </div>
+          <div class="matrix-cell mc-plan">
+            <div class="mc-label">Plan carefully</div>
+            <div class="mc-text">High impact · High effort<br><br>• New in-reach team setup<br>• RITH program establishment<br>• Rural outreach models<br>• ATSI co-design program</div>
+          </div>
+          <div class="matrix-cell mc-con">
+            <div class="mc-label">Consider</div>
+            <div class="mc-text">Low impact · Low effort<br><br>• Brochure / consumer info<br>• Staff newsletter updates<br>• Existing pathway review</div>
+          </div>
+          <div class="matrix-cell mc-rec">
+            <div class="mc-label">Reconsider</div>
+            <div class="mc-text">Low impact · High effort<br><br>• Major infrastructure projects without patient flow analysis<br>• Large system changes without stakeholder buy-in</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">HHS self-assessment questions</div>
+        <div class="card-sub">Discuss in breakout groups Thursday</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">Is implementation needed across the whole HHS, a single facility, or within one service?</div>
+          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">Are key rehabilitation voices missing from current facility planning and bed flow processes?</div>
+          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">Which care settings do you currently have? Which are missing?</div>
+          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">What enablers or barriers are unique to your local context?</div>
+          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">How are ATSI community needs currently met in your rehabilitation service?</div>
+          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">What would "fully implemented" look like for your HHS in 2 years?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOIN -->
+<div class="panel" id="panel-join">
+  <div class="g2">
+    <div class="qr-card">
+      <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-l)">Scan to join</div>
+      <div class="qr-wrap"><canvas id="qr-canvas" width="180" height="180"></canvas></div>
+      <div class="link-box">qldrehab-moc.health.qld.gov.au/plan</div>
+      <div style="font-size:13px;color:var(--ink-l)">Then enter session code:</div>
+      <div class="join-code">QR-2608</div>
+    </div>
+    <div class="card">
+      <div class="card-title">How it works</div>
+      <div class="card-sub">Share during the Teams meeting</div>
+      <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Host shows QR or link on screen</div><div class="step-detail">Switch to this "Join via QR" tab during the Teams call — display fullscreen</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Stakeholders scan or click the link</div><div class="step-detail">Opens on phone or second screen — enter code <strong>QR-2608</strong> to join</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Vote, submit ideas & give feedback</div><div class="step-detail">All responses feed through in real time to the live results view</div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Host shows Admin → Live results</div><div class="step-detail">Display voting outcomes and ideas to drive discussion</div></div></div>
+      <div style="margin-top:16px;background:var(--gold-l);border:1px solid #FAC775;border-radius:var(--rs);padding:12px 14px">
+        <div style="font-size:12px;font-weight:600;color:#7A5000;margin-bottom:3px">To make this live across all devices</div>
+        <div style="font-size:12px;color:#633806;line-height:1.5">Host this HTML file on a web server or SharePoint and connect a real-time backend (Firebase or Supabase — both free tier). Replace the QR canvas with a real QR code pointing to your hosted URL.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="panel" id="panel-admin">
+  <div style="background:var(--ink);color:#fff;border-radius:var(--r);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px">
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"><path d="M3 5h14M3 10h10M3 15h6"/></svg>
+    <div><div style="font-weight:600;font-size:14px">Admin — Live Results</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Show on screen during the Teams call to discuss vote outcomes</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+    <div class="card">
+      <div class="card-title">Deliverables vote results</div>
+      <div class="card-sub">Sorted by votes · updates as participants vote</div>
+      <div id="admin-votes"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ideas & gaps feed</div>
+      <div class="card-sub">All submissions in real time</div>
+      <div id="admin-ideas" style="max-height:400px;overflow-y:auto"><div class="empty">Waiting for submissions...</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Care settings — sections voted to include</div>
+    <div class="card-sub">Live tally of which sections stakeholders want in the MOC for each care setting</div>
+    <div id="admin-settings-summary"><div class="empty">No section votes yet — expand Care settings tab to vote.</div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+var deliverables = [
+  {id:1,text:"Referral pathways & clinical decision-making tools",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
+  {id:2,text:"Workforce capability framework & role delineation guide",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
+  {id:3,text:"Virtual care & tele-rehabilitation model",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false},
+  {id:4,text:"Rural & remote service access strategy",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
+  {id:5,text:"Outcome measurement & AROC data reporting framework",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false},
+  {id:6,text:"Aboriginal & Torres Strait Islander culturally safe care guide",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
+  {id:7,text:"Early supported discharge & in-reach rehabilitation model",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
+  {id:8,text:"Consumer & carer engagement toolkit",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false},
+  {id:9,text:"Paediatric-to-adult transition framework (lifespan approach)",priority:"p-n",ptxt:"New — Qld specific",votes:0,voted:false},
+  {id:10,text:"Governance, accountability & quality improvement framework",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false}
+];
+
+var careSettings = [
+  {id:"cs1",icon:"🏥",name:"In-reach to acute",desc:"Shared care in ICU and acute wards. Early rehab to prevent deconditioning.",color:"#1565C0"},
+  {id:"cs2",icon:"🛏",name:"Inpatient subacute rehabilitation",desc:"Dedicated inpatient rehab wards — intensive MDT program.",color:"#0F6E56"},
+  {id:"cs3",icon:"☀️",name:"Day rehabilitation",desc:"Same-day admitted MDT programs — 2–3x per week.",color:"#854F0B"},
+  {id:"cs4",icon:"🏠",name:"Ambulatory, outpatient & home-based",desc:"Non-admitted community rehabilitation — MDT programs close to home.",color:"#6B21A8"},
+  {id:"cs5",icon:"🩺",name:"Rehabilitation in the home (RITH)",desc:"Admitted rehab in the person's home — hospital substitution or early supported discharge.",color:"#993C1D"},
+  {id:"cs6",icon:"📡",name:"Outreach & hub-and-spoke",desc:"Hub consultative support to spokes — critical for rural/remote Queensland.",color:"#1A5276"},
+  {id:"cs7",icon:"💻",name:"Virtual care & tele-rehabilitation",desc:"Videoconferencing, remote monitoring, app-based therapy.",color:"#117A65"}
+];
+
+// Sections per setting from uploaded document
+var settingSectionsData = {
+  cs1: ["What is it","Patient cohorts","Core elements","Workflow processes","Referrals / admission","Discharge","Workforce considerations","Category definitions","Additional staffing considerations","Outcome measures and KPIs","Benefits and risks to implementation"],
+  cs2: ["What is it","Cohorts","Core elements","Referral pathways (admission/discharge)","Workforce considerations","Outcome measures and KPIs (patient & service level)","Benefits and risks to implementation","Case studies","References"],
+  cs3: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs4: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs5: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs6: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs7: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"]
+};
+
+// Preset resources (In-reach only — from uploaded doc; others are open text)
+var presetResources = {
+  cs1: ["In-reach Toolkit outline and User Guide","Current State Analysis Report","Pre-Implementation Reflection Tool","Implementation Process Guide","Business Case Resource (SBAR Application)","Business Case Resources (DOH Strategic Plan Alignment)","Evaluation Framework","Key Contact Directory","Workflow Spreadsheet set up guide","Patient handouts"]
+};
+
+// State: sections per setting — each is {name, votes, voted, notes}
+var sectionState = {};
+// State: custom sections per setting
+var customSections = {};
+// State: resources per setting
+var resourcesState = {};
+
+careSettings.forEach(function(s) {
+  sectionState[s.id] = (settingSectionsData[s.id] || []).map(function(name) {
+    return {name: name, votes: 0, voted: false, notes: ""};
+  });
+  customSections[s.id] = [];
+  resourcesState[s.id] = [];
+});
+
+// Seed some initial votes on deliverables
+[[1,9],[4,12],[6,11],[7,8],[2,6],[5,5],[9,4],[3,3]].forEach(function(pair) {
+  var d = deliverables.find(function(x){return x.id===pair[0];});
+  if(d) d.votes = pair[1];
+});
+
+var ideas = [];
+var pCount = 24;
+var tasks = [
+  {task:"Finalise principles & scope",phase:"ph-1",lead:"Network Chair",start:"Mar 2025",due:"Apr 2025",status:"s-active",notes:"Thursday 3 April meeting"},
+  {task:"Develop statewide service mapping survey",phase:"ph-1",lead:"Project Lead TBC",start:"Apr 2025",due:"May 2025",status:"s-planned",notes:"All HHS rehab leads"},
+  {task:"AROC data extraction & analysis",phase:"ph-2",lead:"Data Analyst TBC",start:"May 2025",due:"Jul 2025",status:"s-planned",notes:"Benchmark against NSW"},
+  {task:"Evidence review — literature",phase:"ph-2",lead:"Network Exec",start:"May 2025",due:"Aug 2025",status:"s-planned",notes:"Adapt NSW evidence report for Qld"},
+  {task:"Consumer & carer consultation",phase:"ph-2",lead:"Consumer Rep TBC",start:"Jun 2025",due:"Sep 2025",status:"s-tbc",notes:"Including ATSI community forums"},
+  {task:"Draft MOC — care settings sections",phase:"ph-3",lead:"Clinical Advisory Group",start:"Sep 2025",due:"Dec 2025",status:"s-planned",notes:"Case studies from each HHS"},
+  {task:"Statewide consultation on draft MOC",phase:"ph-3",lead:"Network Chair",start:"Jan 2026",due:"Mar 2026",status:"s-planned",notes:"Minimum 8 weeks"}
+];
+
+// ── HELPERS ────────────────────────────────────────────────────────────
+function esc(s) {
+  return (s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function el(id) { return document.getElementById(id); }
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────
+function showPanel(name, navEl) {
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".ni").forEach(function(n){n.classList.remove("active");});
+  var p = el("panel-"+name);
+  if(p) p.classList.add("active");
+  if(navEl) navEl.classList.add("active");
+  var titles = {overview:"Overview",join:"Join via QR",principles:"Principles & Scope",vote:"Deliverables Vote",settings:"Care Settings",ideas:"Ideas & Gaps",timeline:"Project Timeline",implementation:"Implementation Plan",localadapt:"Local Adaptation",admin:"Live Results (Admin)"};
+  el("tb-title").textContent = "QLD Rehabilitation MOC · " + (titles[name] || name);
+  if(name === "admin") renderAdmin();
+  if(name === "join") setTimeout(drawQR, 60);
+  if(name === "settings") renderSettings();
+}
+
+// ── DELIVERABLES VOTE ──────────────────────────────────────────────────
+function votesUsed() {
+  return deliverables.filter(function(d){return d.voted;}).length;
+}
+function renderVote() {
+  var used = votesUsed();
+  var rem = 3 - used;
+  el("v-remaining").textContent = rem === 0 ? "No votes remaining" : rem === 1 ? "1 vote remaining" : rem + " votes remaining";
+  var html = "";
+  deliverables.forEach(function(d) {
+    var disabled = (!d.voted && rem === 0) ? " disabled" : "";
+    html += '<div class="del-card' + (d.voted ? " voted" : "") + '">';
+    html += '<div class="del-body">';
+    html += '<div class="del-title">' + esc(d.text) + '</div>';
+    html += '<span class="ptag ' + d.priority + '">' + esc(d.ptxt) + '</span>';
+    html += '</div>';
+    html += '<div class="vote-area">';
+    html += '<span class="vc">' + d.votes + '</span>';
+    html += '<button class="vbtn' + (d.voted ? " voted" : "") + '"' + disabled + ' onclick="castVote(' + d.id + ')">' + (d.voted ? "✓ Voted" : "Vote") + '</button>';
+    html += '</div></div>';
+  });
+  el("del-list").innerHTML = html;
+}
+function castVote(id) {
+  var d = deliverables.find(function(x){return x.id===id;});
+  if(!d || votesUsed() >= 3) return;
+  d.voted = !d.voted;
+  if(d.voted) d.votes += Math.floor(Math.random()*3)+2;
+  renderVote();
+  renderAdmin();
+}
+
+// ── CARE SETTINGS ─────────────────────────────────────────────────────
+function renderSettings() {
+  var html = "";
+  careSettings.forEach(function(s) {
+    var secs = sectionState[s.id] || [];
+    var customs = customSections[s.id] || [];
+    var includedCount = 0;
+    secs.forEach(function(x){if(x.voted) includedCount++;});
+    customs.forEach(function(x){if(x.voted) includedCount++;});
+    var total = secs.length + customs.length;
+    var resCount = (resourcesState[s.id]||[]).length;
+
+    html += '<div class="setting-card" id="sc-'+s.id+'">';
+    html += '<div class="setting-header" onclick="toggleSetting(\''+s.id+'\')">';
+    html += '<div class="setting-icon" style="background:'+s.color+'22">'+s.icon+'</div>';
+    html += '<div style="flex:1"><div class="setting-name">'+esc(s.name)+'</div><div class="setting-desc">'+esc(s.desc)+'</div></div>';
+    html += '<div style="display:flex;gap:8px;align-items:center;flex-shrink:0">';
+    html += '<span id="badge-inc-'+s.id+'" style="font-size:11px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:8px;font-weight:600">'+includedCount+'/'+total+' included</span>';
+    if(resCount>0) html += '<span id="badge-res-'+s.id+'" style="font-size:11px;background:var(--bl-b);color:var(--bl);padding:2px 8px;border-radius:8px;font-weight:600">'+resCount+' resource'+(resCount!==1?'s':'')+'</span>';
+    else html += '<span id="badge-res-'+s.id+'" style="display:none"></span>';
+    html += '<span style="font-size:12px;color:var(--ink-l)">▾</span>';
+    html += '</div></div>';
+    html += '<div class="setting-body" id="sb-'+s.id+'"></div>';
+    html += '</div>';
+  });
+  el("settings-list").innerHTML = html;
+}
+
+function toggleSetting(sid) {
+  var body = el("sb-"+sid);
+  if(!body) return;
+  if(body.classList.contains("open")) {
+    body.classList.remove("open");
+    body.innerHTML = "";
+  } else {
+    body.classList.add("open");
+    renderSettingBody(sid);
+  }
+}
+
+function renderSettingBody(sid) {
+  var body = el("sb-"+sid);
+  if(!body) return;
+  var s = careSettings.find(function(x){return x.id===sid;});
+  if(!s) return;
+  var secs = sectionState[sid] || [];
+  var customs = customSections[sid] || [];
+  var res = resourcesState[sid] || [];
+  var presets = presetResources[sid] || [];
+
+  var html = "";
+  html += '<p style="font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6">Vote to <strong>include</strong> each section in the QLD MOC for this care setting. Use <strong>Notes</strong> to add what\'s important to cover for Queensland.</p>';
+
+  // ── Standard sections ──
+  html += '<div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Sections</div>';
+  secs.forEach(function(sec, i) {
+    html += '<div class="sec-del" id="sd-'+sid+'-'+i+'">';
+    html += '<div class="sec-del-row">';
+    html += '<span class="sec-del-name">'+esc(sec.name)+'</span>';
+    html += '<span class="sec-votes">'+sec.votes+'</span>';
+    html += '<button class="inc-btn'+(sec.voted?' inc-yes':'')+'" onclick="voteSection(\''+sid+'\','+i+')">'+( sec.voted ? '✓ Include' : 'Include')+'</button>';
+    html += '<button class="notes-btn" onclick="toggleNotes(\'n-'+sid+'-'+i+'\')">Notes ✎</button>';
+    html += '</div>';
+    html += '<div class="notes-area" id="n-'+sid+'-'+i+'">';
+    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px">What\'s important to cover in this section for Queensland?</div>';
+    html += '<textarea placeholder="e.g. QLD-specific context, gaps vs NSW MOC, ATSI considerations, rural/remote..." onblur="saveNotes(\''+sid+'\','+i+',this.value,false)">'+esc(sec.notes)+'</textarea>';
+    if(sec.notes) html += '<div style="font-size:11px;color:var(--qg);margin-top:3px">✓ Saved</div>';
+    html += '</div></div>';
+  });
+
+  // ── Custom sections ──
+  customs.forEach(function(sec, i) {
+    html += '<div class="sec-del" id="csd-'+sid+'-'+i+'">';
+    html += '<div class="sec-del-row">';
+    html += '<span class="sec-del-name"><span style="font-size:10px;font-weight:700;background:var(--gold-l);color:#7A5000;padding:1px 6px;border-radius:5px;margin-right:5px">CUSTOM</span>'+esc(sec.name)+'</span>';
+    html += '<span class="sec-votes">'+sec.votes+'</span>';
+    html += '<button class="inc-btn'+(sec.voted?' inc-yes':'')+'" onclick="voteCustomSection(\''+sid+'\','+i+')">'+( sec.voted ? '✓ Include' : 'Include')+'</button>';
+    html += '<button class="notes-btn" onclick="toggleNotes(\'cn-'+sid+'-'+i+'\')">Notes ✎</button>';
+    html += '</div>';
+    html += '<div class="notes-area" id="cn-'+sid+'-'+i+'">';
+    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px">What\'s important to cover in this section?</div>';
+    html += '<textarea placeholder="Add notes on what this section should cover..." onblur="saveNotes(\''+sid+'\','+i+',this.value,true)">'+esc(sec.notes)+'</textarea>';
+    html += '</div></div>';
+  });
+
+  // ── Add custom section ──
+  html += '<div style="border:1px dashed var(--border);border-radius:var(--rs);padding:12px;margin-top:4px;margin-bottom:16px;background:var(--surf)">';
+  html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">+ Suggest another section</div>';
+  html += '<div style="display:flex;gap:8px">';
+  html += '<input type="text" id="newsec-'+sid+'" placeholder="e.g. Cultural safety protocols, Transition planning..." style="flex:1">';
+  html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addCustomSection(\''+sid+'\')">Add</button>';
+  html += '</div></div>';
+
+  // ── Resources ──
+  html += '<div style="border-top:1px solid var(--border);padding-top:16px">';
+  html += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px">Resources to include</div>';
+
+  // Preset resource chips (In-reach only)
+  if(presets.length > 0) {
+    html += '<div style="background:var(--bl-b);border:1px solid #BFDBFE;border-radius:var(--rs);padding:10px 12px;margin-bottom:10px">';
+    html += '<div style="font-size:12px;font-weight:600;color:var(--bl);margin-bottom:7px">Suggested resources from your document — click to add</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    presets.forEach(function(r, ri) {
+      var already = res.some(function(x){return x.text===r;});
+      html += '<button id="pres-'+sid+'-'+ri+'" onclick="addPresetRes(\''+sid+'\','+ri+')" style="font-size:12px;padding:3px 10px;border-radius:8px;border:1px solid #93C5FD;background:#fff;color:var(--bl);cursor:pointer;font-family:inherit;transition:all .15s'+(already?';opacity:.35;cursor:default':'')+'">+ '+esc(r)+'</button>';
+    });
+    html += '</div></div>';
+  } else {
+    html += '<p style="font-size:13px;color:var(--ink-l);margin-bottom:10px">Add resources, tools, guidelines or links relevant to this care setting.</p>';
+  }
+
+  // Saved resources feed
+  html += '<div id="res-feed-'+sid+'">';
+  res.forEach(function(r) {
+    html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:9px 12px;margin-bottom:7px;font-size:13px;color:var(--ink)">'+esc(r.text)+'<div style="font-size:11px;color:var(--qg);margin-top:2px">'+r.time+'</div></div>';
+  });
+  html += '</div>';
+
+  // Free-text add resource
+  html += '<div style="display:flex;gap:8px;margin-top:8px">';
+  html += '<input type="text" id="res-inp-'+sid+'" placeholder="Type a resource name, tool, guideline or link..." style="flex:1">';
+  html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addResource(\''+sid+'\')">Add resource</button>';
+  html += '</div>';
+  html += '</div>'; // end resources
+
+  body.innerHTML = html;
+}
+
+function voteSection(sid, idx) {
+  var secs = sectionState[sid];
+  if(!secs || !secs[idx]) return;
+  secs[idx].voted = !secs[idx].voted;
+  if(secs[idx].voted) secs[idx].votes += Math.floor(Math.random()*3)+2;
+  updateSettingBadge(sid);
+  renderSettingBody(sid);
+}
+function voteCustomSection(sid, idx) {
+  var customs = customSections[sid];
+  if(!customs || !customs[idx]) return;
+  customs[idx].voted = !customs[idx].voted;
+  if(customs[idx].voted) customs[idx].votes++;
+  updateSettingBadge(sid);
+  renderSettingBody(sid);
+}
+function toggleNotes(id) {
+  var el2 = el(id);
+  if(el2) el2.classList.toggle("open");
+}
+function saveNotes(sid, idx, val, isCustom) {
+  if(isCustom) {
+    if(customSections[sid] && customSections[sid][idx]) customSections[sid][idx].notes = val;
+  } else {
+    if(sectionState[sid] && sectionState[sid][idx]) sectionState[sid][idx].notes = val;
+  }
+}
+function addCustomSection(sid) {
+  var inp = el("newsec-"+sid);
+  if(!inp) return;
+  var name = inp.value.trim();
+  if(!name) return;
+  customSections[sid].push({name:name, votes:0, voted:false, notes:""});
+  inp.value = "";
+  updateSettingBadge(sid);
+  renderSettingBody(sid);
+}
+function addPresetRes(sid, ri) {
+  var presets = presetResources[sid] || [];
+  var r = presets[ri];
+  if(!r) return;
+  var already = resourcesState[sid].some(function(x){return x.text===r;});
+  if(already) return;
+  var time = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  resourcesState[sid].unshift({text:r, time:time});
+  updateSettingBadge(sid);
+  renderSettingBody(sid);
+}
+function addResource(sid) {
+  var inp = el("res-inp-"+sid);
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text) return;
+  var time = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  resourcesState[sid].unshift({text:text, time:time});
+  inp.value = "";
+  updateSettingBadge(sid);
+  renderSettingBody(sid);
+}
+function updateSettingBadge(sid) {
+  var secs = sectionState[sid] || [];
+  var customs = customSections[sid] || [];
+  var res = resourcesState[sid] || [];
+  var included = 0;
+  secs.forEach(function(x){if(x.voted) included++;});
+  customs.forEach(function(x){if(x.voted) included++;});
+  var total = secs.length + customs.length;
+  var incBadge = el("badge-inc-"+sid);
+  if(incBadge) incBadge.textContent = included+"/"+total+" included";
+  var resBadge = el("badge-res-"+sid);
+  if(resBadge) {
+    if(res.length>0){
+      resBadge.textContent = res.length+" resource"+(res.length!==1?"s":"");
+      resBadge.style.display = "";
+    } else {
+      resBadge.style.display = "none";
+    }
+  }
+  // update sidebar badge
+  var totalIncluded = 0;
+  careSettings.forEach(function(s){
+    (sectionState[s.id]||[]).forEach(function(x){if(x.voted) totalIncluded++;});
+    (customSections[s.id]||[]).forEach(function(x){if(x.voted) totalIncluded++;});
+  });
+  var sb = el("sbadge");
+  if(sb) sb.textContent = totalIncluded > 0 ? totalIncluded : "0";
+}
+
+// ── IDEAS ──────────────────────────────────────────────────────────────
+function submitIdea() {
+  var text = el("i-text").value.trim();
+  if(!text) return;
+  var cat = el("i-cat").value;
+  var time = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  ideas.unshift({text:text, cat:cat, time:time});
+  el("i-text").value = "";
+  updateIdeaBadges();
+  renderIdeas();
+  renderAdmin();
+}
+function submitIdea2(cat, placeholder) {
+  showPanel("ideas", document.querySelector(".ni[onclick*=\"'ideas'\"]"));
+  el("i-cat").value = cat;
+  el("i-text").placeholder = placeholder;
+  el("i-text").focus();
+}
+function renderIdeas() {
+  var html = "";
+  ideas.forEach(function(idea) {
+    html += '<div class="idea-item"><div class="idea-cat">'+esc(idea.cat)+'</div><div class="idea-txt">'+esc(idea.text)+'</div><div class="idea-meta">'+idea.time+'</div></div>';
+  });
+  el("ideas-list").innerHTML = html || '<div class="empty">No ideas yet — be the first!</div>';
+}
+function updateIdeaBadges() {
+  el("ibadge").textContent = ideas.length;
+  el("s-ideas").textContent = ideas.length;
+  el("i-count-lbl").textContent = "("+ideas.length+")";
+}
+
+// ── TIMELINE ───────────────────────────────────────────────────────────
+function renderTimeline() {
+  var html = "";
+  tasks.forEach(function(t) {
+    var phLabel = {ph1:"Phase 1","ph-1":"Phase 1",ph2:"Phase 2","ph-2":"Phase 2",ph3:"Phase 3","ph-3":"Phase 3",ph4:"Phase 4","ph-4":"Phase 4"}[t.phase] || t.phase;
+    var stLabel = {"s-active":"Active","s-planned":"Planned","s-done":"Done","s-tbc":"TBC"}[t.status] || t.status;
+    html += '<tr>';
+    html += '<td>'+esc(t.task)+'</td>';
+    html += '<td><span class="phase-badge '+t.phase+'">'+phLabel+'</span></td>';
+    html += '<td>'+esc(t.lead)+'</td>';
+    html += '<td>'+esc(t.start)+'</td>';
+    html += '<td>'+esc(t.due)+'</td>';
+    html += '<td><span class="status-badge '+t.status+'">'+stLabel+'</span></td>';
+    html += '<td style="font-size:12px;color:var(--ink-l)">'+esc(t.notes)+'</td>';
+    html += '</tr>';
+  });
+  el("tl-body").innerHTML = html;
+}
+function addTask() {
+  var task = el("tl-task").value.trim();
+  if(!task) return;
+  tasks.push({
+    task: task,
+    phase: el("tl-phase").value,
+    lead: el("tl-lead").value.trim() || "TBC",
+    start: el("tl-start").value.trim() || "TBC",
+    due: el("tl-due").value.trim() || "TBC",
+    status: el("tl-status").value,
+    notes: ""
+  });
+  ["tl-task","tl-lead","tl-start","tl-due"].forEach(function(id){el(id).value="";});
+  renderTimeline();
+}
+
+// ── IMPLEMENTATION PHASES ──────────────────────────────────────────────
+function togglePhase(id) {
+  var b = el(id);
+  if(b) b.classList.toggle("open");
+}
+
+// ── ADMIN ──────────────────────────────────────────────────────────────
+function renderAdmin() {
+  var sorted = deliverables.slice().sort(function(a,b){return b.votes-a.votes;});
+  var maxV = sorted[0] ? sorted[0].votes : 1;
+  var html = "";
+  sorted.forEach(function(d) {
+    var pct = Math.round((d.votes / (maxV||1)) * 100);
+    html += '<div class="res-bar-item"><div class="res-hdr"><div class="res-label">'+esc(d.text)+'</div><div class="res-votes">'+d.votes+'</div></div>';
+    html += '<div class="res-track"><div class="res-fill" style="width:'+pct+'%"></div></div></div>';
+  });
+  el("admin-votes").innerHTML = html;
+
+  // Settings summary
+  var shtml = "";
+  careSettings.forEach(function(s) {
+    var secs = sectionState[s.id] || [];
+    var customs = customSections[s.id] || [];
+    var included = [];
+    secs.forEach(function(x){if(x.voted) included.push(x.name);});
+    customs.forEach(function(x){if(x.voted) included.push(x.name+" (custom)");});
+    shtml += '<div style="margin-bottom:10px">';
+    shtml += '<div style="font-size:13px;font-weight:500;color:var(--ink)">'+s.icon+' '+esc(s.name)+' <span style="color:var(--qg)">('+included.length+' section'+(included.length!==1?"s":" included")+')</span></div>';
+    if(included.length>0) shtml += '<div style="font-size:12px;color:var(--ink-m);margin-top:2px">'+included.map(esc).join(" · ")+'</div>';
+    shtml += '</div>';
+  });
+  el("admin-settings-summary").innerHTML = shtml || '<div class="empty">No section votes yet.</div>';
+
+  // Ideas feed
+  var ihtml = ideas.map(function(i){
+    return '<div class="idea-item"><div class="idea-cat">'+esc(i.cat)+'</div><div class="idea-txt">'+esc(i.text)+'</div><div class="idea-meta">'+i.time+'</div></div>';
+  }).join("");
+  el("admin-ideas").innerHTML = ihtml || '<div class="empty">Waiting for submissions...</div>';
+}
+
+// ── QR CODE ────────────────────────────────────────────────────────────
+function drawQR() {
+  var canvas = el("qr-canvas");
+  if(!canvas) return;
+  var ctx = canvas.getContext("2d");
+  var size = 180;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0,0,size,size);
+  var cells = 25, cell = Math.floor((size-16)/cells), off = Math.floor((size - cells*cell)/2);
+  function finder(r0,c0) {
+    ctx.fillStyle = "#00843D";
+    for(var r=0;r<7;r++) for(var c=0;c<7;c++) {
+      var outer = r===0||r===6||c===0||c===6;
+      var inner = r>=2&&r<=4&&c>=2&&c<=4;
+      if(outer||inner) ctx.fillRect(off+(c0+c)*cell, off+(r0+r)*cell, cell-1, cell-1);
+    }
+  }
+  finder(0,0); finder(0,18); finder(18,0);
+  ctx.fillStyle = "#00843D";
+  for(var r=0;r<cells;r++) for(var c=0;c<cells;c++) {
+    var inFinder = (r<8&&c<8)||(r<8&&c>=17)||(r>=17&&c<8);
+    if(!inFinder && ((r*31+c)*42+r*c)%7 < 3) ctx.fillRect(off+c*cell, off+r*cell, cell-1, cell-1);
+  }
+}
+
+// ── PARTICIPANT TICKER ─────────────────────────────────────────────────
+setInterval(function() {
+  if(Math.random() < 0.3) {
+    pCount++;
+    el("s-participants").textContent = pCount;
+    el("pchip").textContent = pCount + " participants";
+  }
+}, 9000);
+
+// ── INIT ───────────────────────────────────────────────────────────────
+renderVote();
+renderIdeas();
+renderTimeline();
+renderAdmin();
+setTimeout(drawQR, 200);
+</script>
+</body>
+</html>
