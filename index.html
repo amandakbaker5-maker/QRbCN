@@ -299,15 +299,20 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>
       Principles & scope
     </div>
-    <div class="ni" onclick="showPanel('vote',this)">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 10l4 4 6-7"/><rect x="2" y="2" width="16" height="16" rx="2"/></svg>
-      Deliverables vote
-      <span class="nb" id="vbadge">10</span>
-    </div>
     <div class="ni" onclick="showPanel('settings',this)">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h14M10 3v14"/><circle cx="10" cy="10" r="7"/></svg>
       Care settings
       <span class="nb" id="sbadge">0</span>
+    </div>
+    <div class="ni" onclick="showPanel('orgreq',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>
+      Organisational requirements
+      <span class="nb" id="orbadge">0</span>
+    </div>
+    <div class="ni" onclick="showPanel('localadapt',this)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="M2 10h16M10 3c-2 3-2 11 0 14M10 3c2 3 2 11 0 14"/></svg>
+      Local adaptation
+      <span class="nb" id="labadge">0</span>
     </div>
     <div class="ni" onclick="showPanel('ideas',this)">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="8" r="4"/><path d="M10 12v5M7 17h6"/></svg>
@@ -323,10 +328,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div class="ni" onclick="showPanel('implementation',this)">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h12M4 10h8M4 14h5"/></svg>
       Implementation plan
-    </div>
-    <div class="ni" onclick="showPanel('localadapt',this)">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="M2 10h16M10 3c-2 3-2 11 0 14M10 3c2 3 2 11 0 14"/></svg>
-      Local adaptation
     </div>
 
     <div class="nav-grp">Admin</div>
@@ -482,21 +483,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   </div>
 </div>
 
-<!-- VOTE -->
-<div class="panel" id="panel-vote">
-  <div class="card">
-    <div class="card-title">Prioritise the deliverables</div>
-    <div class="card-sub">Vote for up to 3 deliverables you believe should be prioritised for the QLD Rehab MOC. Results update live and are visible to all participants.</div>
-    <div id="del-list"></div>
-    <p style="font-size:12px;color:var(--ink-l);text-align:center;margin-top:10px" id="vote-note">Select up to 3 · <span id="v-remaining">3 votes remaining</span></p>
-  </div>
-</div>
-
 <!-- CARE SETTINGS -->
 <div class="panel" id="panel-settings">
   <div class="card" style="margin-bottom:8px">
-    <div class="card-title">Care settings — sections, votes & ideas</div>
-    <div class="card-sub">Expand each care setting to vote on which sections to include in the QLD MOC, note what's important against each, add extra sections, and suggest resources.</div>
+    <div class="card-title">Care settings — sections, deliverables & notes</div>
+    <div class="card-sub">Expand each care setting to rate deliverables, vote on sections to include, add notes on what's important for Queensland, and suggest resources.</div>
   </div>
   <div id="settings-list"></div>
 </div>
@@ -541,7 +532,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
             <th>Start</th>
             <th>Due</th>
             <th>Status</th>
-            <th style="min-width:160px">Notes</th>
+            <th style="min-width:160px">Notes</th><th style="width:50px"></th>
           </tr>
         </thead>
         <tbody id="tl-body"></tbody>
@@ -559,8 +550,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
         </select>
       </div>
       <div style="flex:1;min-width:90px"><div class="field-lbl">Lead</div><input type="text" id="tl-lead" placeholder="Name / role"></div>
-      <div style="flex:1;min-width:90px"><div class="field-lbl">Start</div><input type="text" id="tl-start" placeholder="e.g. Apr 2025"></div>
-      <div style="flex:1;min-width:90px"><div class="field-lbl">Due</div><input type="text" id="tl-due" placeholder="e.g. Jun 2025"></div>
+      <div style="flex:1;min-width:90px"><div class="field-lbl">Start</div>
+        <select id="tl-start"><option value="">— month —</option>
+          <option>Apr 2025</option><option>May 2025</option><option>Jun 2025</option><option>Jul 2025</option><option>Aug 2025</option><option>Sep 2025</option><option>Oct 2025</option><option>Nov 2025</option><option>Dec 2025</option>
+          <option>Jan 2026</option><option>Feb 2026</option><option>Mar 2026</option><option>Apr 2026</option><option>May 2026</option><option>Jun 2026</option><option>Jul 2026</option><option>Aug 2026</option><option>Sep 2026</option><option>Oct 2026</option><option>Nov 2026</option><option>Dec 2026</option>
+        </select>
+      </div>
+      <div style="flex:1;min-width:90px"><div class="field-lbl">Due</div>
+        <select id="tl-due"><option value="">— month —</option>
+          <option>Apr 2025</option><option>May 2025</option><option>Jun 2025</option><option>Jul 2025</option><option>Aug 2025</option><option>Sep 2025</option><option>Oct 2025</option><option>Nov 2025</option><option>Dec 2025</option>
+          <option>Jan 2026</option><option>Feb 2026</option><option>Mar 2026</option><option>Apr 2026</option><option>May 2026</option><option>Jun 2026</option><option>Jul 2026</option><option>Aug 2026</option><option>Sep 2026</option><option>Oct 2026</option><option>Nov 2026</option><option>Dec 2026</option>
+        </select>
+      </div>
       <div style="flex:1;min-width:80px"><div class="field-lbl">Status</div>
         <select id="tl-status"><option value="s-planned">Planned</option><option value="s-active">Active</option><option value="s-done">Done</option><option value="s-tbc">TBC</option></select>
       </div>
@@ -574,7 +575,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div class="gantt-wrap">
       <table class="gantt-table">
         <thead><tr><th style="width:200px">Phase</th><th>Q1 2025</th><th>Q2 2025</th><th>Q3 2025</th><th>Q4 2025</th><th>Q1 2026</th><th>Q2 2026</th><th>Q3 2026</th><th>Q4 2026</th></tr></thead>
-        <tbody>
+        <tbody id="gantt-body">
           <tr><td><span class="phase-badge ph-1">Phase 1 · Scoping & evidence</span></td>
             <td><div class="gantt-bar" style="width:90%;background:#1565C0;opacity:.7">&nbsp;</div></td>
             <td><div class="gantt-bar" style="width:50%;background:#1565C0;opacity:.7">&nbsp;</div></td>
@@ -705,81 +706,20 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- LOCAL ADAPTATION -->
 <div class="panel" id="panel-localadapt">
-  <div class="g2">
-    <div>
-      <h3 style="font-size:16px;font-weight:600;margin-bottom:14px;color:var(--ink)">Adapting the MOC to local needs</h3>
-      <p style="font-size:13px;color:var(--ink-m);margin-bottom:16px;line-height:1.6">The Queensland Rehab MOC is designed as a statewide framework. Each HHS will need to tailor implementation based on local context, existing services, workforce and community need. This section guides that process.</p>
-
-      <div class="adapt-card">
-        <div class="adapt-title">1. Understand your local context</div>
-        <div class="adapt-body">Before implementing the MOC, each HHS should assess current service configuration, patient flow, workforce capacity and community demographics. Consider: What services do you currently have? What are the gaps? What are the biggest access barriers for your population?</div>
-        <div class="adapt-actions">
-          <button class="sec-btn" onclick="submitIdea2('Local context gap','What are the key local context factors your HHS needs the MOC to address?')">Add your HHS context ↗</button>
-        </div>
-      </div>
-
-      <div class="adapt-card">
-        <div class="adapt-title">2. Workforce and infrastructure considerations</div>
-        <div class="adapt-body">Care settings required across Queensland will vary based on community need, existing services and local workforce. Options for areas where specialist care is not locally available include virtual care, networked arrangements with tertiary services, outreach/hub-and-spoke models, and agreements with ACCHS and private providers.</div>
-      </div>
-
-      <div class="adapt-card">
-        <div class="adapt-title">3. Rural, regional and remote Queensland</div>
-        <div class="adapt-body">The MOC must be workable for all Queensland contexts — from tertiary metro services to small regional hospitals. For rural and remote areas: prioritise tele-rehabilitation pathways, develop outreach service models, consider fly-in fly-out specialist models, and establish formal networked arrangements with regional referral centres.</div>
-        <div class="adapt-actions">
-          <button class="sec-btn" onclick="submitIdea2('Rural & remote access','What would make the MOC work for your rural or remote service?')">Share rural ideas ↗</button>
-        </div>
-      </div>
-
-      <div class="adapt-card">
-        <div class="adapt-title">4. Aboriginal and Torres Strait Islander communities</div>
-        <div class="adapt-body">Closing the Gap in health outcomes is a Queensland Health commitment. Local adaptation must include co-design with Aboriginal and Torres Strait Islander communities, engagement with local ACCHS, inclusion of Aboriginal Health Practitioners/Workers in rehabilitation MDTs, and culturally safe care protocols tailored to local community needs.</div>
-      </div>
-
-      <div class="adapt-card">
-        <div class="adapt-title">5. Paediatric and lifespan considerations</div>
-        <div class="adapt-body">Unlike NSW, the Queensland MOC includes a lifespan approach. Services must plan for paediatric-to-adult transitions, developmentally appropriate care across age groups, and pathways that support people with congenital conditions into adulthood. HHS with paediatric rehabilitation services should document their transition protocols.</div>
-      </div>
-    </div>
-
-    <div>
-      <div class="card" style="margin-bottom:18px">
-        <div class="card-title">Solution prioritisation matrix</div>
-        <div class="card-sub">Use this to sequence your local implementation</div>
-        <div class="matrix-grid">
-          <div class="matrix-cell mc-qw">
-            <div class="mc-label">Quick wins</div>
-            <div class="mc-text">High impact · Low effort<br><br>• Automated referral protocols<br>• Rehab rep at bed meetings<br>• AROC membership / data use<br>• Tele-rehab for simple cases</div>
-          </div>
-          <div class="matrix-cell mc-plan">
-            <div class="mc-label">Plan carefully</div>
-            <div class="mc-text">High impact · High effort<br><br>• New in-reach team setup<br>• RITH program establishment<br>• Rural outreach models<br>• ATSI co-design program</div>
-          </div>
-          <div class="matrix-cell mc-con">
-            <div class="mc-label">Consider</div>
-            <div class="mc-text">Low impact · Low effort<br><br>• Brochure / consumer info<br>• Staff newsletter updates<br>• Existing pathway review</div>
-          </div>
-          <div class="matrix-cell mc-rec">
-            <div class="mc-label">Reconsider</div>
-            <div class="mc-text">Low impact · High effort<br><br>• Major infrastructure projects without patient flow analysis<br>• Large system changes without stakeholder buy-in</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">HHS self-assessment questions</div>
-        <div class="card-sub">Discuss in breakout groups Thursday</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">Is implementation needed across the whole HHS, a single facility, or within one service?</div>
-          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">Are key rehabilitation voices missing from current facility planning and bed flow processes?</div>
-          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">Which care settings do you currently have? Which are missing?</div>
-          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">What enablers or barriers are unique to your local context?</div>
-          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">How are ATSI community needs currently met in your rehabilitation service?</div>
-          <div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:13px;color:var(--ink)">What would "fully implemented" look like for your HHS in 2 years?</div>
-        </div>
-      </div>
-    </div>
+  <div class="card" style="margin-bottom:8px">
+    <div class="card-title">Adapting the MOC to local needs</div>
+    <div class="card-sub">Rate each consideration as Relevant or Not relevant to your context. Add other considerations at the bottom.</div>
   </div>
+  <div id="local-list"></div>
+</div>
+
+<!-- ORGANISATIONAL REQUIREMENTS -->
+<div class="panel" id="panel-orgreq">
+  <div class="card" style="margin-bottom:8px">
+    <div class="card-title">Organisational requirements</div>
+    <div class="card-sub">Rate each organisational requirement as Relevant or Not relevant to the QLD MOC. Add other considerations at the bottom.</div>
+  </div>
+  <div id="org-list"></div>
 </div>
 
 <!-- JOIN -->
@@ -815,20 +755,32 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
     <div class="card">
-      <div class="card-title">Deliverables vote results</div>
-      <div class="card-sub">Sorted by votes · updates as participants vote</div>
+      <div class="card-title">Deliverables — ratings by care setting</div>
+      <div class="card-sub">Relevant vs not relevant · live totals</div>
       <div id="admin-votes"></div>
     </div>
     <div class="card">
       <div class="card-title">Ideas & gaps feed</div>
       <div class="card-sub">All submissions in real time</div>
-      <div id="admin-ideas" style="max-height:400px;overflow-y:auto"><div class="empty">Waiting for submissions...</div></div>
+      <div id="admin-ideas" style="max-height:380px;overflow-y:auto"><div class="empty">Waiting...</div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+    <div class="card">
+      <div class="card-title">Organisational requirements ratings</div>
+      <div class="card-sub">Relevant vs not relevant · live</div>
+      <div id="admin-org"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Local adaptation ratings</div>
+      <div class="card-sub">Relevant vs not relevant · live</div>
+      <div id="admin-la"></div>
     </div>
   </div>
   <div class="card">
     <div class="card-title">Care settings — sections voted to include</div>
-    <div class="card-sub">Live tally of which sections stakeholders want in the MOC for each care setting</div>
-    <div id="admin-settings-summary"><div class="empty">No section votes yet — expand Care settings tab to vote.</div></div>
+    <div class="card-sub">Live tally per care setting</div>
+    <div id="admin-settings-summary"><div class="empty">No section votes yet.</div></div>
   </div>
 </div>
 
@@ -946,7 +898,7 @@ window.showPanel = function(name, navEl) {
   var p = el("panel-"+name);
   if(p) p.classList.add("active");
   if(navEl) navEl.classList.add("active");
-  var titles = {overview:"Overview",join:"Join via QR",principles:"Principles & Scope",vote:"Deliverables Vote",settings:"Care Settings",ideas:"Ideas & Gaps",timeline:"Project Timeline",implementation:"Implementation Plan",localadapt:"Local Adaptation",admin:"Live Results (Admin)"};
+  var titles = {overview:"Overview",join:"Join via QR",principles:"Principles & Scope",settings:"Care Settings",orgreq:"Organisational Requirements",localadapt:"Local Adaptation",ideas:"Ideas & Gaps",timeline:"Project Timeline",implementation:"Implementation Plan",admin:"Live Results (Admin)"};
   el("tb-title").textContent = "QLD Rehabilitation MOC · "+(titles[name]||name);
   if(name==="join")     setTimeout(drawQR, 60);
   if(name==="settings") renderSettings();
@@ -967,79 +919,127 @@ function registerPresence(){
   });
 }
 
-// ── DELIVERABLES VOTE ──────────────────────────────────────────────────
+// ── DELIVERABLES VOTE (Relevant / Not relevant) ────────────────────────
+// deliverables array now represents In-reach toolkit deliverables from slides
+var deliverables = [
+  {id:"d1", text:"Current state analysis report"},
+  {id:"d2", text:"In-reach rehabilitation model of care"},
+  {id:"d3", text:"Pre-implementation reflection tool"},
+  {id:"d4", text:"Implementation process guide"},
+  {id:"d5", text:"Business case resources"},
+  {id:"d6", text:"Evaluation framework"},
+  {id:"d7", text:"Key contact directory"},
+  {id:"d8", text:"Workflow and data management tools"},
+  {id:"d9", text:"Generic consumer resource"}
+];
+
 function listenVotes(){
   onValue(ref(db,"votes"), function(snap){
     liveVotes = snap.val() || {};
-    // check what this session has already voted
     myVotes = {};
     deliverables.forEach(function(d){
       var v = liveVotes[d.id];
-      if(v && v.voters && v.voters[SESSION_ID]) myVotes[d.id] = true;
+      if(v && v.voters && v.voters[SESSION_ID]) myVotes[d.id] = v.voters[SESSION_ID]; // stores "relevant" or "not_relevant"
     });
     renderVote();
     renderAdmin();
-    updateVoteBadge();
+    // listen for other ideas
+    listenDelOther();
   });
 }
 
-function updateVoteBadge(){
-  var total = 0;
-  Object.keys(liveVotes).forEach(function(k){ total += (liveVotes[k].count||0); });
-  var vb = el("vbadge"); if(vb) vb.textContent = total;
-}
-
-window.castVote = function(did){
+window.castVote = function(did, rating){
   if(myVotes[did]){
-    showToast("You've already voted for this — one vote per person.");
-    return;
-  }
-  var myTotal = Object.keys(myVotes).length;
-  if(myTotal >= 3){
-    showToast("You've used all 3 votes.");
+    showToast("You have already rated this item.");
     return;
   }
   var vRef = ref(db,"votes/"+did);
   runTransaction(vRef, function(current){
-    current = current || {count:0, voters:{}};
-    if(current.voters && current.voters[SESSION_ID]) return; // already voted
-    current.count = (current.count||0) + 1;
-    current.voters = current.voters || {};
-    current.voters[SESSION_ID] = true;
+    current = current || {relevant:0, not_relevant:0, voters:{}};
+    if(current.voters && current.voters[SESSION_ID]) return;
+    if(rating==="relevant") current.relevant = (current.relevant||0)+1;
+    else current.not_relevant = (current.not_relevant||0)+1;
+    current.voters = current.voters||{};
+    current.voters[SESSION_ID] = rating;
     return current;
-  }).then(function(){
-    showToast("Vote recorded!");
-  }).catch(function(e){
-    showToast("Error saving vote — please try again.");
-    console.error(e);
-  });
+  }).then(function(){ showToast("Rating saved!"); })
+    .catch(function(){ showToast("Error — please try again."); });
 };
 
 function renderVote(){
-  var myTotal = Object.keys(myVotes).length;
-  var rem = 3 - myTotal;
-  var remEl = el("v-remaining");
-  if(remEl) remEl.textContent = rem===0?"No votes remaining":rem===1?"1 vote remaining":rem+" votes remaining";
-
   var html = "";
+  var rated = Object.keys(myVotes).length;
+  var remEl = el("v-remaining");
+  if(remEl) remEl.textContent = rated===0 ? "You haven't rated any items yet" : rated+" of "+deliverables.length+" rated";
+
   deliverables.forEach(function(d){
-    var vdata  = liveVotes[d.id] || {count:0};
-    var count  = vdata.count || 0;
-    var voted  = !!myVotes[d.id];
-    var disabled = (!voted && rem===0) ? " disabled" : "";
-    html += '<div class="del-card'+(voted?" voted":"")+ '">';
-    html += '<div class="del-body">';
-    html += '<div class="del-title">'+esc(d.text)+'</div>';
-    html += '<span class="ptag '+d.priority+'">'+esc(d.ptxt)+'</span>';
-    html += '</div>';
-    html += '<div class="vote-area">';
-    html += '<span class="vc">'+count+'</span>';
-    html += '<button class="vbtn'+(voted?" voted":"")+ '"'+disabled+' onclick="castVote(\''+d.id+'\')">'+( voted?"✓ Voted":"Vote")+'</button>';
+    var vdata = liveVotes[d.id] || {relevant:0, not_relevant:0};
+    var rel   = vdata.relevant || 0;
+    var notrel= vdata.not_relevant || 0;
+    var myRating = myVotes[d.id] || null;
+    html += '<div class="del-card" style="flex-direction:column;align-items:flex-start;gap:8px">';
+    html += '<div style="font-size:14px;font-weight:500;color:var(--ink)">'+esc(d.text)+'</div>';
+    html += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">';
+    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+'" onclick="castVote(''+d.id+'','relevant')"'+(myRating?" disabled":"")+'>✓ Relevant <span style="margin-left:4px;font-weight:700">'+rel+'</span></button>';
+    html += '<button class="vbtn'+(myRating==="not_relevant"?" voted-no":"")+'" onclick="castVote(''+d.id+'','not_relevant')"'+(myRating?" disabled":"")+' style="'+(myRating==="not_relevant"?"background:#FEF0EF;color:#C8352A;border-color:#C8352A":"")+'">✗ Not relevant <span style="margin-left:4px;font-weight:700">'+notrel+'</span></button>';
+    if(myRating) html += '<span style="font-size:11px;color:var(--qg)">✓ Rated</span>';
     html += '</div></div>';
   });
+  // del-list now inside each care setting card
   var listEl = el("del-list");
   if(listEl) listEl.innerHTML = html;
 }
+
+// Other deliverable ideas
+var liveDelOther = [];
+function listenDelOther(){
+  onValue(ref(db,"delOther"), function(snap){
+    var data = snap.val()||{};
+    liveDelOther = Object.values(data).sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+    var feed = el("del-other-feed");
+    if(feed){
+      feed.innerHTML = liveDelOther.map(function(i){
+        return '<div class="idea-item" style="margin-bottom:6px"><div class="idea-txt">'+esc(i.text)+'</div><div class="idea-meta">'+esc(i.time||"")+'</div></div>';
+      }).join("") || "";
+    }
+  });
+}
+window.submitDelOther = function(){
+  var inp = el("del-other-text");
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text){ showToast("Please enter your idea first."); return; }
+  push(ref(db,"delOther"),{text:text,time:now(),ts:Date.now(),session:SESSION_ID})
+    .then(function(){ inp.value=""; showToast("Idea added!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+// ── DELIVERABLE RATINGS PER SETTING ───────────────────────────────────
+window.rateDeliverable = function(sid, did, rating){
+  var key = sid+"_del_"+did;
+  var rRef = ref(db,"sections/"+key);
+  runTransaction(rRef, function(current){
+    current = current || {relevant:0, not_relevant:0, voters:{}};
+    if(current.voters && current.voters[SESSION_ID]) return;
+    if(rating==="relevant") current.relevant = (current.relevant||0)+1;
+    else current.not_relevant = (current.not_relevant||0)+1;
+    current.voters = current.voters || {};
+    current.voters[SESSION_ID] = rating;
+    return current;
+  }).then(function(){ showToast("Rating saved!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+window.submitDelOtherSetting = function(sid){
+  var inp = el("delother-"+sid);
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text){ showToast("Please enter an idea first."); return; }
+  var key = sid+"_delother";
+  push(ref(db,"resources/"+key), {text:text, time:now(), ts:Date.now(), session:SESSION_ID})
+    .then(function(){ inp.value=""; showToast("Idea added!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
 
 // ── CARE SETTINGS — SECTION VOTES ─────────────────────────────────────
 function sectionKey(sid, idx){ return sid+"_"+idx; }
@@ -1211,6 +1211,35 @@ function renderSettingBody(sid){
   var res     = liveResources[sid]||[];
 
   var html = "";
+
+  // ── Deliverables sub-section ──
+  html += '<div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:18px">';
+  html += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px">Deliverables</div>';
+  html += '<div style="font-size:13px;color:var(--ink-m);margin-bottom:12px">Rate each deliverable as <strong>Relevant</strong> or <strong>Not relevant</strong> for this care setting. One rating per person.</div>';
+  deliverables.forEach(function(d){
+    var vKey = sid+"_del_"+d.id;
+    var vdata = liveSections[vKey] || {};
+    var rel    = vdata.relevant || 0;
+    var notrel = vdata.not_relevant || 0;
+    var myRating = (vdata.voters && vdata.voters[SESSION_ID]) ? vdata.voters[SESSION_ID] : null;
+    html += '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-bottom:1px solid var(--border)">';
+    html += '<span style="flex:1;font-size:13px;color:var(--ink);min-width:140px">'+esc(d.text)+'</span>';
+    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+'" onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'relevant\')"'+(myRating?" disabled":"")+'>✓ Relevant <strong style="margin-left:3px">'+rel+'</strong></button>';
+    html += '<button class="vbtn" style="'+(myRating==="not_relevant"?"background:#FEF0EF;color:#C8352A;border-color:#C8352A":"")+'" onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'not_relevant\')"'+(myRating?" disabled":"")+'>✗ Not relevant <strong style="margin-left:3px">'+notrel+'</strong></button>';
+    if(myRating) html += '<span style="font-size:11px;color:var(--qg)">✓ Rated</span>';
+    html += '</div>';
+  });
+  // Other deliverables idea box
+  var delOtherKey = sid+"_delother";
+  var delOtherFeed = liveResources[delOtherKey] || [];
+  html += '<div style="margin-top:10px"><div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:5px">Other deliverable ideas</div>';
+  delOtherFeed.forEach(function(r){ html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:6px 10px;margin-bottom:4px;font-size:13px">'+esc(r.text)+'<span style="font-size:11px;color:var(--qg);margin-left:6px">'+esc(r.time||"")+'</span></div>'; });
+  html += '<div style="display:flex;gap:8px;margin-top:6px">';
+  html += '<input type="text" id="delother-'+sid+'" placeholder="Suggest another deliverable for this setting..." style="flex:1">';
+  html += '<button class="submit-btn" style="padding:7px 14px;font-size:12px;white-space:nowrap" onclick="submitDelOtherSetting(\''+sid+'\')">Add</button>';
+  html += '</div></div>';
+  html += '</div>'; // end deliverables subsection
+
   html += '<p style="font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6">Vote to <strong>include</strong> each section. Add notes on what\'s important to cover for Queensland. Votes and notes are shared live with all participants.</p>';
   html += '<div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Sections</div>';
 
@@ -1304,6 +1333,121 @@ onValue(ref(db,"customSections"), function(snap){
   });
 });
 
+// ── ORGANISATIONAL REQUIREMENTS ────────────────────────────────────────
+var orgItems = [
+  {id:"or1", name:"Sponsorship, governance and leadership",    desc:"Executive sponsorship, steering committee, clinical and operational leadership"},
+  {id:"or2", name:"Workforce, education and training",         desc:"Specialist rehabilitation skills, staffing levels, professional development"},
+  {id:"or3", name:"Documentation, coding and funding",         desc:"AN-SNAP V5, Tier 2 non-admitted, activity-based funding, clinical documentation"},
+  {id:"or4", name:"Protocols and procedures",                  desc:"Referral criteria, admission/discharge, shared care, escalation pathways"},
+  {id:"or5", name:"Measurement and data",                      desc:"AROC benchmarking, patient flow portal, PROMs/PREMs, HOPE platform"}
+];
+var localItems = [
+  {id:"la1", name:"Setting implementation priorities",          desc:"Phased approach — Plan, Assess, Operationalise — tailored to local HHS context"},
+  {id:"la2", name:"How to measure efficiency and effectiveness", desc:"KPIs, AROC data, discharge delays, patient outcomes, service-level benchmarking"},
+  {id:"la3", name:"Using virtual care in rehabilitation",        desc:"Telehealth models, remote monitoring, digital equity, tele-rehabilitation programs"}
+];
+
+var liveOrgRatings = {};   // {or1: {relevant:3, not_relevant:1, voters:{}, notes:[]}}
+var liveLocalRatings = {}; // same structure
+var myOrgRatings   = {};
+var myLocalRatings = {};
+
+function listenOrgRatings(){
+  onValue(ref(db,"orgRatings"), function(snap){
+    liveOrgRatings = snap.val()||{};
+    myOrgRatings = {};
+    orgItems.forEach(function(item){
+      var v = liveOrgRatings[item.id];
+      if(v && v.voters && v.voters[SESSION_ID]) myOrgRatings[item.id] = v.voters[SESSION_ID];
+    });
+    renderOrgList();
+    renderAdmin();
+    updateOrgBadge();
+  });
+}
+function listenLocalRatings(){
+  onValue(ref(db,"localRatings"), function(snap){
+    liveLocalRatings = snap.val()||{};
+    myLocalRatings = {};
+    localItems.forEach(function(item){
+      var v = liveLocalRatings[item.id];
+      if(v && v.voters && v.voters[SESSION_ID]) myLocalRatings[item.id] = v.voters[SESSION_ID];
+    });
+    renderLocalList();
+    renderAdmin();
+    updateLocalBadge();
+  });
+}
+
+function updateOrgBadge(){
+  var rated = Object.keys(myOrgRatings).length;
+  var ob = el("orbadge"); if(ob) ob.textContent = rated>0?rated:"0";
+}
+function updateLocalBadge(){
+  var rated = Object.keys(myLocalRatings).length;
+  var lb = el("labadge"); if(lb) lb.textContent = rated>0?rated:"0";
+}
+
+window.rateItem = function(dbPath, itemId, rating){
+  var rRef = ref(db, dbPath+"/"+itemId);
+  runTransaction(rRef, function(current){
+    current = current||{relevant:0,not_relevant:0,voters:{},notes:{}};
+    if(current.voters && current.voters[SESSION_ID]) return;
+    if(rating==="relevant") current.relevant=(current.relevant||0)+1;
+    else current.not_relevant=(current.not_relevant||0)+1;
+    current.voters=current.voters||{};
+    current.voters[SESSION_ID]=rating;
+    return current;
+  }).then(function(){ showToast("Rating saved!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+window.submitRatingNote = function(dbPath, itemId, btnEl){
+  var inp = el("rn-"+itemId);
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text){ showToast("Please enter a note."); return; }
+  push(ref(db,dbPath+"/"+itemId+"/notes"),{text:text,time:now(),ts:Date.now(),session:SESSION_ID})
+    .then(function(){ inp.value=""; showToast("Note saved!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+function buildRatingHtml(items, liveData, myRatings, dbPath){
+  var html = "";
+  items.forEach(function(item){
+    var v = liveData[item.id]||{relevant:0,not_relevant:0};
+    var rel=v.relevant||0, notrel=v.not_relevant||0;
+    var myR = myRatings[item.id]||null;
+    var notes = v.notes ? Object.values(v.notes).sort(function(a,b){return (b.ts||0)-(a.ts||0);}) : [];
+    html += '<div class="sec-del" style="margin-bottom:10px">';
+    html += '<div class="sec-del-row" style="flex-wrap:wrap;gap:8px">';
+    html += '<div style="flex:1;min-width:160px"><div style="font-size:14px;font-weight:500;color:var(--ink)">'+esc(item.name)+'</div>';
+    html += '<div style="font-size:12px;color:var(--ink-l);margin-top:2px">'+esc(item.desc)+'</div></div>';
+    html += '<button class="vbtn'+(myR==="relevant"?" voted":"")+'" onclick="rateItem(''+dbPath+'',''+item.id+'','relevant')"'+(myR?" disabled":"")+'>✓ Relevant <span style="font-weight:700;margin-left:3px">'+rel+'</span></button>';
+    html += '<button class="vbtn" onclick="rateItem(''+dbPath+'',''+item.id+'','not_relevant')"'+(myR?" disabled":"")+' style="'+(myR==="not_relevant"?"background:#FEF0EF;color:#C8352A;border-color:#C8352A":"")+'" >✗ Not relevant <span style="font-weight:700;margin-left:3px">'+notrel+'</span></button>';
+    html += '<button class="notes-btn" onclick="toggleNotes('rnnotes-'+item.id+'')">Notes'+(notes.length>0?" ("+notes.length+")":"")+" ✎"+'</button>';
+    html += '</div>';
+    html += '<div class="notes-area" id="rnnotes-'+item.id+'">';
+    if(notes.length>0){
+      notes.forEach(function(n){ html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:7px 10px;margin-bottom:5px;font-size:13px">'+esc(n.text)+'<span style="font-size:11px;color:var(--qg);margin-left:6px">'+esc(n.time||"")+'</span></div>'; });
+    }
+    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px">Other considerations</div>';
+    html += '<div style="display:flex;gap:8px"><textarea id="rn-'+item.id+'" placeholder="Add any other considerations..." style="flex:1;min-height:55px;resize:vertical"></textarea>';
+    html += '<button class="submit-btn" style="padding:7px 14px;font-size:12px;align-self:flex-end;white-space:nowrap" onclick="submitRatingNote(''+dbPath+'',''+item.id+'')">Add</button></div>';
+    html += '</div></div>';
+  });
+  return html;
+}
+
+function renderOrgList(){
+  var listEl = el("org-list"); if(!listEl) return;
+  listEl.innerHTML = buildRatingHtml(orgItems, liveOrgRatings, myOrgRatings, "orgRatings");
+}
+function renderLocalList(){
+  var listEl = el("local-list"); if(!listEl) return;
+  listEl.innerHTML = buildRatingHtml(localItems, liveLocalRatings, myLocalRatings, "localRatings");
+}
+
 // ── IDEAS ──────────────────────────────────────────────────────────────
 function listenIdeas(){
   onValue(ref(db,"ideas"), function(snap){
@@ -1344,22 +1488,64 @@ function renderIdeas(){
 }
 
 // ── TIMELINE ───────────────────────────────────────────────────────────
+// Month-to-quarter mapping
+var monthToCol = {"Apr 2025":1,"May 2025":1,"Jun 2025":1,"Jul 2025":2,"Aug 2025":2,"Sep 2025":2,"Oct 2025":3,"Nov 2025":3,"Dec 2025":3,"Jan 2026":4,"Feb 2026":4,"Mar 2026":4,"Apr 2026":5,"May 2026":5,"Jun 2026":5,"Jul 2026":6,"Aug 2026":6,"Sep 2026":6,"Oct 2026":7,"Nov 2026":7,"Dec 2026":7};
+var phaseColors = {"ph-1":"#1565C0","ph-2":"#F2A900","ph-3":"#00843D","ph-4":"#6B21A8"};
+
 function renderTimeline(){
   var html = "";
-  tasks.forEach(function(t){
+  tasks.forEach(function(t, idx){
     var ph = {"ph-1":"Phase 1","ph-2":"Phase 2","ph-3":"Phase 3","ph-4":"Phase 4"}[t.phase]||t.phase;
     var st = {"s-active":"Active","s-planned":"Planned","s-done":"Done","s-tbc":"TBC"}[t.status]||t.status;
-    html += '<tr><td>'+esc(t.task)+'</td><td><span class="phase-badge '+t.phase+'">'+ph+'</span></td><td>'+esc(t.lead)+'</td><td>'+esc(t.start)+'</td><td>'+esc(t.due)+'</td><td><span class="status-badge '+t.status+'">'+st+'</span></td><td style="font-size:12px;color:var(--ink-l)">'+esc(t.notes)+'</td></tr>';
+    html += '<tr>';
+    html += '<td>'+esc(t.task)+'</td>';
+    html += '<td><span class="phase-badge '+t.phase+'">'+ph+'</span></td>';
+    html += '<td>'+esc(t.lead)+'</td>';
+    html += '<td>'+esc(t.start||"")+'</td>';
+    html += '<td>'+esc(t.due||"")+'</td>';
+    html += '<td><span class="status-badge '+t.status+'">'+st+'</span></td>';
+    html += '<td style="font-size:12px;color:var(--ink-l)">'+esc(t.notes)+'</td>';
+    html += '<td><button onclick="deleteTask('+idx+')" style="padding:3px 9px;font-size:12px;background:var(--hi-b);color:var(--hi);border:1px solid #f5b7b1;border-radius:5px;cursor:pointer;font-family:inherit">✕ Delete</button></td>';
+    html += '</tr>';
   });
   var tb = el("tl-body"); if(tb) tb.innerHTML = html;
+  renderGantt();
 }
+
+window.deleteTask = function(idx){
+  tasks.splice(idx,1);
+  renderTimeline();
+};
 
 window.addTask = function(){
   var task = el("tl-task").value.trim(); if(!task) return;
-  tasks.push({task:task, phase:el("tl-phase").value, lead:el("tl-lead").value.trim()||"TBC", start:el("tl-start").value.trim()||"TBC", due:el("tl-due").value.trim()||"TBC", status:el("tl-status").value, notes:""});
-  ["tl-task","tl-lead","tl-start","tl-due"].forEach(function(id){ el(id).value=""; });
+  var start = el("tl-start").value;
+  var due = el("tl-due").value;
+  tasks.push({task:task, phase:el("tl-phase").value, lead:el("tl-lead").value.trim()||"TBC", start:start||"", due:due||"", status:el("tl-status").value, notes:""});
+  el("tl-task").value=""; el("tl-lead").value="";
+  el("tl-start").selectedIndex=0; el("tl-due").selectedIndex=0;
   renderTimeline();
 };
+
+function renderGantt(){
+  var ganttEl = el("gantt-body"); if(!ganttEl) return;
+  var html = "";
+  tasks.forEach(function(t){
+    var startCol = monthToCol[t.start]||0;
+    var endCol   = monthToCol[t.due]||0;
+    var color    = phaseColors[t.phase]||"#888888";
+    html += '<tr><td style="font-size:12px;max-width:160px;word-break:break-word;white-space:normal">'+esc(t.task)+'</td>';
+    for(var c=1;c<=7;c++){
+      if(startCol && endCol && c>=startCol && c<=endCol){
+        html += '<td style="padding:3px 2px"><div style="height:14px;background:'+color+';opacity:.8;border-radius:3px;min-width:8px"></div></td>';
+      } else {
+        html += '<td></td>';
+      }
+    }
+    html += '</tr>';
+  });
+  ganttEl.innerHTML = html;
+}
 
 window.togglePhase = function(id){
   var b = el(id); if(b) b.classList.toggle("open");
@@ -1368,16 +1554,49 @@ window.togglePhase = function(id){
 // ── ADMIN ──────────────────────────────────────────────────────────────
 function renderAdmin(){
   // Deliverable votes
-  var sorted = deliverables.slice().sort(function(a,b){
-    return ((liveVotes[b.id]||{}).count||0) - ((liveVotes[a.id]||{}).count||0);
+  // Deliverables ratings — aggregated across all settings
+  var vhtml = "";
+  deliverables.forEach(function(d){
+    var totalRel=0, totalNotRel=0;
+    careSettings.forEach(function(s){
+      var v = liveSections[s.id+"_del_"+d.id]||{};
+      totalRel += (v.relevant||0);
+      totalNotRel += (v.not_relevant||0);
+    });
+    var total = totalRel+totalNotRel;
+    var pct = total>0?Math.round((totalRel/total)*100):0;
+    vhtml += '<div style="margin-bottom:10px"><div style="font-size:13px;color:var(--ink);margin-bottom:3px">'+esc(d.text)+'</div>';
+    vhtml += '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">';
+    vhtml += '<span style="font-size:12px;background:var(--qg-l);color:var(--qg);padding:1px 7px;border-radius:6px;font-weight:600">'+totalRel+' relevant</span>';
+    vhtml += '<span style="font-size:12px;background:var(--hi-b);color:var(--hi);padding:1px 7px;border-radius:6px;font-weight:600">'+totalNotRel+' not relevant</span>';
+    if(total>0) vhtml += '<span style="font-size:11px;color:var(--ink-l)">'+pct+'% relevant</span>';
+    vhtml += '</div></div>';
   });
-  var maxV = (liveVotes[sorted[0]&&sorted[0].id]||{}).count||1;
-  var vhtml = sorted.map(function(d){
-    var count = (liveVotes[d.id]||{}).count||0;
-    var pct = Math.round((count/(maxV||1))*100);
-    return '<div class="res-bar-item"><div class="res-hdr"><div class="res-label">'+esc(d.text)+'</div><div class="res-votes">'+count+'</div></div><div class="res-track"><div class="res-fill" style="width:'+pct+'%"></div></div></div>';
-  }).join("");
   var avEl = el("admin-votes"); if(avEl) avEl.innerHTML = vhtml;
+
+  // Org requirements summary
+  var ohtml = "";
+  orgItems.forEach(function(item){
+    var v = liveOrgRatings[item.id]||{relevant:0,not_relevant:0};
+    ohtml += '<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)">';
+    ohtml += '<div style="flex:1;font-size:13px;color:var(--ink)">'+esc(item.name)+'</div>';
+    ohtml += '<span style="font-size:12px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:6px;font-weight:600">'+( v.relevant||0)+' relevant</span>';
+    ohtml += '<span style="font-size:12px;background:var(--hi-b);color:var(--hi);padding:2px 8px;border-radius:6px;font-weight:600">'+(v.not_relevant||0)+' not relevant</span>';
+    ohtml += '</div>';
+  });
+  var oEl = el("admin-org"); if(oEl) oEl.innerHTML = ohtml;
+
+  // Local adaptation summary
+  var lahtml = "";
+  localItems.forEach(function(item){
+    var v = liveLocalRatings[item.id]||{relevant:0,not_relevant:0};
+    lahtml += '<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)">';
+    lahtml += '<div style="flex:1;font-size:13px;color:var(--ink)">'+esc(item.name)+'</div>';
+    lahtml += '<span style="font-size:12px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:6px;font-weight:600">'+(v.relevant||0)+' relevant</span>';
+    lahtml += '<span style="font-size:12px;background:var(--hi-b);color:var(--hi);padding:2px 8px;border-radius:6px;font-weight:600">'+(v.not_relevant||0)+' not relevant</span>';
+    lahtml += '</div>';
+  });
+  var laEl = el("admin-la"); if(laEl) laEl.innerHTML = lahtml;
 
   // Settings summary
   var shtml = careSettings.map(function(s){
@@ -1401,7 +1620,7 @@ function renderAdmin(){
 // ── PDF EXPORT ─────────────────────────────────────────────────────────
 window.exportPDF = function(){
   var w = window.open("","_blank");
-  var sortedVotes = deliverables.slice().sort(function(a,b){
+  var sortedVotes = deliverables.slice().sort(function(a,b){ // kept for PDF structure
     return ((liveVotes[b.id]||{}).count||0)-((liveVotes[a.id]||{}).count||0);
   });
 
@@ -1421,14 +1640,44 @@ window.exportPDF = function(){
   html += '<div class="meta">Exported: '+new Date().toLocaleString()+'&nbsp;&nbsp;|&nbsp;&nbsp;Participants: '+liveParticipants+'&nbsp;&nbsp;|&nbsp;&nbsp;Session data from Firebase</div>';
   html += '<button onclick="window.print()" style="background:#00843D;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-bottom:24px">⬇ Print / Save as PDF</button>';
 
-  // Deliverables
-  html += '<h2>Deliverables Vote Results</h2>';
-  html += '<table><tr><th>Deliverable</th><th>Priority</th><th style="width:60px;text-align:center">Votes</th></tr>';
-  sortedVotes.forEach(function(d){
-    var count = (liveVotes[d.id]||{}).count||0;
-    var maxV2 = (liveVotes[sortedVotes[0].id]||{}).count||1;
-    var pct = Math.round((count/maxV2)*100);
-    html += '<tr><td>'+esc(d.text)+'<div class="vote-bar"><div class="vote-fill" style="width:'+pct+'%"></div></div></td><td>'+esc(d.ptxt)+'</td><td style="text-align:center;font-weight:600">'+count+'</td></tr>';
+  // Deliverables per care setting
+  html += '<h2>Deliverables — Ratings per Care Setting</h2>';
+  careSettings.forEach(function(s){
+    html += '<h3>'+s.icon+' '+esc(s.name)+'</h3>';
+    html += '<table><tr><th>Deliverable</th><th style="text-align:center;width:80px">Relevant</th><th style="text-align:center;width:100px">Not relevant</th></tr>';
+    deliverables.forEach(function(d){
+      var v = liveSections[s.id+"_del_"+d.id]||{relevant:0,not_relevant:0};
+      html += '<tr><td>'+esc(d.text)+'</td><td style="text-align:center;color:#00843D;font-weight:600">'+(v.relevant||0)+'</td><td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td></tr>';
+    });
+    html += '</table>';
+    // Other ideas for this setting
+    var otherRes = liveResources[s.id+"_delother"]||[];
+    if(otherRes.length>0){
+      html += '<div style="margin-bottom:8px"><strong style="font-size:12px">Other deliverable ideas:</strong><br>';
+      otherRes.forEach(function(r){ html += '<div class="idea-box">'+esc(r.text)+'</div>'; });
+      html += '</div>';
+    }
+  });
+
+  // Org requirements
+  html += '<h2>Organisational Requirements — Ratings & Notes</h2>';
+  html += '<table><tr><th>Item</th><th style="text-align:center">Relevant</th><th style="text-align:center">Not relevant</th><th>Notes / other considerations</th></tr>';
+  orgItems.forEach(function(item){
+    var v = liveOrgRatings[item.id]||{relevant:0,not_relevant:0};
+    var notes = v.notes ? Object.values(v.notes) : [];
+    var notesHtml = notes.map(function(n){ return '<div class="note-box">'+esc(n.text)+'</div>'; }).join("") || '<span style="color:#aaa">—</span>';
+    html += '<tr><td>'+esc(item.name)+'</td><td style="text-align:center;color:#00843D;font-weight:600">'+(v.relevant||0)+'</td><td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td><td>'+notesHtml+'</td></tr>';
+  });
+  html += '</table>';
+
+  // Local adaptation
+  html += '<h2>Local Adaptation — Ratings & Notes</h2>';
+  html += '<table><tr><th>Item</th><th style="text-align:center">Relevant</th><th style="text-align:center">Not relevant</th><th>Notes / other considerations</th></tr>';
+  localItems.forEach(function(item){
+    var v = liveLocalRatings[item.id]||{relevant:0,not_relevant:0};
+    var notes = v.notes ? Object.values(v.notes) : [];
+    var notesHtml = notes.map(function(n){ return '<div class="note-box">'+esc(n.text)+'</div>'; }).join("") || '<span style="color:#aaa">—</span>';
+    html += '<tr><td>'+esc(item.name)+'</td><td style="text-align:center;color:#00843D;font-weight:600">'+(v.relevant||0)+'</td><td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td><td>'+notesHtml+'</td></tr>';
   });
   html += '</table>';
 
@@ -1491,7 +1740,11 @@ listenVotes();
 listenSections();
 listenResources();
 listenIdeas();
+listenOrgRatings();
+listenLocalRatings();
 renderTimeline();
+renderOrgList();
+renderLocalList();
 setTimeout(drawQR, 300);
 
 // Connection status indicator
