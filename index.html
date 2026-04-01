@@ -271,8 +271,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .export-btn{padding:9px 20px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
 .export-btn:hover{background:#2d2d4a}
 </style>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -917,10 +917,13 @@ function showPanel(name, navEl) {
   if(navEl) navEl.classList.add("active");
   var titles = {overview:"Overview",join:"Join via QR",principles:"Principles & Scope",settings:"Care Settings",orgreq:"Organisational Requirements",localadapt:"Local Adaptation",ideas:"Ideas & Gaps",timeline:"Project Timeline",implementation:"Implementation Plan",admin:"Live Results (Admin)"};
   el("tb-title").textContent = "QLD Rehabilitation MOC · "+(titles[name]||name);
-  if(name==="join")     setTimeout(drawQR, 60);
-  if(name==="settings") renderSettings();
-  if(name==="admin")    renderAdmin();
-};
+  if(name==="join")       setTimeout(drawQR, 60);
+  if(name==="settings")   renderSettings();
+  if(name==="orgreq")     renderOrgList();
+  if(name==="localadapt") renderLocalList();
+  if(name==="ideas")      renderIdeas();
+  if(name==="admin")      renderAdmin();
+}
 
 // ── REGISTER PRESENCE ──────────────────────────────────────────────────
 function registerPresence(){
@@ -2031,25 +2034,19 @@ document.addEventListener('click', function(e) {
 });
 
 // ── INIT ───────────────────────────────────────────────────────────────
-window.addEventListener('load', function() {
-  try {
-    registerPresence();
-    listenVotes();
-    listenSections();
-    listenResources();
-    listenIdeas();
-    listenOrgRatings();
-    listenLocalRatings();
-    listenCustomItems();
-    listenScopeVotes();
-    renderTimeline();
-    renderOrgList();
-    renderLocalList();
-    setTimeout(drawQR, 300);
-  } catch(e) {
-    console.error('Init error:', e);
-  }
-});
+registerPresence();
+listenVotes();
+listenSections();
+listenResources();
+listenIdeas();
+listenOrgRatings();
+listenLocalRatings();
+listenCustomItems();
+listenScopeVotes();
+renderTimeline();
+renderOrgList();
+renderLocalList();
+setTimeout(drawQR, 300);
 
 // Connection status indicator
 onValue(ref(db,".info/connected"), function(snap){
