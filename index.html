@@ -271,8 +271,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .export-btn{padding:9px 20px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
 .export-btn:hover{background:#2d2d4a}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.6.10/firebase-app-compat.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.6.10/firebase-database-compat.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -363,18 +363,42 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- OVERVIEW -->
 <div class="panel active" id="panel-overview">
-  <div class="stat-grid" style="grid-template-columns:1fr">
+  <div class="stat-grid">
     <div class="stat dark"><div class="stat-lbl">Participants joined</div><div class="stat-val" id="s-participants">1</div><div class="stat-det">Across QLD HHS</div></div>
+    <div class="stat"><div class="stat-lbl">Deliverables under review</div><div class="stat-val">10</div><div class="stat-det">Vote open now</div></div>
+    <div class="stat"><div class="stat-lbl">Ideas submitted</div><div class="stat-val" id="s-ideas">0</div><div class="stat-det">Growing in real time</div></div>
+    <div class="stat"><div class="stat-lbl">Principles confirmed</div><div class="stat-val">7</div><div class="stat-det">Across QLD & lifespan</div></div>
   </div>
-  <!-- keep these hidden so JS can still update them -->
-  <span id="s-ideas" style="display:none">0</span>
-  <div class="card" style="margin-top:18px">
-    <div class="card-title">Meeting agenda</div>
-    <div class="card-sub">Thursday 3 April · Statewide Teams call</div>
-    <div class="agenda-item"><div class="a-time">9:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Welcome & context setting</div><div class="a-detail">Chair opens · review confirmed principles & scope</div></div></div>
-    <div class="agenda-item"><div class="a-time">9:15 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Care settings — sections, gaps & ideas</div><div class="a-detail">30 min · Expand each setting · vote on sections · add notes</div></div></div>
-    <div class="agenda-item"><div class="a-time">9:45 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Live deliverables vote</div><div class="a-detail">20 min · Rate deliverables relevant / not relevant per setting</div></div></div>
-    <div class="agenda-item"><div class="a-time">10:05 am</div><div class="a-dot-col"><div class="a-dot" style="background:#ccc"></div></div><div class="a-body"><div class="a-title">Wrap-up & next steps</div><div class="a-detail">Confirm priorities · assign leads · close</div></div></div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">Meeting agenda</div>
+      <div class="card-sub">Thursday 3 April · Statewide Teams call</div>
+      <div class="agenda-item"><div class="a-time">9:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Welcome & context setting</div><div class="a-detail">Chair opens · review confirmed principles & scope</div></div></div>
+      <div class="agenda-item"><div class="a-time">9:15 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Care settings — sections, gaps & ideas</div><div class="a-detail">30 min · Expand each setting · vote on sections · add notes</div></div></div>
+      <div class="agenda-item"><div class="a-time">9:45 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Live deliverables vote</div><div class="a-detail">20 min · Rate deliverables relevant / not relevant per setting</div></div></div>
+      <div class="agenda-item"><div class="a-time">10:05 am</div><div class="a-dot-col"><div class="a-dot" style="background:#ccc"></div></div><div class="a-body"><div class="a-title">Wrap-up & next steps</div><div class="a-detail">Confirm priorities · assign leads · close</div></div></div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Confirmed principles</div>
+        <div class="card-sub">7 principles — finalised Feb 2026</div>
+        <div class="pill confirmed">Person-centred & goal-based</div>
+        <div class="pill confirmed">Holistic & inclusive care</div>
+        <div class="pill confirmed">Equitable & timely access</div>
+        <div class="pill confirmed">Integrated & coordinated delivery</div>
+        <div class="pill confirmed">Sustainable workforce & expertise</div>
+        <div class="pill confirmed">Evidence, data & evaluation</div>
+        <div class="pill confirmed">Innovation & technology</div>
+      </div>
+      <div class="card">
+        <div class="card-title">MOC development progress</div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Principles</span><span class="prog-pct">100%</span></div><div class="prog-track"><div class="prog-fill" style="width:100%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Scope</span><span class="prog-pct" id="scope-pct">80%</span></div><div class="prog-track"><div class="prog-fill" id="scope-bar" style="width:80%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Deliverables</span><span class="prog-pct">30%</span></div><div class="prog-track"><div class="prog-fill" style="width:30%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Stakeholder engagement</span><span class="prog-pct">55%</span></div><div class="prog-track"><div class="prog-fill" style="width:55%"></div></div></div>
+        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Evidence review</span><span class="prog-pct">40%</span></div><div class="prog-track"><div class="prog-fill" style="width:40%"></div></div></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -455,59 +479,65 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
         <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Drug and alcohol rehabilitation services</div></div>
         <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Transitional Care Program (TCP) short-term restorative care</div></div>
       </div>
-      <div class="card" style="margin-top:12px;border:2px solid var(--qg)">
-        <div class="card-title">Confirm scope</div>
-        <div class="card-sub">Review the items above then vote to confirm the proposed scope.</div>
-        <div id="scope-vote-body">
-          <div id="scope-step1">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-              <button class="vbtn" id="scope-yes-btn" onclick="castScopeVote('yes')">✓ Yes — confirm</button>
-              <button class="vbtn" id="scope-no-btn" onclick="castScopeVote('no')">✗ No — needs changes</button>
-            </div>
-          </div>
-          <div id="scope-step2" style="display:none;background:var(--hi-b);border:1px solid #f5b7b1;border-radius:var(--rs);padding:14px;margin-bottom:10px">
-            <div style="font-size:13px;font-weight:600;color:var(--hi);margin-bottom:8px">What needs to change?</div>
-            <div class="field" style="margin-bottom:8px">
-              <div class="field-lbl" style="margin-bottom:4px">Which item needs to change?</div>
-              <select id="scope-change-item" style="width:100%;font-size:13px">
-                <option value="">— Select an item —</option>
-                <optgroup label="Currently IN scope">
-                  <option>Adult MDT rehabilitation services (levels 2–6 CSCF)</option>
-                  <option>In-reach to acute setting</option>
-                  <option>Sub-acute inpatient rehabilitation services</option>
-                  <option>Ambulatory, home-based, outreach and day hospital services</option>
-                  <option>Transition of adolescent and young adult from paediatric services</option>
-                  <option>Paediatric rehabilitation services</option>
-                  <option>Telehealth and virtual care</option>
-                  <option>Single-discipline rehabilitation programs</option>
-                  <option>Linkage to statewide service models</option>
-                </optgroup>
-                <optgroup label="Currently OUT of scope">
-                  <option>Mental health rehabilitation (out — should be in)</option>
-                  <option>NDIS-funded community services (out — should be in)</option>
-                  <option>Private providers (out — should be in)</option>
-                  <option>Cardiac and pulmonary rehabilitation (out — should be in)</option>
-                  <option>Drug and alcohol rehabilitation (out — should be in)</option>
-                  <option>TCP short-term restorative care (out — should be in)</option>
-                </optgroup>
-                <option value="other">Something else (describe below)</option>
-              </select>
-            </div>
-            <div class="field" style="margin-bottom:10px">
-              <div class="field-lbl" style="margin-bottom:4px">Why? What would you suggest instead?</div>
-              <textarea id="scope-change-reason" placeholder="Describe the change and your reasoning..." style="min-height:70px;width:100%;font-size:13px"></textarea>
-            </div>
-            <button class="submit-btn" style="padding:8px 18px;font-size:13px" onclick="submitScopeChange()">Submit feedback</button>
-          </div>
-          <div id="scope-step3" style="display:none;background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:10px;margin-bottom:10px">
-            <span id="scope-confirmed-msg" style="font-size:13px;color:var(--qg);font-weight:500"></span>
-          </div>
-          <div id="scope-tally" style="font-size:13px;color:var(--ink-m)">No votes yet.</div>
-        </div>
-      </div>
     </div>
   </div>
 
+  <!-- SCOPE CONFIRMATION VOTE -->
+  <div class="card" style="margin-top:8px;border:2px solid var(--qg)">
+    <div class="card-title">Confirm scope</div>
+    <div class="card-sub">Review the in-scope and out-of-scope items above, then vote to confirm the proposed scope for the Queensland Rehabilitation MOC.</div>
+    <div id="scope-vote-body">
+      <!-- Step 1: initial vote -->
+      <div id="scope-step1">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+          <button class="vbtn" id="scope-yes-btn" onclick="castScopeVote('yes')">✓ Yes — confirm scope</button>
+          <button class="vbtn" id="scope-no-btn" onclick="castScopeVote('no')">✗ No — needs changes</button>
+        </div>
+      </div>
+      <!-- Step 2: shown after No vote — branching questions -->
+      <div id="scope-step2" style="display:none;background:var(--hi-b);border:1px solid #f5b7b1;border-radius:var(--rs);padding:16px;margin-bottom:12px">
+        <div style="font-size:14px;font-weight:600;color:var(--hi);margin-bottom:4px">What needs to change?</div>
+        <div style="font-size:13px;color:var(--ink-m);margin-bottom:12px">Please answer both questions below to help us understand the required changes.</div>
+        <div class="field" style="margin-bottom:10px">
+          <div class="field-lbl" style="margin-bottom:4px">Which item(s) need to change?</div>
+          <select id="scope-change-item" style="width:100%">
+            <option value="">— Select an item —</option>
+            <optgroup label="Currently IN scope">
+              <option>Adult MDT rehabilitation services (levels 2–6 CSCF)</option>
+              <option>In-reach to acute setting</option>
+              <option>Sub-acute inpatient rehabilitation services</option>
+              <option>Ambulatory, home-based, outreach and day hospital services</option>
+              <option>Transition of adolescent and young adult from paediatric services</option>
+              <option>Paediatric rehabilitation services</option>
+              <option>Telehealth and virtual care</option>
+              <option>Single-discipline rehabilitation programs</option>
+              <option>Linkage to statewide service models</option>
+            </optgroup>
+            <optgroup label="Currently OUT of scope">
+              <option>Mental health rehabilitation (out — should be in)</option>
+              <option>NDIS-funded community services (out — should be in)</option>
+              <option>Private providers (out — should be in)</option>
+              <option>Cardiac and pulmonary rehabilitation (out — should be in)</option>
+              <option>Drug and alcohol rehabilitation (out — should be in)</option>
+              <option>TCP short-term restorative care (out — should be in)</option>
+            </optgroup>
+            <option value="other">Something else (describe below)</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <div class="field-lbl" style="margin-bottom:4px">Why does this need to change? What would you suggest instead?</div>
+          <textarea id="scope-change-reason" placeholder="Describe the change needed and your reasoning..." style="min-height:80px;width:100%"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitScopeChange()">Submit feedback</button>
+      </div>
+      <!-- Step 3: confirmation after vote -->
+      <div id="scope-step3" style="display:none;background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:12px;margin-bottom:12px">
+        <span id="scope-confirmed-msg" style="font-size:13px;color:var(--qg);font-weight:500"></span>
+      </div>
+      <div id="scope-tally" style="font-size:13px;color:var(--ink-m)">No votes yet.</div>
+    </div>
+  </div>
+</div>
 
 <!-- CARE SETTINGS -->
 <div class="panel" id="panel-settings">
@@ -1236,8 +1266,6 @@ function renderSettingBody(sid){
   html += "<p style='font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6'>Rate each section as <strong>Relevant</strong>, <strong>Not relevant</strong> or <strong>Not sure</strong>. Add notes on what's important to cover for Queensland.</p>";
   html += '<div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Sections</div>';
 
-  var isInreach = (sid === "cs1");  // In-reach already done by another group — grey out comments
-
   secs.forEach(function(name, i){
     var k     = sectionKey(sid, i);
     var vdata = liveSections[k] || {relevant:0, not_relevant:0, not_sure:0, voters:{}, notes:{}};
@@ -1254,9 +1282,6 @@ function renderSettingBody(sid){
     html += '<button class="notes-btn" onclick="toggleNotes(\'notes-'+sid+'-'+i+'\')">Notes'+(notes.length>0?' ('+notes.length+')':'')+' ✎</button>';
     html += '</div>';
     html += '<div class="notes-area" id="notes-'+sid+'-'+i+'">';
-    if(isInreach){
-      html += '<div style="background:var(--surf);border-radius:var(--rs);padding:12px;text-align:center;color:var(--ink-l);font-size:13px">Comments not available for this setting — completed by another group.</div>';
-    } else {
     html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">What\'s important to cover in this section for Queensland?</div>';
     if(notes.length > 0){
       html += '<div style="margin-bottom:8px">';
@@ -1269,7 +1294,6 @@ function renderSettingBody(sid){
     html += '<textarea id="noteinp-'+sid+'-'+i+'" placeholder="e.g. QLD-specific context, gaps vs NSW MOC, ATSI considerations, rural/remote..." style="flex:1;min-height:60px;resize:vertical"></textarea>';
     html += '</div>';
     html += '<button class="submit-btn" style="margin-top:6px;padding:7px 16px;font-size:13px" onclick="submitSectionNote(\''+sid+'\','+i+')">Add note</button>';
-    } // end else !isInreach
     html += '</div></div>';
   });
 
@@ -1906,7 +1930,7 @@ function exportPDF(){
     });
     html += '</table>';
 
-  // Other deliverable ideas — always shown so PDF is complete
+    // Other deliverable ideas — always shown so PDF is complete
     var otherRes = liveResources[s.id+"_delother"]||[];
     html += '<h4>Other deliverable ideas</h4>';
     if(otherRes.length>0){
