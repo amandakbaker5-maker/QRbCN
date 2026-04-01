@@ -260,7 +260,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 /* RESPONSIVE */
 @media(max-width:900px){.sidebar{width:200px}.main{margin-left:200px}.stat-grid{grid-template-columns:repeat(2,1fr)}.g2,.g3,.form-row{grid-template-columns:1fr}}
 @media(max-width:640px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0}.shell{flex-direction:column}.content{padding:18px 14px}.topbar{padding:12px 16px}.stat-grid{grid-template-columns:1fr 1fr}}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:var(--r);font-size:14px;opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* CONNECTION */
+.conn-indicator{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-l)}
+.conn-indicator .dot{width:8px;height:8px;border-radius:50%;background:#C8352A;transition:background .3s}
+/* EXPORT BTN */
+.export-btn{padding:9px 20px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
+.export-btn:hover{background:#2d2d4a}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div class="shell">
@@ -327,7 +338,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   <div class="sb-foot">
     <div class="code-box">
       <div class="cl">Session code</div>
-      <div class="cv">QR-2608</div>
+      <div class="cv" style="font-size:11px;letter-spacing:0;word-break:break-all;line-height:1.4">github.io/QRbCN</div>
     </div>
   </div>
 </nav>
@@ -339,7 +350,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div class="tb-title" id="tb-title">QLD Rehabilitation MOC · Overview</div>
     <div class="tb-sub">Thursday 3 April 2025 · Statewide Teams meeting</div>
   </div>
-  <div class="tb-right">
+  <div class="tb-right"><div class="conn-indicator"><div class="dot" id="conn-dot"></div><span id="conn-label">Connecting...</span></div>
     <div class="live">Live</div>
     <div class="pchip" id="pchip">24 participants</div>
   </div>
@@ -776,16 +787,16 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   <div class="g2">
     <div class="qr-card">
       <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-l)">Scan to join</div>
-      <div class="qr-wrap"><canvas id="qr-canvas" width="180" height="180"></canvas></div>
-      <div class="link-box">qldrehab-moc.health.qld.gov.au/plan</div>
-      <div style="font-size:13px;color:var(--ink-l)">Then enter session code:</div>
-      <div class="join-code">QR-2608</div>
+      <div class="qr-wrap"><div id="qr-canvas-container" style="width:180px;height:180px;display:flex;align-items:center;justify-content:center"></div></div>
+      <div class="link-box">amandakbaker5-maker.github.io/QRbCN</div>
+      <div style="font-size:13px;color:var(--ink-l)">Or share the full link:</div>
+      <div class="join-code" style="font-size:14px;letter-spacing:0;word-break:break-all">https://amandakbaker5-maker.github.io/QRbCN/</div>
     </div>
     <div class="card">
       <div class="card-title">How it works</div>
       <div class="card-sub">Share during the Teams meeting</div>
       <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Host shows QR or link on screen</div><div class="step-detail">Switch to this "Join via QR" tab during the Teams call — display fullscreen</div></div></div>
-      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Stakeholders scan or click the link</div><div class="step-detail">Opens on phone or second screen — enter code <strong>QR-2608</strong> to join</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Stakeholders scan or click the link</div><div class="step-detail">Opens the planning hub directly — works on any phone or device</div></div></div>
       <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Vote, submit ideas & give feedback</div><div class="step-detail">All responses feed through in real time to the live results view</div></div></div>
       <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Host shows Admin → Live results</div><div class="step-detail">Display voting outcomes and ideas to drive discussion</div></div></div>
       <div style="margin-top:16px;background:var(--gold-l);border:1px solid #FAC775;border-radius:var(--rs);padding:12px 14px">
@@ -800,7 +811,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 <div class="panel" id="panel-admin">
   <div style="background:var(--ink);color:#fff;border-radius:var(--r);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px">
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"><path d="M3 5h14M3 10h10M3 15h6"/></svg>
-    <div><div style="font-weight:600;font-size:14px">Admin — Live Results</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Show on screen during the Teams call to discuss vote outcomes</div></div>
+    <div><div style="font-weight:600;font-size:14px">Admin — Live Results</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Show on screen during the Teams call to discuss vote outcomes</div></div><button class="export-btn" onclick="exportPDF()" style="margin-left:auto">⬇ Export PDF</button>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
     <div class="card">
@@ -823,220 +834,417 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 </div><!-- /content -->
 </div><!-- /main -->
+<div id="toast"></div>
 </div><!-- /shell -->
 
-<script>
-// ── DATA ──────────────────────────────────────────────────────────────
+<script type="module">
+// ── FIREBASE SETUP ────────────────────────────────────────────────────
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, push, onValue, runTransaction, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCAsXLrKcvJ_e1PczCydpiA4kLdf5XtUpU",
+  authDomain: "qrbcn-moc.firebaseapp.com",
+  databaseURL: "https://qrbcn-moc-default-rtdb.firebaseio.com",
+  projectId: "qrbcn-moc",
+  storageBucket: "qrbcn-moc.firebasestorage.app",
+  messagingSenderId: "373324111704",
+  appId: "1:373324111704:web:50a3fc483d1146ab704f2d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+// ── SESSION ID (one per browser — prevents duplicate votes) ────────────
+function getSessionId() {
+  var k = "qld_moc_session";
+  var id = localStorage.getItem(k);
+  if (!id) {
+    id = "u_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+    localStorage.setItem(k, id);
+  }
+  return id;
+}
+var SESSION_ID = getSessionId();
+
+// ── STATIC DATA ────────────────────────────────────────────────────────
 var deliverables = [
-  {id:1,text:"Referral pathways & clinical decision-making tools",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
-  {id:2,text:"Workforce capability framework & role delineation guide",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
-  {id:3,text:"Virtual care & tele-rehabilitation model",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false},
-  {id:4,text:"Rural & remote service access strategy",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
-  {id:5,text:"Outcome measurement & AROC data reporting framework",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false},
-  {id:6,text:"Aboriginal & Torres Strait Islander culturally safe care guide",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
-  {id:7,text:"Early supported discharge & in-reach rehabilitation model",priority:"p-h",ptxt:"High priority",votes:0,voted:false},
-  {id:8,text:"Consumer & carer engagement toolkit",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false},
-  {id:9,text:"Paediatric-to-adult transition framework (lifespan approach)",priority:"p-n",ptxt:"New — Qld specific",votes:0,voted:false},
-  {id:10,text:"Governance, accountability & quality improvement framework",priority:"p-m",ptxt:"Medium priority",votes:0,voted:false}
+  {id:"d1", text:"Referral pathways & clinical decision-making tools",           priority:"p-h", ptxt:"High priority"},
+  {id:"d2", text:"Workforce capability framework & role delineation guide",       priority:"p-h", ptxt:"High priority"},
+  {id:"d3", text:"Virtual care & tele-rehabilitation model",                      priority:"p-m", ptxt:"Medium priority"},
+  {id:"d4", text:"Rural & remote service access strategy",                        priority:"p-h", ptxt:"High priority"},
+  {id:"d5", text:"Outcome measurement & AROC data reporting framework",           priority:"p-m", ptxt:"Medium priority"},
+  {id:"d6", text:"Aboriginal & Torres Strait Islander culturally safe care guide",priority:"p-h", ptxt:"High priority"},
+  {id:"d7", text:"Early supported discharge & in-reach rehabilitation model",     priority:"p-h", ptxt:"High priority"},
+  {id:"d8", text:"Consumer & carer engagement toolkit",                           priority:"p-m", ptxt:"Medium priority"},
+  {id:"d9", text:"Paediatric-to-adult transition framework (lifespan approach)",  priority:"p-n", ptxt:"New — Qld specific"},
+  {id:"d10",text:"Governance, accountability & quality improvement framework",    priority:"p-m", ptxt:"Medium priority"}
 ];
 
 var careSettings = [
-  {id:"cs1",icon:"🏥",name:"In-reach to acute",desc:"Shared care in ICU and acute wards. Early rehab to prevent deconditioning.",color:"#1565C0"},
-  {id:"cs2",icon:"🛏",name:"Inpatient subacute rehabilitation",desc:"Dedicated inpatient rehab wards — intensive MDT program.",color:"#0F6E56"},
-  {id:"cs3",icon:"☀️",name:"Day rehabilitation",desc:"Same-day admitted MDT programs — 2–3x per week.",color:"#854F0B"},
-  {id:"cs4",icon:"🏠",name:"Ambulatory, outpatient & home-based",desc:"Non-admitted community rehabilitation — MDT programs close to home.",color:"#6B21A8"},
-  {id:"cs5",icon:"🩺",name:"Rehabilitation in the home (RITH)",desc:"Admitted rehab in the person's home — hospital substitution or early supported discharge.",color:"#993C1D"},
-  {id:"cs6",icon:"📡",name:"Outreach & hub-and-spoke",desc:"Hub consultative support to spokes — critical for rural/remote Queensland.",color:"#1A5276"},
-  {id:"cs7",icon:"💻",name:"Virtual care & tele-rehabilitation",desc:"Videoconferencing, remote monitoring, app-based therapy.",color:"#117A65"}
+  {id:"cs1", icon:"🏥", name:"In-reach to acute",                   color:"#1565C0"},
+  {id:"cs2", icon:"🛏",  name:"Inpatient subacute rehabilitation",   color:"#0F6E56"},
+  {id:"cs3", icon:"☀️", name:"Day rehabilitation",                  color:"#854F0B"},
+  {id:"cs4", icon:"🏠", name:"Ambulatory, outpatient & home-based", color:"#6B21A8"},
+  {id:"cs5", icon:"🩺", name:"Rehabilitation in the home (RITH)",   color:"#993C1D"},
+  {id:"cs6", icon:"📡", name:"Outreach & hub-and-spoke",            color:"#1A5276"},
+  {id:"cs7", icon:"💻", name:"Virtual care & tele-rehabilitation",  color:"#117A65"}
 ];
 
-// Sections per setting from uploaded document
 var settingSectionsData = {
-  cs1: ["What is it","Patient cohorts","Core elements","Workflow processes","Referrals / admission","Discharge","Workforce considerations","Category definitions","Additional staffing considerations","Outcome measures and KPIs","Benefits and risks to implementation"],
-  cs2: ["What is it","Cohorts","Core elements","Referral pathways (admission/discharge)","Workforce considerations","Outcome measures and KPIs (patient & service level)","Benefits and risks to implementation","Case studies","References"],
-  cs3: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
-  cs4: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
-  cs5: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
-  cs6: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
-  cs7: ["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"]
+  cs1:["What is it","Patient cohorts","Core elements","Workflow processes","Referrals / admission","Discharge","Workforce considerations","Category definitions","Additional staffing considerations","Outcome measures and KPIs","Benefits and risks to implementation"],
+  cs2:["What is it","Cohorts","Core elements","Referral pathways (admission/discharge)","Workforce considerations","Outcome measures and KPIs (patient & service level)","Benefits and risks to implementation","Case studies","References"],
+  cs3:["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs4:["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs5:["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs6:["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"],
+  cs7:["What is it","Cohort","Core elements","Referral pathways","Workforce considerations","Outcome measures and KPIs (patient & service level)","Implementation","Case study","References"]
 };
 
-// Preset resources (In-reach only — from uploaded doc; others are open text)
 var presetResources = {
-  cs1: ["In-reach Toolkit outline and User Guide","Current State Analysis Report","Pre-Implementation Reflection Tool","Implementation Process Guide","Business Case Resource (SBAR Application)","Business Case Resources (DOH Strategic Plan Alignment)","Evaluation Framework","Key Contact Directory","Workflow Spreadsheet set up guide","Patient handouts"]
+  cs1:["In-reach Toolkit outline and User Guide","Current State Analysis Report","Pre-Implementation Reflection Tool","Implementation Process Guide","Business Case Resource (SBAR Application)","Business Case Resources (DOH Strategic Plan Alignment)","Evaluation Framework","Key Contact Directory","Workflow Spreadsheet set up guide","Patient handouts"]
 };
 
-// State: sections per setting — each is {name, votes, voted, notes}
-var sectionState = {};
-// State: custom sections per setting
-var customSections = {};
-// State: resources per setting
-var resourcesState = {};
-
-careSettings.forEach(function(s) {
-  sectionState[s.id] = (settingSectionsData[s.id] || []).map(function(name) {
-    return {name: name, votes: 0, voted: false, notes: ""};
-  });
-  customSections[s.id] = [];
-  resourcesState[s.id] = [];
-});
-
-// Seed some initial votes on deliverables
-[[1,9],[4,12],[6,11],[7,8],[2,6],[5,5],[9,4],[3,3]].forEach(function(pair) {
-  var d = deliverables.find(function(x){return x.id===pair[0];});
-  if(d) d.votes = pair[1];
-});
-
-var ideas = [];
-var pCount = 24;
 var tasks = [
-  {task:"Finalise principles & scope",phase:"ph-1",lead:"Network Chair",start:"Mar 2025",due:"Apr 2025",status:"s-active",notes:"Thursday 3 April meeting"},
-  {task:"Develop statewide service mapping survey",phase:"ph-1",lead:"Project Lead TBC",start:"Apr 2025",due:"May 2025",status:"s-planned",notes:"All HHS rehab leads"},
-  {task:"AROC data extraction & analysis",phase:"ph-2",lead:"Data Analyst TBC",start:"May 2025",due:"Jul 2025",status:"s-planned",notes:"Benchmark against NSW"},
-  {task:"Evidence review — literature",phase:"ph-2",lead:"Network Exec",start:"May 2025",due:"Aug 2025",status:"s-planned",notes:"Adapt NSW evidence report for Qld"},
-  {task:"Consumer & carer consultation",phase:"ph-2",lead:"Consumer Rep TBC",start:"Jun 2025",due:"Sep 2025",status:"s-tbc",notes:"Including ATSI community forums"},
-  {task:"Draft MOC — care settings sections",phase:"ph-3",lead:"Clinical Advisory Group",start:"Sep 2025",due:"Dec 2025",status:"s-planned",notes:"Case studies from each HHS"},
-  {task:"Statewide consultation on draft MOC",phase:"ph-3",lead:"Network Chair",start:"Jan 2026",due:"Mar 2026",status:"s-planned",notes:"Minimum 8 weeks"}
+  {task:"Finalise principles & scope",         phase:"ph-1",lead:"Network Chair",        start:"Mar 2025",due:"Apr 2025",status:"s-active", notes:"Thursday 3 April meeting"},
+  {task:"Develop statewide service mapping survey",phase:"ph-1",lead:"Project Lead TBC", start:"Apr 2025",due:"May 2025",status:"s-planned",notes:"All HHS rehab leads"},
+  {task:"AROC data extraction & analysis",      phase:"ph-2",lead:"Data Analyst TBC",    start:"May 2025",due:"Jul 2025", status:"s-planned",notes:"Benchmark against NSW"},
+  {task:"Evidence review — literature",          phase:"ph-2",lead:"Network Exec",        start:"May 2025",due:"Aug 2025", status:"s-planned",notes:"Adapt NSW evidence report for Qld"},
+  {task:"Consumer & carer consultation",         phase:"ph-2",lead:"Consumer Rep TBC",    start:"Jun 2025",due:"Sep 2025", status:"s-tbc",   notes:"Including ATSI community forums"},
+  {task:"Draft MOC — care settings sections",    phase:"ph-3",lead:"Clinical Advisory Group",start:"Sep 2025",due:"Dec 2025",status:"s-planned",notes:"Case studies from each HHS"},
+  {task:"Statewide consultation on draft MOC",   phase:"ph-3",lead:"Network Chair",        start:"Jan 2026",due:"Mar 2026",status:"s-planned",notes:"Minimum 8 weeks"}
 ];
+
+// ── LOCAL STATE (mirrors Firebase for rendering) ───────────────────────
+var liveVotes    = {};   // {d1: {count, voters:{sid:true}}}
+var liveIdeas    = [];   // [{id, cat, text, time}]
+var liveSections = {};   // {cs1_0: {count, voters, notes:[{id,text,time}]}}
+var liveResources= {};   // {cs1: [{id,text,time}]}
+var liveParticipants = 0;
+
+var myVotes      = {};   // {d1: true}  — sections this session has voted on
+var mySectionVotes = {}; // {cs1_0: true}
 
 // ── HELPERS ────────────────────────────────────────────────────────────
-function esc(s) {
-  return (s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function el(id){ return document.getElementById(id); }
+function now(){ return new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}); }
+
+function showToast(msg){
+  var t = el("toast");
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2500);
 }
-function el(id) { return document.getElementById(id); }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────
-function showPanel(name, navEl) {
-  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active");});
-  document.querySelectorAll(".ni").forEach(function(n){n.classList.remove("active");});
+window.showPanel = function(name, navEl) {
+  document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+  document.querySelectorAll(".ni").forEach(function(n){ n.classList.remove("active"); });
   var p = el("panel-"+name);
   if(p) p.classList.add("active");
   if(navEl) navEl.classList.add("active");
   var titles = {overview:"Overview",join:"Join via QR",principles:"Principles & Scope",vote:"Deliverables Vote",settings:"Care Settings",ideas:"Ideas & Gaps",timeline:"Project Timeline",implementation:"Implementation Plan",localadapt:"Local Adaptation",admin:"Live Results (Admin)"};
-  el("tb-title").textContent = "QLD Rehabilitation MOC · " + (titles[name] || name);
-  if(name === "admin") renderAdmin();
-  if(name === "join") setTimeout(drawQR, 60);
-  if(name === "settings") renderSettings();
+  el("tb-title").textContent = "QLD Rehabilitation MOC · "+(titles[name]||name);
+  if(name==="join")     setTimeout(drawQR, 60);
+  if(name==="settings") renderSettings();
+  if(name==="admin")    renderAdmin();
+};
+
+// ── REGISTER PRESENCE ──────────────────────────────────────────────────
+function registerPresence(){
+  var presRef = ref(db, "presence/"+SESSION_ID);
+  set(presRef, {t: Date.now()});
+  onValue(ref(db,"presence"), function(snap){
+    var data = snap.val() || {};
+    var cutoff = Date.now() - 3600000; // active in last hour
+    var count = Object.values(data).filter(function(v){ return v.t > cutoff; }).length;
+    liveParticipants = count;
+    var pEl = el("s-participants"); if(pEl) pEl.textContent = count;
+    var chip = el("pchip"); if(chip) chip.textContent = count+" participant"+(count!==1?"s":"");
+  });
 }
 
 // ── DELIVERABLES VOTE ──────────────────────────────────────────────────
-function votesUsed() {
-  return deliverables.filter(function(d){return d.voted;}).length;
+function listenVotes(){
+  onValue(ref(db,"votes"), function(snap){
+    liveVotes = snap.val() || {};
+    // check what this session has already voted
+    myVotes = {};
+    deliverables.forEach(function(d){
+      var v = liveVotes[d.id];
+      if(v && v.voters && v.voters[SESSION_ID]) myVotes[d.id] = true;
+    });
+    renderVote();
+    renderAdmin();
+    updateVoteBadge();
+  });
 }
-function renderVote() {
-  var used = votesUsed();
-  var rem = 3 - used;
-  el("v-remaining").textContent = rem === 0 ? "No votes remaining" : rem === 1 ? "1 vote remaining" : rem + " votes remaining";
+
+function updateVoteBadge(){
+  var total = 0;
+  Object.keys(liveVotes).forEach(function(k){ total += (liveVotes[k].count||0); });
+  var vb = el("vbadge"); if(vb) vb.textContent = total;
+}
+
+window.castVote = function(did){
+  if(myVotes[did]){
+    showToast("You've already voted for this — one vote per person.");
+    return;
+  }
+  var myTotal = Object.keys(myVotes).length;
+  if(myTotal >= 3){
+    showToast("You've used all 3 votes.");
+    return;
+  }
+  var vRef = ref(db,"votes/"+did);
+  runTransaction(vRef, function(current){
+    current = current || {count:0, voters:{}};
+    if(current.voters && current.voters[SESSION_ID]) return; // already voted
+    current.count = (current.count||0) + 1;
+    current.voters = current.voters || {};
+    current.voters[SESSION_ID] = true;
+    return current;
+  }).then(function(){
+    showToast("Vote recorded!");
+  }).catch(function(e){
+    showToast("Error saving vote — please try again.");
+    console.error(e);
+  });
+};
+
+function renderVote(){
+  var myTotal = Object.keys(myVotes).length;
+  var rem = 3 - myTotal;
+  var remEl = el("v-remaining");
+  if(remEl) remEl.textContent = rem===0?"No votes remaining":rem===1?"1 vote remaining":rem+" votes remaining";
+
   var html = "";
-  deliverables.forEach(function(d) {
-    var disabled = (!d.voted && rem === 0) ? " disabled" : "";
-    html += '<div class="del-card' + (d.voted ? " voted" : "") + '">';
+  deliverables.forEach(function(d){
+    var vdata  = liveVotes[d.id] || {count:0};
+    var count  = vdata.count || 0;
+    var voted  = !!myVotes[d.id];
+    var disabled = (!voted && rem===0) ? " disabled" : "";
+    html += '<div class="del-card'+(voted?" voted":"")+ '">';
     html += '<div class="del-body">';
-    html += '<div class="del-title">' + esc(d.text) + '</div>';
-    html += '<span class="ptag ' + d.priority + '">' + esc(d.ptxt) + '</span>';
+    html += '<div class="del-title">'+esc(d.text)+'</div>';
+    html += '<span class="ptag '+d.priority+'">'+esc(d.ptxt)+'</span>';
     html += '</div>';
     html += '<div class="vote-area">';
-    html += '<span class="vc">' + d.votes + '</span>';
-    html += '<button class="vbtn' + (d.voted ? " voted" : "") + '"' + disabled + ' onclick="castVote(' + d.id + ')">' + (d.voted ? "✓ Voted" : "Vote") + '</button>';
+    html += '<span class="vc">'+count+'</span>';
+    html += '<button class="vbtn'+(voted?" voted":"")+ '"'+disabled+' onclick="castVote(\''+d.id+'\')">'+( voted?"✓ Voted":"Vote")+'</button>';
     html += '</div></div>';
   });
-  el("del-list").innerHTML = html;
-}
-function castVote(id) {
-  var d = deliverables.find(function(x){return x.id===id;});
-  if(!d || votesUsed() >= 3) return;
-  d.voted = !d.voted;
-  if(d.voted) d.votes += Math.floor(Math.random()*3)+2;
-  renderVote();
-  renderAdmin();
+  var listEl = el("del-list");
+  if(listEl) listEl.innerHTML = html;
 }
 
-// ── CARE SETTINGS ─────────────────────────────────────────────────────
-function renderSettings() {
+// ── CARE SETTINGS — SECTION VOTES ─────────────────────────────────────
+function sectionKey(sid, idx){ return sid+"_"+idx; }
+
+function listenSections(){
+  onValue(ref(db,"sections"), function(snap){
+    liveSections = snap.val() || {};
+    mySectionVotes = {};
+    careSettings.forEach(function(s){
+      (settingSectionsData[s.id]||[]).forEach(function(_, i){
+        var k = sectionKey(s.id, i);
+        var v = liveSections[k];
+        if(v && v.voters && v.voters[SESSION_ID]) mySectionVotes[k] = true;
+      });
+    });
+    updateSettingBadges();
+    // refresh open setting body if any
+    careSettings.forEach(function(s){
+      var body = el("sb-"+s.id);
+      if(body && body.classList.contains("open")) renderSettingBody(s.id);
+    });
+    renderAdmin();
+  });
+}
+
+window.voteSection = function(sid, idx){
+  var k = sectionKey(sid, idx);
+  if(mySectionVotes[k]){
+    showToast("Already voted for this section.");
+    return;
+  }
+  var sRef = ref(db,"sections/"+k);
+  runTransaction(sRef, function(current){
+    current = current || {count:0, voters:{}, notes:{}};
+    if(current.voters && current.voters[SESSION_ID]) return;
+    current.count = (current.count||0)+1;
+    current.voters = current.voters||{};
+    current.voters[SESSION_ID] = true;
+    return current;
+  }).then(function(){ showToast("Section vote saved!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+window.submitSectionNote = function(sid, idx){
+  var inp = el("noteinp-"+sid+"-"+idx);
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text){ showToast("Please enter a note first."); return; }
+  var noteRef = ref(db,"sections/"+sectionKey(sid,idx)+"/notes");
+  push(noteRef, {text:text, time:now(), session:SESSION_ID})
+    .then(function(){ inp.value=""; showToast("Note saved!"); })
+    .catch(function(){ showToast("Error saving note."); });
+};
+
+function listenSectionNotes(){
+  // notes are nested inside sections — already covered by listenSections
+}
+
+function updateSettingBadges(){
+  careSettings.forEach(function(s){
+    var secs = settingSectionsData[s.id]||[];
+    var included = 0;
+    secs.forEach(function(_, i){
+      var v = liveSections[sectionKey(s.id,i)];
+      if(v && v.count > 0) included++;
+    });
+    var total = secs.length;
+    var badge = el("badge-inc-"+s.id);
+    if(badge) badge.textContent = included+"/"+total+" included";
+    var resBadge = el("badge-res-"+s.id);
+    var resCount = (liveResources[s.id]||[]).length;
+    if(resBadge){
+      if(resCount>0){ resBadge.textContent=resCount+" resource"+(resCount!==1?"s":""); resBadge.style.display=""; }
+      else resBadge.style.display="none";
+    }
+  });
+  // sidebar badge
+  var totalVoted = 0;
+  careSettings.forEach(function(s){
+    (settingSectionsData[s.id]||[]).forEach(function(_,i){
+      var v = liveSections[sectionKey(s.id,i)];
+      if(v && v.count>0) totalVoted++;
+    });
+  });
+  var sb = el("sbadge"); if(sb) sb.textContent = totalVoted>0?totalVoted:"0";
+}
+
+// ── CARE SETTINGS — RESOURCES ──────────────────────────────────────────
+function listenResources(){
+  onValue(ref(db,"resources"), function(snap){
+    var data = snap.val() || {};
+    liveResources = {};
+    Object.keys(data).forEach(function(sid){
+      liveResources[sid] = Object.keys(data[sid]).map(function(k){
+        return Object.assign({fbid:k}, data[sid][k]);
+      }).sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+    });
+    updateSettingBadges();
+    careSettings.forEach(function(s){
+      var body = el("sb-"+s.id);
+      if(body && body.classList.contains("open")) renderSettingBody(s.id);
+    });
+  });
+}
+
+window.addResource = function(sid){
+  var inp = el("res-inp-"+sid);
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text){ showToast("Please enter a resource first."); return; }
+  push(ref(db,"resources/"+sid), {text:text, time:now(), ts:Date.now(), session:SESSION_ID})
+    .then(function(){ inp.value=""; showToast("Resource added!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+window.addPresetRes = function(sid, ri){
+  var presets = presetResources[sid]||[];
+  var text = presets[ri];
+  if(!text) return;
+  var already = (liveResources[sid]||[]).some(function(x){ return x.text===text; });
+  if(already){ showToast("Already added."); return; }
+  push(ref(db,"resources/"+sid), {text:text, time:now(), ts:Date.now(), session:SESSION_ID})
+    .then(function(){ showToast("Resource added!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+// ── RENDER SETTINGS ────────────────────────────────────────────────────
+function renderSettings(){
   var html = "";
-  careSettings.forEach(function(s) {
-    var secs = sectionState[s.id] || [];
-    var customs = customSections[s.id] || [];
-    var includedCount = 0;
-    secs.forEach(function(x){if(x.voted) includedCount++;});
-    customs.forEach(function(x){if(x.voted) includedCount++;});
-    var total = secs.length + customs.length;
-    var resCount = (resourcesState[s.id]||[]).length;
-
+  careSettings.forEach(function(s){
+    var secs  = settingSectionsData[s.id]||[];
+    var included = 0;
+    secs.forEach(function(_,i){ var v=liveSections[sectionKey(s.id,i)]; if(v&&v.count>0) included++; });
+    var resCount = (liveResources[s.id]||[]).length;
     html += '<div class="setting-card" id="sc-'+s.id+'">';
     html += '<div class="setting-header" onclick="toggleSetting(\''+s.id+'\')">';
     html += '<div class="setting-icon" style="background:'+s.color+'22">'+s.icon+'</div>';
-    html += '<div style="flex:1"><div class="setting-name">'+esc(s.name)+'</div><div class="setting-desc">'+esc(s.desc)+'</div></div>';
+    html += '<div style="flex:1"><div class="setting-name">'+esc(s.name)+'</div></div>';
     html += '<div style="display:flex;gap:8px;align-items:center;flex-shrink:0">';
-    html += '<span id="badge-inc-'+s.id+'" style="font-size:11px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:8px;font-weight:600">'+includedCount+'/'+total+' included</span>';
-    if(resCount>0) html += '<span id="badge-res-'+s.id+'" style="font-size:11px;background:var(--bl-b);color:var(--bl);padding:2px 8px;border-radius:8px;font-weight:600">'+resCount+' resource'+(resCount!==1?'s':'')+'</span>';
-    else html += '<span id="badge-res-'+s.id+'" style="display:none"></span>';
+    html += '<span id="badge-inc-'+s.id+'" style="font-size:11px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:8px;font-weight:600">'+included+"/"+secs.length+' included</span>';
+    if(resCount>0) html+='<span id="badge-res-'+s.id+'" style="font-size:11px;background:var(--bl-b);color:var(--bl);padding:2px 8px;border-radius:8px;font-weight:600">'+resCount+' resource'+(resCount!==1?"s":"")+'</span>';
+    else html+='<span id="badge-res-'+s.id+'" style="display:none"></span>';
     html += '<span style="font-size:12px;color:var(--ink-l)">▾</span>';
     html += '</div></div>';
     html += '<div class="setting-body" id="sb-'+s.id+'"></div>';
     html += '</div>';
   });
-  el("settings-list").innerHTML = html;
+  var listEl = el("settings-list");
+  if(listEl) listEl.innerHTML = html;
 }
 
-function toggleSetting(sid) {
+window.toggleSetting = function(sid){
   var body = el("sb-"+sid);
   if(!body) return;
-  if(body.classList.contains("open")) {
+  if(body.classList.contains("open")){
     body.classList.remove("open");
     body.innerHTML = "";
   } else {
     body.classList.add("open");
     renderSettingBody(sid);
   }
-}
+};
 
-function renderSettingBody(sid) {
+function renderSettingBody(sid){
   var body = el("sb-"+sid);
   if(!body) return;
-  var s = careSettings.find(function(x){return x.id===sid;});
-  if(!s) return;
-  var secs = sectionState[sid] || [];
-  var customs = customSections[sid] || [];
-  var res = resourcesState[sid] || [];
-  var presets = presetResources[sid] || [];
+  var secs    = settingSectionsData[sid]||[];
+  var presets = presetResources[sid]||[];
+  var res     = liveResources[sid]||[];
 
   var html = "";
-  html += '<p style="font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6">Vote to <strong>include</strong> each section in the QLD MOC for this care setting. Use <strong>Notes</strong> to add what\'s important to cover for Queensland.</p>';
-
-  // ── Standard sections ──
+  html += '<p style="font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6">Vote to <strong>include</strong> each section. Add notes on what\'s important to cover for Queensland. Votes and notes are shared live with all participants.</p>';
   html += '<div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Sections</div>';
-  secs.forEach(function(sec, i) {
-    html += '<div class="sec-del" id="sd-'+sid+'-'+i+'">';
+
+  secs.forEach(function(name, i){
+    var k     = sectionKey(sid, i);
+    var vdata = liveSections[k] || {count:0, voters:{}, notes:{}};
+    var count = vdata.count || 0;
+    var voted = !!(vdata.voters && vdata.voters[SESSION_ID]);
+    var notes = vdata.notes ? Object.values(vdata.notes) : [];
+
+    html += '<div class="sec-del">';
     html += '<div class="sec-del-row">';
-    html += '<span class="sec-del-name">'+esc(sec.name)+'</span>';
-    html += '<span class="sec-votes">'+sec.votes+'</span>';
-    html += '<button class="inc-btn'+(sec.voted?' inc-yes':'')+'" onclick="voteSection(\''+sid+'\','+i+')">'+( sec.voted ? '✓ Include' : 'Include')+'</button>';
-    html += '<button class="notes-btn" onclick="toggleNotes(\'n-'+sid+'-'+i+'\')">Notes ✎</button>';
+    html += '<span class="sec-del-name">'+esc(name)+'</span>';
+    html += '<span class="sec-votes">'+count+'</span>';
+    html += '<button class="inc-btn'+(voted?" inc-yes":"")+'" onclick="voteSection(\''+sid+'\','+i+')">'+(voted?"✓ Included":"Include")+'</button>';
+    html += '<button class="notes-btn" onclick="toggleNotes(\'notes-'+sid+'-'+i+'\')">Notes'+(notes.length>0?' ('+notes.length+')':'')+' ✎</button>';
     html += '</div>';
-    html += '<div class="notes-area" id="n-'+sid+'-'+i+'">';
-    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px">What\'s important to cover in this section for Queensland?</div>';
-    html += '<textarea placeholder="e.g. QLD-specific context, gaps vs NSW MOC, ATSI considerations, rural/remote..." onblur="saveNotes(\''+sid+'\','+i+',this.value,false)">'+esc(sec.notes)+'</textarea>';
-    if(sec.notes) html += '<div style="font-size:11px;color:var(--qg);margin-top:3px">✓ Saved</div>';
+    html += '<div class="notes-area" id="notes-'+sid+'-'+i+'">';
+    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">What\'s important to cover in this section for Queensland?</div>';
+    if(notes.length > 0){
+      html += '<div style="margin-bottom:8px">';
+      notes.forEach(function(n){
+        html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:8px 10px;margin-bottom:5px;font-size:13px;color:var(--ink)">'+esc(n.text)+'<span style="font-size:11px;color:var(--qg);margin-left:8px">'+esc(n.time||"")+'</span></div>';
+      });
+      html += '</div>';
+    }
+    html += '<div style="display:flex;gap:8px">';
+    html += '<textarea id="noteinp-'+sid+'-'+i+'" placeholder="e.g. QLD-specific context, gaps vs NSW MOC, ATSI considerations, rural/remote..." style="flex:1;min-height:60px;resize:vertical"></textarea>';
+    html += '</div>';
+    html += '<button class="submit-btn" style="margin-top:6px;padding:7px 16px;font-size:13px" onclick="submitSectionNote(\''+sid+'\','+i+')">Add note</button>';
     html += '</div></div>';
   });
 
-  // ── Custom sections ──
-  customs.forEach(function(sec, i) {
-    html += '<div class="sec-del" id="csd-'+sid+'-'+i+'">';
-    html += '<div class="sec-del-row">';
-    html += '<span class="sec-del-name"><span style="font-size:10px;font-weight:700;background:var(--gold-l);color:#7A5000;padding:1px 6px;border-radius:5px;margin-right:5px">CUSTOM</span>'+esc(sec.name)+'</span>';
-    html += '<span class="sec-votes">'+sec.votes+'</span>';
-    html += '<button class="inc-btn'+(sec.voted?' inc-yes':'')+'" onclick="voteCustomSection(\''+sid+'\','+i+')">'+( sec.voted ? '✓ Include' : 'Include')+'</button>';
-    html += '<button class="notes-btn" onclick="toggleNotes(\'cn-'+sid+'-'+i+'\')">Notes ✎</button>';
-    html += '</div>';
-    html += '<div class="notes-area" id="cn-'+sid+'-'+i+'">';
-    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px">What\'s important to cover in this section?</div>';
-    html += '<textarea placeholder="Add notes on what this section should cover..." onblur="saveNotes(\''+sid+'\','+i+',this.value,true)">'+esc(sec.notes)+'</textarea>';
-    html += '</div></div>';
-  });
-
-  // ── Add custom section ──
+  // Add custom section
   html += '<div style="border:1px dashed var(--border);border-radius:var(--rs);padding:12px;margin-top:4px;margin-bottom:16px;background:var(--surf)">';
   html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">+ Suggest another section</div>';
   html += '<div style="display:flex;gap:8px">';
@@ -1044,274 +1252,260 @@ function renderSettingBody(sid) {
   html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addCustomSection(\''+sid+'\')">Add</button>';
   html += '</div></div>';
 
-  // ── Resources ──
+  // Resources
   html += '<div style="border-top:1px solid var(--border);padding-top:16px">';
   html += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px">Resources to include</div>';
-
-  // Preset resource chips (In-reach only)
-  if(presets.length > 0) {
+  if(presets.length > 0){
     html += '<div style="background:var(--bl-b);border:1px solid #BFDBFE;border-radius:var(--rs);padding:10px 12px;margin-bottom:10px">';
-    html += '<div style="font-size:12px;font-weight:600;color:var(--bl);margin-bottom:7px">Suggested resources from your document — click to add</div>';
+    html += '<div style="font-size:12px;font-weight:600;color:var(--bl);margin-bottom:7px">Suggested resources — click to add</div>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
-    presets.forEach(function(r, ri) {
-      var already = res.some(function(x){return x.text===r;});
-      html += '<button id="pres-'+sid+'-'+ri+'" onclick="addPresetRes(\''+sid+'\','+ri+')" style="font-size:12px;padding:3px 10px;border-radius:8px;border:1px solid #93C5FD;background:#fff;color:var(--bl);cursor:pointer;font-family:inherit;transition:all .15s'+(already?';opacity:.35;cursor:default':'')+'">+ '+esc(r)+'</button>';
+    presets.forEach(function(r, ri){
+      var already = res.some(function(x){ return x.text===r; });
+      html += '<button onclick="addPresetRes(\''+sid+'\','+ri+')" style="font-size:12px;padding:3px 10px;border-radius:8px;border:1px solid #93C5FD;background:#fff;color:var(--bl);cursor:pointer;font-family:inherit;transition:all .15s'+(already?';opacity:.35;cursor:default':'')+'">+ '+esc(r)+'</button>';
     });
     html += '</div></div>';
-  } else {
-    html += '<p style="font-size:13px;color:var(--ink-l);margin-bottom:10px">Add resources, tools, guidelines or links relevant to this care setting.</p>';
   }
-
-  // Saved resources feed
-  html += '<div id="res-feed-'+sid+'">';
-  res.forEach(function(r) {
-    html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:9px 12px;margin-bottom:7px;font-size:13px;color:var(--ink)">'+esc(r.text)+'<div style="font-size:11px;color:var(--qg);margin-top:2px">'+r.time+'</div></div>';
-  });
-  html += '</div>';
-
-  // Free-text add resource
+  if(res.length > 0){
+    res.forEach(function(r){
+      html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:9px 12px;margin-bottom:7px;font-size:13px;color:var(--ink)">'+esc(r.text)+'<span style="font-size:11px;color:var(--qg);margin-left:8px">'+esc(r.time||"")+'</span></div>';
+    });
+  } else {
+    html += '<p style="font-size:13px;color:var(--ink-l);margin-bottom:8px">No resources added yet.</p>';
+  }
   html += '<div style="display:flex;gap:8px;margin-top:8px">';
   html += '<input type="text" id="res-inp-'+sid+'" placeholder="Type a resource name, tool, guideline or link..." style="flex:1">';
   html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addResource(\''+sid+'\')">Add resource</button>';
-  html += '</div>';
-  html += '</div>'; // end resources
+  html += '</div></div>';
 
   body.innerHTML = html;
 }
 
-function voteSection(sid, idx) {
-  var secs = sectionState[sid];
-  if(!secs || !secs[idx]) return;
-  secs[idx].voted = !secs[idx].voted;
-  if(secs[idx].voted) secs[idx].votes += Math.floor(Math.random()*3)+2;
-  updateSettingBadge(sid);
-  renderSettingBody(sid);
-}
-function voteCustomSection(sid, idx) {
-  var customs = customSections[sid];
-  if(!customs || !customs[idx]) return;
-  customs[idx].voted = !customs[idx].voted;
-  if(customs[idx].voted) customs[idx].votes++;
-  updateSettingBadge(sid);
-  renderSettingBody(sid);
-}
-function toggleNotes(id) {
-  var el2 = el(id);
-  if(el2) el2.classList.toggle("open");
-}
-function saveNotes(sid, idx, val, isCustom) {
-  if(isCustom) {
-    if(customSections[sid] && customSections[sid][idx]) customSections[sid][idx].notes = val;
-  } else {
-    if(sectionState[sid] && sectionState[sid][idx]) sectionState[sid][idx].notes = val;
-  }
-}
-function addCustomSection(sid) {
+window.toggleNotes = function(id){
+  var e = el(id); if(e) e.classList.toggle("open");
+};
+
+window.addCustomSection = function(sid){
   var inp = el("newsec-"+sid);
   if(!inp) return;
   var name = inp.value.trim();
-  if(!name) return;
-  customSections[sid].push({name:name, votes:0, voted:false, notes:""});
-  inp.value = "";
-  updateSettingBadge(sid);
-  renderSettingBody(sid);
-}
-function addPresetRes(sid, ri) {
-  var presets = presetResources[sid] || [];
-  var r = presets[ri];
-  if(!r) return;
-  var already = resourcesState[sid].some(function(x){return x.text===r;});
-  if(already) return;
-  var time = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-  resourcesState[sid].unshift({text:r, time:time});
-  updateSettingBadge(sid);
-  renderSettingBody(sid);
-}
-function addResource(sid) {
-  var inp = el("res-inp-"+sid);
-  if(!inp) return;
-  var text = inp.value.trim();
-  if(!text) return;
-  var time = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-  resourcesState[sid].unshift({text:text, time:time});
-  inp.value = "";
-  updateSettingBadge(sid);
-  renderSettingBody(sid);
-}
-function updateSettingBadge(sid) {
-  var secs = sectionState[sid] || [];
-  var customs = customSections[sid] || [];
-  var res = resourcesState[sid] || [];
-  var included = 0;
-  secs.forEach(function(x){if(x.voted) included++;});
-  customs.forEach(function(x){if(x.voted) included++;});
-  var total = secs.length + customs.length;
-  var incBadge = el("badge-inc-"+sid);
-  if(incBadge) incBadge.textContent = included+"/"+total+" included";
-  var resBadge = el("badge-res-"+sid);
-  if(resBadge) {
-    if(res.length>0){
-      resBadge.textContent = res.length+" resource"+(res.length!==1?"s":"");
-      resBadge.style.display = "";
-    } else {
-      resBadge.style.display = "none";
-    }
-  }
-  // update sidebar badge
-  var totalIncluded = 0;
+  if(!name){ showToast("Please enter a section name."); return; }
+  push(ref(db,"customSections/"+sid), {name:name, time:now(), session:SESSION_ID})
+    .then(function(){ inp.value=""; showToast("Section suggestion saved!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+// Listen for custom sections and append to settings
+onValue(ref(db,"customSections"), function(snap){
+  var data = snap.val()||{};
   careSettings.forEach(function(s){
-    (sectionState[s.id]||[]).forEach(function(x){if(x.voted) totalIncluded++;});
-    (customSections[s.id]||[]).forEach(function(x){if(x.voted) totalIncluded++;});
+    var customs = data[s.id] ? Object.values(data[s.id]) : [];
+    var body = el("sb-"+s.id);
+    if(body && body.classList.contains("open")) renderSettingBody(s.id);
   });
-  var sb = el("sbadge");
-  if(sb) sb.textContent = totalIncluded > 0 ? totalIncluded : "0";
-}
+});
 
 // ── IDEAS ──────────────────────────────────────────────────────────────
-function submitIdea() {
-  var text = el("i-text").value.trim();
-  if(!text) return;
-  var cat = el("i-cat").value;
-  var time = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-  ideas.unshift({text:text, cat:cat, time:time});
-  el("i-text").value = "";
-  updateIdeaBadges();
-  renderIdeas();
-  renderAdmin();
+function listenIdeas(){
+  onValue(ref(db,"ideas"), function(snap){
+    var data = snap.val()||{};
+    liveIdeas = Object.keys(data).map(function(k){
+      return Object.assign({fbid:k}, data[k]);
+    }).sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+    renderIdeas();
+    renderAdmin();
+    var ib = el("ibadge"); if(ib) ib.textContent = liveIdeas.length;
+    var si = el("s-ideas"); if(si) si.textContent = liveIdeas.length;
+    var ic = el("i-count-lbl"); if(ic) ic.textContent="("+liveIdeas.length+")";
+  });
 }
-function submitIdea2(cat, placeholder) {
+
+window.submitIdea = function(){
+  var text = el("i-text").value.trim();
+  if(!text){ showToast("Please enter your idea first."); return; }
+  var cat = el("i-cat").value;
+  push(ref(db,"ideas"), {text:text, cat:cat, time:now(), ts:Date.now(), session:SESSION_ID})
+    .then(function(){ el("i-text").value=""; showToast("Idea submitted!"); })
+    .catch(function(){ showToast("Error — please try again."); });
+};
+
+window.submitIdea2 = function(cat, placeholder){
   showPanel("ideas", document.querySelector(".ni[onclick*=\"'ideas'\"]"));
   el("i-cat").value = cat;
   el("i-text").placeholder = placeholder;
   el("i-text").focus();
-}
-function renderIdeas() {
-  var html = "";
-  ideas.forEach(function(idea) {
-    html += '<div class="idea-item"><div class="idea-cat">'+esc(idea.cat)+'</div><div class="idea-txt">'+esc(idea.text)+'</div><div class="idea-meta">'+idea.time+'</div></div>';
-  });
-  el("ideas-list").innerHTML = html || '<div class="empty">No ideas yet — be the first!</div>';
-}
-function updateIdeaBadges() {
-  el("ibadge").textContent = ideas.length;
-  el("s-ideas").textContent = ideas.length;
-  el("i-count-lbl").textContent = "("+ideas.length+")";
+};
+
+function renderIdeas(){
+  var html = liveIdeas.map(function(i){
+    return '<div class="idea-item"><div class="idea-cat">'+esc(i.cat)+'</div><div class="idea-txt">'+esc(i.text)+'</div><div class="idea-meta">'+esc(i.time||"")+'</div></div>';
+  }).join("");
+  var listEl = el("ideas-list");
+  if(listEl) listEl.innerHTML = html || '<div class="empty">No ideas yet — be the first!</div>';
 }
 
 // ── TIMELINE ───────────────────────────────────────────────────────────
-function renderTimeline() {
+function renderTimeline(){
   var html = "";
-  tasks.forEach(function(t) {
-    var phLabel = {ph1:"Phase 1","ph-1":"Phase 1",ph2:"Phase 2","ph-2":"Phase 2",ph3:"Phase 3","ph-3":"Phase 3",ph4:"Phase 4","ph-4":"Phase 4"}[t.phase] || t.phase;
-    var stLabel = {"s-active":"Active","s-planned":"Planned","s-done":"Done","s-tbc":"TBC"}[t.status] || t.status;
-    html += '<tr>';
-    html += '<td>'+esc(t.task)+'</td>';
-    html += '<td><span class="phase-badge '+t.phase+'">'+phLabel+'</span></td>';
-    html += '<td>'+esc(t.lead)+'</td>';
-    html += '<td>'+esc(t.start)+'</td>';
-    html += '<td>'+esc(t.due)+'</td>';
-    html += '<td><span class="status-badge '+t.status+'">'+stLabel+'</span></td>';
-    html += '<td style="font-size:12px;color:var(--ink-l)">'+esc(t.notes)+'</td>';
-    html += '</tr>';
+  tasks.forEach(function(t){
+    var ph = {"ph-1":"Phase 1","ph-2":"Phase 2","ph-3":"Phase 3","ph-4":"Phase 4"}[t.phase]||t.phase;
+    var st = {"s-active":"Active","s-planned":"Planned","s-done":"Done","s-tbc":"TBC"}[t.status]||t.status;
+    html += '<tr><td>'+esc(t.task)+'</td><td><span class="phase-badge '+t.phase+'">'+ph+'</span></td><td>'+esc(t.lead)+'</td><td>'+esc(t.start)+'</td><td>'+esc(t.due)+'</td><td><span class="status-badge '+t.status+'">'+st+'</span></td><td style="font-size:12px;color:var(--ink-l)">'+esc(t.notes)+'</td></tr>';
   });
-  el("tl-body").innerHTML = html;
-}
-function addTask() {
-  var task = el("tl-task").value.trim();
-  if(!task) return;
-  tasks.push({
-    task: task,
-    phase: el("tl-phase").value,
-    lead: el("tl-lead").value.trim() || "TBC",
-    start: el("tl-start").value.trim() || "TBC",
-    due: el("tl-due").value.trim() || "TBC",
-    status: el("tl-status").value,
-    notes: ""
-  });
-  ["tl-task","tl-lead","tl-start","tl-due"].forEach(function(id){el(id).value="";});
-  renderTimeline();
+  var tb = el("tl-body"); if(tb) tb.innerHTML = html;
 }
 
-// ── IMPLEMENTATION PHASES ──────────────────────────────────────────────
-function togglePhase(id) {
-  var b = el(id);
-  if(b) b.classList.toggle("open");
-}
+window.addTask = function(){
+  var task = el("tl-task").value.trim(); if(!task) return;
+  tasks.push({task:task, phase:el("tl-phase").value, lead:el("tl-lead").value.trim()||"TBC", start:el("tl-start").value.trim()||"TBC", due:el("tl-due").value.trim()||"TBC", status:el("tl-status").value, notes:""});
+  ["tl-task","tl-lead","tl-start","tl-due"].forEach(function(id){ el(id).value=""; });
+  renderTimeline();
+};
+
+window.togglePhase = function(id){
+  var b = el(id); if(b) b.classList.toggle("open");
+};
 
 // ── ADMIN ──────────────────────────────────────────────────────────────
-function renderAdmin() {
-  var sorted = deliverables.slice().sort(function(a,b){return b.votes-a.votes;});
-  var maxV = sorted[0] ? sorted[0].votes : 1;
-  var html = "";
-  sorted.forEach(function(d) {
-    var pct = Math.round((d.votes / (maxV||1)) * 100);
-    html += '<div class="res-bar-item"><div class="res-hdr"><div class="res-label">'+esc(d.text)+'</div><div class="res-votes">'+d.votes+'</div></div>';
-    html += '<div class="res-track"><div class="res-fill" style="width:'+pct+'%"></div></div></div>';
+function renderAdmin(){
+  // Deliverable votes
+  var sorted = deliverables.slice().sort(function(a,b){
+    return ((liveVotes[b.id]||{}).count||0) - ((liveVotes[a.id]||{}).count||0);
   });
-  el("admin-votes").innerHTML = html;
+  var maxV = (liveVotes[sorted[0]&&sorted[0].id]||{}).count||1;
+  var vhtml = sorted.map(function(d){
+    var count = (liveVotes[d.id]||{}).count||0;
+    var pct = Math.round((count/(maxV||1))*100);
+    return '<div class="res-bar-item"><div class="res-hdr"><div class="res-label">'+esc(d.text)+'</div><div class="res-votes">'+count+'</div></div><div class="res-track"><div class="res-fill" style="width:'+pct+'%"></div></div></div>';
+  }).join("");
+  var avEl = el("admin-votes"); if(avEl) avEl.innerHTML = vhtml;
 
   // Settings summary
-  var shtml = "";
-  careSettings.forEach(function(s) {
-    var secs = sectionState[s.id] || [];
-    var customs = customSections[s.id] || [];
+  var shtml = careSettings.map(function(s){
+    var secs = settingSectionsData[s.id]||[];
     var included = [];
-    secs.forEach(function(x){if(x.voted) included.push(x.name);});
-    customs.forEach(function(x){if(x.voted) included.push(x.name+" (custom)");});
-    shtml += '<div style="margin-bottom:10px">';
-    shtml += '<div style="font-size:13px;font-weight:500;color:var(--ink)">'+s.icon+' '+esc(s.name)+' <span style="color:var(--qg)">('+included.length+' section'+(included.length!==1?"s":" included")+')</span></div>';
-    if(included.length>0) shtml += '<div style="font-size:12px;color:var(--ink-m);margin-top:2px">'+included.map(esc).join(" · ")+'</div>';
-    shtml += '</div>';
-  });
-  el("admin-settings-summary").innerHTML = shtml || '<div class="empty">No section votes yet.</div>';
-
-  // Ideas feed
-  var ihtml = ideas.map(function(i){
-    return '<div class="idea-item"><div class="idea-cat">'+esc(i.cat)+'</div><div class="idea-txt">'+esc(i.text)+'</div><div class="idea-meta">'+i.time+'</div></div>';
+    secs.forEach(function(name,i){
+      var v = liveSections[sectionKey(s.id,i)];
+      if(v && v.count>0) included.push(name+" ("+v.count+")");
+    });
+    return '<div style="margin-bottom:10px"><div style="font-size:13px;font-weight:500;color:var(--ink)">'+s.icon+' '+esc(s.name)+' <span style="color:var(--qg)">('+included.length+' section'+(included.length!==1?"s":"")+')</span></div>'+(included.length>0?'<div style="font-size:12px;color:var(--ink-m);margin-top:2px">'+included.map(esc).join(" · ")+'</div>':'')+'</div>';
   }).join("");
-  el("admin-ideas").innerHTML = ihtml || '<div class="empty">Waiting for submissions...</div>';
+  var asEl = el("admin-settings-summary"); if(asEl) asEl.innerHTML = shtml;
+
+  // Ideas
+  var ihtml = liveIdeas.map(function(i){
+    return '<div class="idea-item"><div class="idea-cat">'+esc(i.cat)+'</div><div class="idea-txt">'+esc(i.text)+'</div><div class="idea-meta">'+esc(i.time||"")+'</div></div>';
+  }).join("");
+  var aiEl = el("admin-ideas"); if(aiEl) aiEl.innerHTML = ihtml||'<div class="empty">Waiting...</div>';
 }
+
+// ── PDF EXPORT ─────────────────────────────────────────────────────────
+window.exportPDF = function(){
+  var w = window.open("","_blank");
+  var sortedVotes = deliverables.slice().sort(function(a,b){
+    return ((liveVotes[b.id]||{}).count||0)-((liveVotes[a.id]||{}).count||0);
+  });
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QLD Rehab MOC — Session Export</title>';
+  html += '<style>body{font-family:Arial,sans-serif;font-size:13px;color:#1A1A2E;padding:32px;max-width:800px;margin:0 auto}';
+  html += 'h1{font-size:22px;color:#00843D;margin-bottom:4px}h2{font-size:16px;color:#00843D;margin:24px 0 8px;border-bottom:2px solid #00843D;padding-bottom:4px}';
+  html += 'h3{font-size:14px;color:#1A1A2E;margin:14px 0 4px}.meta{font-size:12px;color:#888;margin-bottom:24px}';
+  html += 'table{width:100%;border-collapse:collapse;margin-bottom:16px}td,th{border:1px solid #ddd;padding:7px 10px;text-align:left;font-size:12px}th{background:#f0f7f4;font-weight:600}';
+  html += '.vote-bar{height:10px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:3px}.vote-fill{height:100%;background:#00843D;border-radius:4px}';
+  html += '.idea-box{background:#f0f7f4;border-left:3px solid #00843D;padding:8px 10px;margin-bottom:6px;border-radius:0 4px 4px 0}';
+  html += '.note-box{background:#e8f5ee;border:1px solid #9FE1CB;padding:7px 9px;margin-bottom:5px;border-radius:4px;font-size:12px}';
+  html += '.res-box{background:#fff;border:1px solid #9FE1CB;padding:6px 9px;margin-bottom:4px;border-radius:4px;font-size:12px}';
+  html += '@media print{button{display:none}}</style></head><body>';
+
+  html += '<h1>Queensland Rehabilitation Clinical Network</h1>';
+  html += '<h1 style="font-size:18px;color:#1A1A2E;margin-top:2px">Model of Care — Stakeholder Planning Session Export</h1>';
+  html += '<div class="meta">Exported: '+new Date().toLocaleString()+'&nbsp;&nbsp;|&nbsp;&nbsp;Participants: '+liveParticipants+'&nbsp;&nbsp;|&nbsp;&nbsp;Session data from Firebase</div>';
+  html += '<button onclick="window.print()" style="background:#00843D;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-bottom:24px">⬇ Print / Save as PDF</button>';
+
+  // Deliverables
+  html += '<h2>Deliverables Vote Results</h2>';
+  html += '<table><tr><th>Deliverable</th><th>Priority</th><th style="width:60px;text-align:center">Votes</th></tr>';
+  sortedVotes.forEach(function(d){
+    var count = (liveVotes[d.id]||{}).count||0;
+    var maxV2 = (liveVotes[sortedVotes[0].id]||{}).count||1;
+    var pct = Math.round((count/maxV2)*100);
+    html += '<tr><td>'+esc(d.text)+'<div class="vote-bar"><div class="vote-fill" style="width:'+pct+'%"></div></div></td><td>'+esc(d.ptxt)+'</td><td style="text-align:center;font-weight:600">'+count+'</td></tr>';
+  });
+  html += '</table>';
+
+  // Care settings sections
+  html += '<h2>Care Settings — Section Votes & Notes</h2>';
+  careSettings.forEach(function(s){
+    var secs = settingSectionsData[s.id]||[];
+    var anyVotes = secs.some(function(_,i){ var v=liveSections[sectionKey(s.id,i)]; return v&&v.count>0; });
+    var res = liveResources[s.id]||[];
+    html += '<h3>'+s.icon+' '+esc(s.name)+'</h3>';
+    html += '<table><tr><th>Section</th><th style="width:60px;text-align:center">Votes to include</th><th>Notes</th></tr>';
+    secs.forEach(function(name,i){
+      var v = liveSections[sectionKey(s.id,i)]||{count:0};
+      var notes = v.notes ? Object.values(v.notes) : [];
+      var notesHtml = notes.map(function(n){ return '<div class="note-box">'+esc(n.text)+'</div>'; }).join("");
+      html += '<tr><td>'+esc(name)+'</td><td style="text-align:center;font-weight:600">'+(v.count||0)+'</td><td>'+(notesHtml||'<span style="color:#aaa">—</span>')+'</td></tr>';
+    });
+    html += '</table>';
+    if(res.length>0){
+      html += '<div style="margin-bottom:12px"><strong style="font-size:12px">Suggested resources:</strong><br>';
+      res.forEach(function(r){ html += '<div class="res-box">'+esc(r.text)+'</div>'; });
+      html += '</div>';
+    }
+  });
+
+  // Ideas
+  html += '<h2>Ideas & Gaps Submitted ('+liveIdeas.length+')</h2>';
+  if(liveIdeas.length > 0){
+    var byCat = {};
+    liveIdeas.forEach(function(i){ (byCat[i.cat]=byCat[i.cat]||[]).push(i); });
+    Object.keys(byCat).forEach(function(cat){
+      html += '<h3>'+esc(cat)+'</h3>';
+      byCat[cat].forEach(function(i){
+        html += '<div class="idea-box">'+esc(i.text)+'<span style="font-size:11px;color:#888;margin-left:8px">'+esc(i.time||"")+'</span></div>';
+      });
+    });
+  } else {
+    html += '<p style="color:#888">No ideas submitted.</p>';
+  }
+
+  html += '</body></html>';
+  w.document.write(html);
+  w.document.close();
+};
 
 // ── QR CODE ────────────────────────────────────────────────────────────
-function drawQR() {
-  var canvas = el("qr-canvas");
-  if(!canvas) return;
-  var ctx = canvas.getContext("2d");
-  var size = 180;
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(0,0,size,size);
-  var cells = 25, cell = Math.floor((size-16)/cells), off = Math.floor((size - cells*cell)/2);
-  function finder(r0,c0) {
-    ctx.fillStyle = "#00843D";
-    for(var r=0;r<7;r++) for(var c=0;c<7;c++) {
-      var outer = r===0||r===6||c===0||c===6;
-      var inner = r>=2&&r<=4&&c>=2&&c<=4;
-      if(outer||inner) ctx.fillRect(off+(c0+c)*cell, off+(r0+r)*cell, cell-1, cell-1);
-    }
-  }
-  finder(0,0); finder(0,18); finder(18,0);
-  ctx.fillStyle = "#00843D";
-  for(var r=0;r<cells;r++) for(var c=0;c<cells;c++) {
-    var inFinder = (r<8&&c<8)||(r<8&&c>=17)||(r>=17&&c<8);
-    if(!inFinder && ((r*31+c)*42+r*c)%7 < 3) ctx.fillRect(off+c*cell, off+r*cell, cell-1, cell-1);
+function drawQR(){
+  var container = el("qr-canvas-container");
+  if(!container) return;
+  container.innerHTML = "";
+  if(typeof QRCode !== "undefined"){
+    new QRCode(container,{text:"https://amandakbaker5-maker.github.io/QRbCN/",width:180,height:180,colorDark:"#00843D",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
   }
 }
-
-// ── PARTICIPANT TICKER ─────────────────────────────────────────────────
-setInterval(function() {
-  if(Math.random() < 0.3) {
-    pCount++;
-    el("s-participants").textContent = pCount;
-    el("pchip").textContent = pCount + " participants";
-  }
-}, 9000);
+window.drawQR = drawQR;
 
 // ── INIT ───────────────────────────────────────────────────────────────
-renderVote();
-renderIdeas();
+registerPresence();
+listenVotes();
+listenSections();
+listenResources();
+listenIdeas();
 renderTimeline();
-renderAdmin();
-setTimeout(drawQR, 200);
+setTimeout(drawQR, 300);
+
+// Connection status indicator
+onValue(ref(db,".info/connected"), function(snap){
+  var connected = snap.val();
+  var dot = el("conn-dot");
+  var label = el("conn-label");
+  if(dot){
+    dot.style.background = connected ? "#00843D" : "#C8352A";
+    dot.title = connected ? "Connected to Firebase" : "Reconnecting...";
+  }
+  if(label) label.textContent = connected ? "Live" : "Reconnecting...";
+});
+
 </script>
 </body>
 </html>
