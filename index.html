@@ -109,8 +109,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--surf);color:var(--ink);mi
 .a-detail{font-size:12px;color:var(--ink-l);margin-top:2px}
 
 /* PILLS */
-.pill{display:inline-block;padding:5px 13px;border-radius:20px;font-size:13px;border:1px solid var(--border);background:var(--surf);color:var(--ink-m);margin:3px}
-.pill.confirmed{background:var(--qg-l);color:var(--qg);border-color:#9FE1CB;font-weight:500}
+.pill{display:block;padding:6px 13px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border);background:var(--surf);color:var(--ink-m);margin:0 0 5px}
+.pill.confirmed{background:var(--qg-l);color:var(--qg);border-color:#9FE1CB;font-weight:500;display:block}
 .pill.discuss{background:var(--gold-l);color:#7A5000;border-color:#FAC775}
 
 /* VOTING */
@@ -271,6 +271,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .export-btn{padding:9px 20px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
 .export-btn:hover{background:#2d2d4a}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -353,7 +355,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   </div>
   <div class="tb-right"><div class="conn-indicator"><div class="dot" id="conn-dot"></div><span id="conn-label">Connecting...</span></div>
     <div class="live">Live</div>
-    <div class="pchip" id="pchip">24 participants</div>
+    <div class="pchip" id="pchip">1 participant</div>
   </div>
 </div>
 
@@ -361,43 +363,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- OVERVIEW -->
 <div class="panel active" id="panel-overview">
-  <div class="stat-grid">
-    <div class="stat dark"><div class="stat-lbl">Participants joined</div><div class="stat-val" id="s-participants">24</div><div class="stat-det">Across QLD HHS</div></div>
-    <div class="stat"><div class="stat-lbl">Deliverables under review</div><div class="stat-val">10</div><div class="stat-det">Vote open now</div></div>
-    <div class="stat"><div class="stat-lbl">Ideas submitted</div><div class="stat-val" id="s-ideas">0</div><div class="stat-det">Growing in real time</div></div>
-    <div class="stat"><div class="stat-lbl">Principles confirmed</div><div class="stat-val">7</div><div class="stat-det">Across QLD & lifespan</div></div>
+  <div class="stat-grid" style="grid-template-columns:1fr">
+    <div class="stat dark"><div class="stat-lbl">Participants joined</div><div class="stat-val" id="s-participants">1</div><div class="stat-det">Across QLD HHS</div></div>
   </div>
-  <div class="g3">
-    <div class="card">
-      <div class="card-title">Meeting agenda</div>
-      <div class="card-sub">Thursday 3 April · Statewide Teams call</div>
-      <div class="agenda-item"><div class="a-time">9:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Welcome & context setting</div><div class="a-detail">Chair opens · review confirmed principles & scope</div></div></div>
-      <div class="agenda-item"><div class="a-time">9:15 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Live deliverables prioritisation vote</div><div class="a-detail">20 min · Stakeholders vote via this platform</div></div></div>
-      <div class="agenda-item"><div class="a-time">9:35 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Care settings — gaps & ideas</div><div class="a-detail">25 min · Submit ideas by setting</div></div></div>
-      <div class="agenda-item"><div class="a-time">10:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Breakout discussion — top priorities</div><div class="a-detail">25 min · Teams breakout rooms · report back</div></div></div>
-      <div class="agenda-item"><div class="a-time">10:25 am</div><div class="a-dot-col"><div class="a-dot" style="background:#ccc"></div></div><div class="a-body"><div class="a-title">Wrap-up & next steps</div><div class="a-detail">Confirm priorities · assign leads · close</div></div></div>
-    </div>
-    <div>
-      <div class="card">
-        <div class="card-title">Confirmed principles</div>
-        <div class="card-sub">7 principles — finalised Feb 2026</div>
-        <div class="pill confirmed">Person-centred & goal-based</div>
-        <div class="pill confirmed">Holistic & inclusive care</div>
-        <div class="pill confirmed">Equitable & timely access</div>
-        <div class="pill confirmed">Integrated & coordinated delivery</div>
-        <div class="pill confirmed">Sustainable workforce & expertise</div>
-        <div class="pill confirmed">Evidence, data & evaluation</div>
-        <div class="pill confirmed">Innovation & technology</div>
-      </div>
-      <div class="card">
-        <div class="card-title">MOC development progress</div>
-        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Principles</span><span class="prog-pct">100%</span></div><div class="prog-track"><div class="prog-fill" style="width:100%"></div></div></div>
-        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Scope</span><span class="prog-pct">80%</span></div><div class="prog-track"><div class="prog-fill" style="width:80%"></div></div></div>
-        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Deliverables</span><span class="prog-pct">30%</span></div><div class="prog-track"><div class="prog-fill" style="width:30%"></div></div></div>
-        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Stakeholder engagement</span><span class="prog-pct">55%</span></div><div class="prog-track"><div class="prog-fill" style="width:55%"></div></div></div>
-        <div class="prog-row"><div class="prog-hdr"><span class="prog-name">Evidence review</span><span class="prog-pct">40%</span></div><div class="prog-track"><div class="prog-fill" style="width:40%"></div></div></div>
-      </div>
-    </div>
+  <!-- keep these hidden so JS can still update them -->
+  <span id="s-ideas" style="display:none">0</span>
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Meeting agenda</div>
+    <div class="card-sub">Thursday 3 April · Statewide Teams call</div>
+    <div class="agenda-item"><div class="a-time">9:00 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Welcome & context setting</div><div class="a-detail">Chair opens · review confirmed principles & scope</div></div></div>
+    <div class="agenda-item"><div class="a-time">9:15 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--qg)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Care settings — sections, gaps & ideas</div><div class="a-detail">30 min · Expand each setting · vote on sections · add notes</div></div></div>
+    <div class="agenda-item"><div class="a-time">9:45 am</div><div class="a-dot-col"><div class="a-dot" style="background:var(--gold)"></div><div class="a-line"></div></div><div class="a-body"><div class="a-title">Live deliverables vote</div><div class="a-detail">20 min · Rate deliverables relevant / not relevant per setting</div></div></div>
+    <div class="agenda-item"><div class="a-time">10:05 am</div><div class="a-dot-col"><div class="a-dot" style="background:#ccc"></div></div><div class="a-body"><div class="a-title">Wrap-up & next steps</div><div class="a-detail">Confirm priorities · assign leads · close</div></div></div>
   </div>
 </div>
 
@@ -456,32 +433,81 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       <h3 style="font-size:16px;font-weight:600;margin-bottom:14px;color:var(--ink)">Scope of the QLD Rehab MOC</h3>
       <div class="card">
         <div class="card-title">In scope ✓</div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div><div class="scope-txt">Adult and paediatric multidisciplinary rehabilitation across all Queensland HHS</div><div class="scope-note">Lifespan approach — key difference from NSW MOC</div></div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Inpatient, ambulatory, community, home-based and virtual care settings</div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Aboriginal and Torres Strait Islander populations — culturally safe care</div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div><div class="scope-txt">Rural, regional and remote access equity across Queensland</div><div class="scope-note">Including outreach and telehealth models</div></div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Workforce planning, role delineation and professional development</div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Referral pathways and cross-sector service integration</div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Outcome measurement, data and service evaluation</div></div>
-        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Digital health, tele-rehabilitation and innovation</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div><div class="scope-txt">Adult multidisciplinary rehabilitation services — levels 2–6 of the Qld Health Clinical Services Capability Framework</div><div class="scope-note">Delivered across all Queensland HHS</div></div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">In-reach to acute setting</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Sub-acute inpatient rehabilitation services</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div><div class="scope-txt">Ambulatory, home-based, outreach and day hospital rehabilitation services</div><div class="scope-note">Provided under an admitted or non-admitted (Tier 2) model</div></div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Transition of adolescent and young adult from paediatric services</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Paediatric rehabilitation services</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Telehealth and virtual care</div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div>
+          <div class="scope-txt">Linkage to statewide service models</div>
+          <div class="scope-note">Such as the <a href="https://www.health.qld.gov.au/clinical-practice/guidelines-procedures/clinical-staff/rehabilitation/spinal-cord" target="_blank" style="color:var(--qg)">Queensland Spinal Cord Injuries Service (QSCIS)</a></div>
+        </div></div>
+        <div class="scope-item"><div class="scope-icon si-in">✓</div><div class="scope-txt">Single-discipline rehabilitation programs</div></div>
       </div>
       <div class="card">
         <div class="card-title">Out of scope ✗</div>
         <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Mental health rehabilitation services (separate workstream)</div></div>
         <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">NDIS-funded community services</div></div>
-        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Primary care single-discipline rehabilitation programs</div></div>
         <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Private providers (noting aspects of MOC may apply)</div></div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Cardiac and pulmonary rehabilitation</div></div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Drug and alcohol rehabilitation services</div></div>
+        <div class="scope-item"><div class="scope-icon si-out">✗</div><div class="scope-txt">Transitional Care Program (TCP) short-term restorative care</div></div>
       </div>
-      <div class="card">
-        <div class="card-title">To confirm Thursday</div>
-        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">Cardiac and pulmonary rehabilitation — in or out?</div></div>
-        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">Drug and alcohol rehabilitation services</div></div>
-        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">Transitional Aged Care Program (TACP) short-term restorative care</div></div>
-        <div class="scope-item"><div class="scope-icon si-tbc">?</div><div class="scope-txt">ACCHS-delivered rehabilitation programs — inclusion criteria</div></div>
+      <div class="card" style="margin-top:12px;border:2px solid var(--qg)">
+        <div class="card-title">Confirm scope</div>
+        <div class="card-sub">Review the items above then vote to confirm the proposed scope.</div>
+        <div id="scope-vote-body">
+          <div id="scope-step1">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+              <button class="vbtn" id="scope-yes-btn" onclick="castScopeVote('yes')">✓ Yes — confirm</button>
+              <button class="vbtn" id="scope-no-btn" onclick="castScopeVote('no')">✗ No — needs changes</button>
+            </div>
+          </div>
+          <div id="scope-step2" style="display:none;background:var(--hi-b);border:1px solid #f5b7b1;border-radius:var(--rs);padding:14px;margin-bottom:10px">
+            <div style="font-size:13px;font-weight:600;color:var(--hi);margin-bottom:8px">What needs to change?</div>
+            <div class="field" style="margin-bottom:8px">
+              <div class="field-lbl" style="margin-bottom:4px">Which item needs to change?</div>
+              <select id="scope-change-item" style="width:100%;font-size:13px">
+                <option value="">— Select an item —</option>
+                <optgroup label="Currently IN scope">
+                  <option>Adult MDT rehabilitation services (levels 2–6 CSCF)</option>
+                  <option>In-reach to acute setting</option>
+                  <option>Sub-acute inpatient rehabilitation services</option>
+                  <option>Ambulatory, home-based, outreach and day hospital services</option>
+                  <option>Transition of adolescent and young adult from paediatric services</option>
+                  <option>Paediatric rehabilitation services</option>
+                  <option>Telehealth and virtual care</option>
+                  <option>Single-discipline rehabilitation programs</option>
+                  <option>Linkage to statewide service models</option>
+                </optgroup>
+                <optgroup label="Currently OUT of scope">
+                  <option>Mental health rehabilitation (out — should be in)</option>
+                  <option>NDIS-funded community services (out — should be in)</option>
+                  <option>Private providers (out — should be in)</option>
+                  <option>Cardiac and pulmonary rehabilitation (out — should be in)</option>
+                  <option>Drug and alcohol rehabilitation (out — should be in)</option>
+                  <option>TCP short-term restorative care (out — should be in)</option>
+                </optgroup>
+                <option value="other">Something else (describe below)</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:10px">
+              <div class="field-lbl" style="margin-bottom:4px">Why? What would you suggest instead?</div>
+              <textarea id="scope-change-reason" placeholder="Describe the change and your reasoning..." style="min-height:70px;width:100%;font-size:13px"></textarea>
+            </div>
+            <button class="submit-btn" style="padding:8px 18px;font-size:13px" onclick="submitScopeChange()">Submit feedback</button>
+          </div>
+          <div id="scope-step3" style="display:none;background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:10px;margin-bottom:10px">
+            <span id="scope-confirmed-msg" style="font-size:13px;color:var(--qg);font-weight:500"></span>
+          </div>
+          <div id="scope-tally" style="font-size:13px;color:var(--ink-m)">No votes yet.</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
 
 <!-- CARE SETTINGS -->
 <div class="panel" id="panel-settings">
@@ -576,27 +602,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       <table class="gantt-table">
         <thead><tr><th style="width:200px">Phase</th><th>Q1 2025</th><th>Q2 2025</th><th>Q3 2025</th><th>Q4 2025</th><th>Q1 2026</th><th>Q2 2026</th><th>Q3 2026</th><th>Q4 2026</th></tr></thead>
         <tbody id="gantt-body">
-          <tr><td><span class="phase-badge ph-1">Phase 1 · Scoping & evidence</span></td>
-            <td><div class="gantt-bar" style="width:90%;background:#1565C0;opacity:.7">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:50%;background:#1565C0;opacity:.7">&nbsp;</div></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td><span class="phase-badge ph-2">Phase 2 · Development</span></td>
-            <td></td>
-            <td><div class="gantt-bar" style="width:50%;background:var(--gold);opacity:.8">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:100%;background:var(--gold);opacity:.8">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:60%;background:var(--gold);opacity:.8">&nbsp;</div></td>
-            <td></td><td></td><td></td><td></td></tr>
-          <tr><td><span class="phase-badge ph-3">Phase 3 · Consultation</span></td>
-            <td></td><td></td><td></td>
-            <td><div class="gantt-bar" style="width:40%;background:var(--qg);opacity:.7">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:100%;background:var(--qg);opacity:.7">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:30%;background:var(--qg);opacity:.7">&nbsp;</div></td>
-            <td></td><td></td></tr>
-          <tr><td><span class="phase-badge ph-4">Phase 4 · Finalisation & launch</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-            <td><div class="gantt-bar" style="width:70%;background:#6B21A8;opacity:.7">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:100%;background:#6B21A8;opacity:.7">&nbsp;</div></td>
-            <td><div class="gantt-bar" style="width:30%;background:#6B21A8;opacity:.7">&nbsp;</div></td></tr>
+          <tr><td colspan="9" style="text-align:center;color:var(--ink-l);font-size:13px;padding:20px">Add tasks above to populate the Gantt chart</td></tr>
         </tbody>
       </table>
     </div>
@@ -753,35 +759,38 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"><path d="M3 5h14M3 10h10M3 15h6"/></svg>
     <div><div style="font-weight:600;font-size:14px">Admin — Live Results</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Show on screen during the Teams call to discuss vote outcomes</div></div><button class="export-btn" onclick="exportPDF()" style="margin-left:auto">⬇ Export PDF</button>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
-    <div class="card">
-      <div class="card-title">Deliverables — ratings by care setting</div>
-      <div class="card-sub">Relevant vs not relevant · live totals</div>
-      <div id="admin-votes"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Ideas & gaps feed</div>
-      <div class="card-sub">All submissions in real time</div>
-      <div id="admin-ideas" style="max-height:380px;overflow-y:auto"><div class="empty">Waiting...</div></div>
-    </div>
+  <!-- 1. Care Settings -->
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title">1 · Care settings</div>
+    <div class="card-sub">Sections rated · deliverables rated · notes · updates live</div>
+    <div id="admin-settings-summary"><div class="empty">No votes yet.</div></div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
-    <div class="card">
-      <div class="card-title">Organisational requirements ratings</div>
-      <div class="card-sub">Relevant vs not relevant · live</div>
-      <div id="admin-org"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Local adaptation ratings</div>
-      <div class="card-sub">Relevant vs not relevant · live</div>
-      <div id="admin-la"></div>
-    </div>
+  <!-- 2. Organisational Requirements -->
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title">2 · Organisational requirements</div>
+    <div class="card-sub">Relevant / Not relevant / Not sure · participant notes · updates live</div>
+    <div id="admin-org"></div>
   </div>
+  <!-- 3. Local Adaptation -->
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title">3 · Local adaptation</div>
+    <div class="card-sub">Relevant / Not relevant / Not sure · participant notes · updates live</div>
+    <div id="admin-la"></div>
+  </div>
+  <!-- Scope confirmation -->
+  <div class="card" style="margin-bottom:18px;border:1px solid #9FE1CB">
+    <div class="card-title">Scope confirmation vote</div>
+    <div class="card-sub">Live tally — confirm or request changes</div>
+    <div id="admin-scope-vote"><div class="empty">No votes yet.</div></div>
+  </div>
+  <!-- 4. Ideas & Gaps -->
   <div class="card">
-    <div class="card-title">Care settings — sections voted to include</div>
-    <div class="card-sub">Live tally per care setting</div>
-    <div id="admin-settings-summary"><div class="empty">No section votes yet.</div></div>
+    <div class="card-title">4 · Ideas & gaps</div>
+    <div class="card-sub">All submissions in real time</div>
+    <div id="admin-ideas"><div class="empty">Waiting...</div></div>
   </div>
+  <!-- hidden admin-votes div kept for JS compatibility -->
+  <div id="admin-votes" style="display:none"></div>
 </div>
 
 </div><!-- /content -->
@@ -789,11 +798,10 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 <div id="toast"></div>
 </div><!-- /shell -->
 
-<script type="module">
+<script>
+
 // ── FIREBASE SETUP ────────────────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, push, onValue, runTransaction, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+// Firebase loaded via compat CDN scripts in <head>
 
 const firebaseConfig = {
   apiKey: "AIzaSyCAsXLrKcvJ_e1PczCydpiA4kLdf5XtUpU",
@@ -805,8 +813,17 @@ const firebaseConfig = {
   appId: "1:373324111704:web:50a3fc483d1146ab704f2d"
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getDatabase(app);
+var app = firebase.initializeApp(firebaseConfig);
+var db  = firebase.database();
+
+// ── FIREBASE COMPAT HELPERS ───────────────────────────────────────────
+function ref(database, path) { return database.ref(path); }
+function onValue(refObj, callback) { refObj.on("value", function(snap){ callback(snap); }); }
+function push(refObj, data) { return refObj.push(data); }
+function set(refObj, data) { return refObj.set(data); }
+function runTransaction(refObj, updateFn) { return refObj.transaction(updateFn); }
+
+
 
 // ── SESSION ID (one per browser — prevents duplicate votes) ────────────
 function getSessionId() {
@@ -892,7 +909,7 @@ function showToast(msg){
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────
-window.showPanel = function(name, navEl) {
+function showPanel(name, navEl) {
   document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
   document.querySelectorAll(".ni").forEach(function(n){ n.classList.remove("active"); });
   var p = el("panel-"+name);
@@ -908,10 +925,16 @@ window.showPanel = function(name, navEl) {
 // ── REGISTER PRESENCE ──────────────────────────────────────────────────
 function registerPresence(){
   var presRef = ref(db, "presence/"+SESSION_ID);
-  set(presRef, {t: Date.now()});
+  // Write presence immediately on join
+  set(presRef, {t: Date.now(), joined: Date.now()});
+  // Refresh every 2 minutes so count stays accurate during long sessions
+  setInterval(function(){
+    set(presRef, {t: Date.now(), joined: Date.now()});
+  }, 120000);
+  // Listen for all presence records and count active (joined in last 4 hours)
   onValue(ref(db,"presence"), function(snap){
     var data = snap.val() || {};
-    var cutoff = Date.now() - 3600000; // active in last hour
+    var cutoff = Date.now() - (4 * 3600000);
     var count = Object.values(data).filter(function(v){ return v.t > cutoff; }).length;
     liveParticipants = count;
     var pEl = el("s-participants"); if(pEl) pEl.textContent = count;
@@ -923,7 +946,6 @@ function registerPresence(){
 // deliverables array now represents In-reach toolkit deliverables from slides
 var deliverables = [
   {id:"d1", text:"Current state analysis report"},
-  {id:"d2", text:"In-reach rehabilitation model of care"},
   {id:"d3", text:"Pre-implementation reflection tool"},
   {id:"d4", text:"Implementation process guide"},
   {id:"d5", text:"Business case resources"},
@@ -948,14 +970,14 @@ function listenVotes(){
   });
 }
 
-window.castVote = function(did, rating){
+function castVote(did, rating){
   if(myVotes[did]){
     showToast("You have already rated this item.");
     return;
   }
   var vRef = ref(db,"votes/"+did);
   runTransaction(vRef, function(current){
-    current = current || {relevant:0, not_relevant:0, voters:{}};
+    current = current || {relevant:0, not_relevant:0, not_sure:0, voters:{}};
     if(current.voters && current.voters[SESSION_ID]) return;
     if(rating==="relevant") current.relevant = (current.relevant||0)+1;
     else current.not_relevant = (current.not_relevant||0)+1;
@@ -980,8 +1002,8 @@ function renderVote(){
     html += '<div class="del-card" style="flex-direction:column;align-items:flex-start;gap:8px">';
     html += '<div style="font-size:14px;font-weight:500;color:var(--ink)">'+esc(d.text)+'</div>';
     html += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">';
-    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+'" onclick="castVote(''+d.id+'','relevant')"'+(myRating?" disabled":"")+'>✓ Relevant <span style="margin-left:4px;font-weight:700">'+rel+'</span></button>';
-    html += '<button class="vbtn'+(myRating==="not_relevant"?" voted-no":"")+'" onclick="castVote(''+d.id+'','not_relevant')"'+(myRating?" disabled":"")+' style="'+(myRating==="not_relevant"?"background:#FEF0EF;color:#C8352A;border-color:#C8352A":"")+'">✗ Not relevant <span style="margin-left:4px;font-weight:700">'+notrel+'</span></button>';
+    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+(myRating?" disabled":"")+' data-action="castVote" data-id="'+d.id+'" data-rating="relevant">✓ Relevant <strong>'+rel+'</strong></button>';
+    html += '<button class="vbtn"'+(myRating==="not_relevant"?' style="background:#FEF0EF;color:#C8352A;border-color:#C8352A"':"")+''+(myRating?" disabled":"")+' data-action="castVote" data-id="'+d.id+'" data-rating="not_relevant">✗ Not relevant <strong>'+notrel+'</strong></button>';
     if(myRating) html += '<span style="font-size:11px;color:var(--qg)">✓ Rated</span>';
     html += '</div></div>';
   });
@@ -1004,7 +1026,7 @@ function listenDelOther(){
     }
   });
 }
-window.submitDelOther = function(){
+function submitDelOther(){
   var inp = el("del-other-text");
   if(!inp) return;
   var text = inp.value.trim();
@@ -1015,11 +1037,11 @@ window.submitDelOther = function(){
 };
 
 // ── DELIVERABLE RATINGS PER SETTING ───────────────────────────────────
-window.rateDeliverable = function(sid, did, rating){
+function rateDeliverable(sid, did, rating){
   var key = sid+"_del_"+did;
   var rRef = ref(db,"sections/"+key);
   runTransaction(rRef, function(current){
-    current = current || {relevant:0, not_relevant:0, voters:{}};
+    current = current || {relevant:0, not_relevant:0, not_sure:0, voters:{}};
     if(current.voters && current.voters[SESSION_ID]) return;
     if(rating==="relevant") current.relevant = (current.relevant||0)+1;
     else current.not_relevant = (current.not_relevant||0)+1;
@@ -1030,7 +1052,7 @@ window.rateDeliverable = function(sid, did, rating){
     .catch(function(){ showToast("Error — please try again."); });
 };
 
-window.submitDelOtherSetting = function(sid){
+function submitDelOtherSetting(sid){
   var inp = el("delother-"+sid);
   if(!inp) return;
   var text = inp.value.trim();
@@ -1052,7 +1074,7 @@ function listenSections(){
       (settingSectionsData[s.id]||[]).forEach(function(_, i){
         var k = sectionKey(s.id, i);
         var v = liveSections[k];
-        if(v && v.voters && v.voters[SESSION_ID]) mySectionVotes[k] = true;
+        if(v && v.voters && v.voters[SESSION_ID]) mySectionVotes[k] = v.voters[SESSION_ID];
       });
     });
     updateSettingBadges();
@@ -1065,25 +1087,25 @@ function listenSections(){
   });
 }
 
-window.voteSection = function(sid, idx){
+function voteSection(sid, idx, rating){
   var k = sectionKey(sid, idx);
   if(mySectionVotes[k]){
-    showToast("Already voted for this section.");
+    showToast("You have already rated this section.");
     return;
   }
   var sRef = ref(db,"sections/"+k);
   runTransaction(sRef, function(current){
-    current = current || {count:0, voters:{}, notes:{}};
+    current = current || {relevant:0, not_relevant:0, not_sure:0, voters:{}, notes:{}};
     if(current.voters && current.voters[SESSION_ID]) return;
-    current.count = (current.count||0)+1;
+    current[rating] = (current[rating]||0)+1;
     current.voters = current.voters||{};
-    current.voters[SESSION_ID] = true;
+    current.voters[SESSION_ID] = rating;
     return current;
-  }).then(function(){ showToast("Section vote saved!"); })
+  }).then(function(){ showToast("Rating saved!"); })
     .catch(function(){ showToast("Error — please try again."); });
 };
 
-window.submitSectionNote = function(sid, idx){
+function submitSectionNote(sid, idx){
   var inp = el("noteinp-"+sid+"-"+idx);
   if(!inp) return;
   var text = inp.value.trim();
@@ -1104,13 +1126,13 @@ function updateSettingBadges(){
     var included = 0;
     secs.forEach(function(_, i){
       var v = liveSections[sectionKey(s.id,i)];
-      if(v && v.count > 0) included++;
+      if(v && (v.relevant>0 || v.not_relevant>0 || v.not_sure>0)) included++;
     });
     var total = secs.length;
     var badge = el("badge-inc-"+s.id);
     if(badge) badge.textContent = included+"/"+total+" included";
     var resBadge = el("badge-res-"+s.id);
-    var resCount = (liveResources[s.id]||[]).length;
+    var resCount = 0; // resources section removed
     if(resBadge){
       if(resCount>0){ resBadge.textContent=resCount+" resource"+(resCount!==1?"s":""); resBadge.style.display=""; }
       else resBadge.style.display="none";
@@ -1121,7 +1143,7 @@ function updateSettingBadges(){
   careSettings.forEach(function(s){
     (settingSectionsData[s.id]||[]).forEach(function(_,i){
       var v = liveSections[sectionKey(s.id,i)];
-      if(v && v.count>0) totalVoted++;
+      if(v && (v.relevant>0 || v.not_relevant>0 || v.not_sure>0)) totalVoted++;
     });
   });
   var sb = el("sbadge"); if(sb) sb.textContent = totalVoted>0?totalVoted:"0";
@@ -1145,7 +1167,7 @@ function listenResources(){
   });
 }
 
-window.addResource = function(sid){
+function addResource(sid){
   var inp = el("res-inp-"+sid);
   if(!inp) return;
   var text = inp.value.trim();
@@ -1155,7 +1177,7 @@ window.addResource = function(sid){
     .catch(function(){ showToast("Error — please try again."); });
 };
 
-window.addPresetRes = function(sid, ri){
+function addPresetRes(sid, ri){
   var presets = presetResources[sid]||[];
   var text = presets[ri];
   if(!text) return;
@@ -1173,7 +1195,7 @@ function renderSettings(){
     var secs  = settingSectionsData[s.id]||[];
     var included = 0;
     secs.forEach(function(_,i){ var v=liveSections[sectionKey(s.id,i)]; if(v&&v.count>0) included++; });
-    var resCount = (liveResources[s.id]||[]).length;
+    var resCount = 0; // resources section removed
     html += '<div class="setting-card" id="sc-'+s.id+'">';
     html += '<div class="setting-header" onclick="toggleSetting(\''+s.id+'\')">';
     html += '<div class="setting-icon" style="background:'+s.color+'22">'+s.icon+'</div>';
@@ -1191,7 +1213,7 @@ function renderSettings(){
   if(listEl) listEl.innerHTML = html;
 }
 
-window.toggleSetting = function(sid){
+function toggleSetting(sid){
   var body = el("sb-"+sid);
   if(!body) return;
   if(body.classList.contains("open")){
@@ -1207,25 +1229,75 @@ function renderSettingBody(sid){
   var body = el("sb-"+sid);
   if(!body) return;
   var secs    = settingSectionsData[sid]||[];
-  var presets = presetResources[sid]||[];
-  var res     = liveResources[sid]||[];
-
   var html = "";
+
+
+
+  html += "<p style='font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6'>Rate each section as <strong>Relevant</strong>, <strong>Not relevant</strong> or <strong>Not sure</strong>. Add notes on what's important to cover for Queensland.</p>";
+  html += '<div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Sections</div>';
+
+  var isInreach = (sid === "cs1");  // In-reach already done by another group — grey out comments
+
+  secs.forEach(function(name, i){
+    var k     = sectionKey(sid, i);
+    var vdata = liveSections[k] || {relevant:0, not_relevant:0, not_sure:0, voters:{}, notes:{}};
+    var rel=vdata.relevant||0, notrel=vdata.not_relevant||0, notsure=vdata.not_sure||0;
+    var myRating=(vdata.voters&&vdata.voters[SESSION_ID])?vdata.voters[SESSION_ID]:null;
+    var notes = vdata.notes ? Object.values(vdata.notes) : [];
+
+    html += '<div class="sec-del">';
+    html += '<div class="sec-del-row">';
+    html += '<span class="sec-del-name">'+esc(name)+'</span>';
+    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+(myRating?" disabled":"")+' onclick="voteSection(\''+ sid +'\','+ i +',\'relevant\')">✓ Relevant <strong>'+ rel +'</strong></button>';
+    html += '<button class="vbtn"'+(myRating==="not_relevant"?' style="background:#FEF0EF;color:#C8352A;border-color:#C8352A"':"")+(myRating?" disabled":"")+' onclick="voteSection(\''+ sid +'\','+ i +',\'not_relevant\')">✗ Not relevant <strong>'+ notrel +'</strong></button>';
+    html += '<button class="vbtn"'+(myRating==="not_sure"?' style="background:#FEF6E0;color:#854F0B;border-color:#F2A900"':"")+(myRating?" disabled":"")+' onclick="voteSection(\''+ sid +'\','+ i +',\'not_sure\')"'+">"+"? Not sure <strong>"+ notsure +"</strong></button>";
+    html += '<button class="notes-btn" onclick="toggleNotes(\'notes-'+sid+'-'+i+'\')">Notes'+(notes.length>0?' ('+notes.length+')':'')+' ✎</button>';
+    html += '</div>';
+    html += '<div class="notes-area" id="notes-'+sid+'-'+i+'">';
+    if(isInreach){
+      html += '<div style="background:var(--surf);border-radius:var(--rs);padding:12px;text-align:center;color:var(--ink-l);font-size:13px">Comments not available for this setting — completed by another group.</div>';
+    } else {
+    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">What\'s important to cover in this section for Queensland?</div>';
+    if(notes.length > 0){
+      html += '<div style="margin-bottom:8px">';
+      notes.forEach(function(n){
+        html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:8px 10px;margin-bottom:5px;font-size:13px;color:var(--ink)">'+esc(n.text)+'<span style="font-size:11px;color:var(--qg);margin-left:8px">'+esc(n.time||"")+'</span></div>';
+      });
+      html += '</div>';
+    }
+    html += '<div style="display:flex;gap:8px">';
+    html += '<textarea id="noteinp-'+sid+'-'+i+'" placeholder="e.g. QLD-specific context, gaps vs NSW MOC, ATSI considerations, rural/remote..." style="flex:1;min-height:60px;resize:vertical"></textarea>';
+    html += '</div>';
+    html += '<button class="submit-btn" style="margin-top:6px;padding:7px 16px;font-size:13px" onclick="submitSectionNote(\''+sid+'\','+i+')">Add note</button>';
+    } // end else !isInreach
+    html += '</div></div>';
+  });
+
+  // Add custom section
+  html += '<div style="border:1px dashed var(--border);border-radius:var(--rs);padding:12px;margin-top:4px;margin-bottom:16px;background:var(--surf)">';
+  html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">+ Suggest another section</div>';
+  html += '<div style="display:flex;gap:8px">';
+  html += '<input type="text" id="newsec-'+sid+'" placeholder="e.g. Cultural safety protocols, Transition planning..." style="flex:1">';
+  html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addCustomSection(\''+sid+'\')">Add</button>';
+  html += '</div></div>';
+
 
   // ── Deliverables sub-section ──
   html += '<div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:18px">';
   html += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px">Deliverables</div>';
-  html += '<div style="font-size:13px;color:var(--ink-m);margin-bottom:12px">Rate each deliverable as <strong>Relevant</strong> or <strong>Not relevant</strong> for this care setting. One rating per person.</div>';
+  html += '<div style="font-size:13px;color:var(--ink-m);margin-bottom:12px">Rate each deliverable as <strong>Relevant</strong>, <strong>Not relevant</strong> or <strong>Not sure</strong> for this care setting. One rating per person.</div>';
   deliverables.forEach(function(d){
     var vKey = sid+"_del_"+d.id;
     var vdata = liveSections[vKey] || {};
     var rel    = vdata.relevant || 0;
     var notrel = vdata.not_relevant || 0;
     var myRating = (vdata.voters && vdata.voters[SESSION_ID]) ? vdata.voters[SESSION_ID] : null;
+    var notsure = vdata.not_sure || 0;
     html += '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-bottom:1px solid var(--border)">';
     html += '<span style="flex:1;font-size:13px;color:var(--ink);min-width:140px">'+esc(d.text)+'</span>';
-    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+'" onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'relevant\')"'+(myRating?" disabled":"")+'>✓ Relevant <strong style="margin-left:3px">'+rel+'</strong></button>';
-    html += '<button class="vbtn" style="'+(myRating==="not_relevant"?"background:#FEF0EF;color:#C8352A;border-color:#C8352A":"")+'" onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'not_relevant\')"'+(myRating?" disabled":"")+'>✗ Not relevant <strong style="margin-left:3px">'+notrel+'</strong></button>';
+    html += '<button class="vbtn'+(myRating==="relevant"?" voted":"")+(myRating?" disabled":"")+' onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'relevant\')">✓ Relevant <strong>'+rel+'</strong></button>';
+    html += '<button class="vbtn"'+(myRating==="not_relevant"?' style="background:#FEF0EF;color:#C8352A;border-color:#C8352A"':"")+''+(myRating?" disabled":"")+' onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'not_relevant\')">✗ Not relevant <strong>'+notrel+'</strong></button>';
+    html += '<button class="vbtn"'+(myRating==="not_sure"?' style="background:#FEF6E0;color:#854F0B;border-color:#F2A900"':"")+''+(myRating?" disabled":"")+' onclick="rateDeliverable(\''+sid+'\',\''+d.id+'\',\'not_sure\')">'+'? Not sure <strong>'+notsure+'</strong></button>';
     if(myRating) html += '<span style="font-size:11px;color:var(--qg)">✓ Rated</span>';
     html += '</div>';
   });
@@ -1240,80 +1312,14 @@ function renderSettingBody(sid){
   html += '</div></div>';
   html += '</div>'; // end deliverables subsection
 
-  html += '<p style="font-size:13px;color:var(--ink-m);margin-bottom:14px;line-height:1.6">Vote to <strong>include</strong> each section. Add notes on what\'s important to cover for Queensland. Votes and notes are shared live with all participants.</p>';
-  html += '<div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Sections</div>';
-
-  secs.forEach(function(name, i){
-    var k     = sectionKey(sid, i);
-    var vdata = liveSections[k] || {count:0, voters:{}, notes:{}};
-    var count = vdata.count || 0;
-    var voted = !!(vdata.voters && vdata.voters[SESSION_ID]);
-    var notes = vdata.notes ? Object.values(vdata.notes) : [];
-
-    html += '<div class="sec-del">';
-    html += '<div class="sec-del-row">';
-    html += '<span class="sec-del-name">'+esc(name)+'</span>';
-    html += '<span class="sec-votes">'+count+'</span>';
-    html += '<button class="inc-btn'+(voted?" inc-yes":"")+'" onclick="voteSection(\''+sid+'\','+i+')">'+(voted?"✓ Included":"Include")+'</button>';
-    html += '<button class="notes-btn" onclick="toggleNotes(\'notes-'+sid+'-'+i+'\')">Notes'+(notes.length>0?' ('+notes.length+')':'')+' ✎</button>';
-    html += '</div>';
-    html += '<div class="notes-area" id="notes-'+sid+'-'+i+'">';
-    html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">What\'s important to cover in this section for Queensland?</div>';
-    if(notes.length > 0){
-      html += '<div style="margin-bottom:8px">';
-      notes.forEach(function(n){
-        html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:8px 10px;margin-bottom:5px;font-size:13px;color:var(--ink)">'+esc(n.text)+'<span style="font-size:11px;color:var(--qg);margin-left:8px">'+esc(n.time||"")+'</span></div>';
-      });
-      html += '</div>';
-    }
-    html += '<div style="display:flex;gap:8px">';
-    html += '<textarea id="noteinp-'+sid+'-'+i+'" placeholder="e.g. QLD-specific context, gaps vs NSW MOC, ATSI considerations, rural/remote..." style="flex:1;min-height:60px;resize:vertical"></textarea>';
-    html += '</div>';
-    html += '<button class="submit-btn" style="margin-top:6px;padding:7px 16px;font-size:13px" onclick="submitSectionNote(\''+sid+'\','+i+')">Add note</button>';
-    html += '</div></div>';
-  });
-
-  // Add custom section
-  html += '<div style="border:1px dashed var(--border);border-radius:var(--rs);padding:12px;margin-top:4px;margin-bottom:16px;background:var(--surf)">';
-  html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:6px">+ Suggest another section</div>';
-  html += '<div style="display:flex;gap:8px">';
-  html += '<input type="text" id="newsec-'+sid+'" placeholder="e.g. Cultural safety protocols, Transition planning..." style="flex:1">';
-  html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addCustomSection(\''+sid+'\')">Add</button>';
-  html += '</div></div>';
-
-  // Resources
-  html += '<div style="border-top:1px solid var(--border);padding-top:16px">';
-  html += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px">Resources to include</div>';
-  if(presets.length > 0){
-    html += '<div style="background:var(--bl-b);border:1px solid #BFDBFE;border-radius:var(--rs);padding:10px 12px;margin-bottom:10px">';
-    html += '<div style="font-size:12px;font-weight:600;color:var(--bl);margin-bottom:7px">Suggested resources — click to add</div>';
-    html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
-    presets.forEach(function(r, ri){
-      var already = res.some(function(x){ return x.text===r; });
-      html += '<button onclick="addPresetRes(\''+sid+'\','+ri+')" style="font-size:12px;padding:3px 10px;border-radius:8px;border:1px solid #93C5FD;background:#fff;color:var(--bl);cursor:pointer;font-family:inherit;transition:all .15s'+(already?';opacity:.35;cursor:default':'')+'">+ '+esc(r)+'</button>';
-    });
-    html += '</div></div>';
-  }
-  if(res.length > 0){
-    res.forEach(function(r){
-      html += '<div style="background:var(--qg-l);border:1px solid #9FE1CB;border-radius:var(--rs);padding:9px 12px;margin-bottom:7px;font-size:13px;color:var(--ink)">'+esc(r.text)+'<span style="font-size:11px;color:var(--qg);margin-left:8px">'+esc(r.time||"")+'</span></div>';
-    });
-  } else {
-    html += '<p style="font-size:13px;color:var(--ink-l);margin-bottom:8px">No resources added yet.</p>';
-  }
-  html += '<div style="display:flex;gap:8px;margin-top:8px">';
-  html += '<input type="text" id="res-inp-'+sid+'" placeholder="Type a resource name, tool, guideline or link..." style="flex:1">';
-  html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;white-space:nowrap" onclick="addResource(\''+sid+'\')">Add resource</button>';
-  html += '</div></div>';
-
-  body.innerHTML = html;
+    body.innerHTML = html;
 }
 
-window.toggleNotes = function(id){
+function toggleNotes(id){
   var e = el(id); if(e) e.classList.toggle("open");
 };
 
-window.addCustomSection = function(sid){
+function addCustomSection(sid){
   var inp = el("newsec-"+sid);
   if(!inp) return;
   var name = inp.value.trim();
@@ -1388,7 +1394,7 @@ function updateLocalBadge(){
   var lb = el("labadge"); if(lb) lb.textContent = rated>0?rated:"0";
 }
 
-window.rateItem = function(dbPath, itemId, rating){
+function rateItem(dbPath, itemId, rating){
   var rRef = ref(db, dbPath+"/"+itemId);
   runTransaction(rRef, function(current){
     current = current||{relevant:0,not_relevant:0,voters:{},notes:{}};
@@ -1402,7 +1408,7 @@ window.rateItem = function(dbPath, itemId, rating){
     .catch(function(){ showToast("Error — please try again."); });
 };
 
-window.submitRatingNote = function(dbPath, itemId, btnEl){
+function submitRatingNote(dbPath, itemId, btnEl){
   var inp = el("rn-"+itemId);
   if(!inp) return;
   var text = inp.value.trim();
@@ -1423,9 +1429,9 @@ function buildRatingHtml(items, liveData, myRatings, dbPath){
     html += '<div class="sec-del-row" style="flex-wrap:wrap;gap:8px">';
     html += '<div style="flex:1;min-width:160px"><div style="font-size:14px;font-weight:500;color:var(--ink)">'+esc(item.name)+'</div>';
     html += '<div style="font-size:12px;color:var(--ink-l);margin-top:2px">'+esc(item.desc)+'</div></div>';
-    html += '<button class="vbtn'+(myR==="relevant"?" voted":"")+'" onclick="rateItem(''+dbPath+'',''+item.id+'','relevant')"'+(myR?" disabled":"")+'>✓ Relevant <span style="font-weight:700;margin-left:3px">'+rel+'</span></button>';
-    html += '<button class="vbtn" onclick="rateItem(''+dbPath+'',''+item.id+'','not_relevant')"'+(myR?" disabled":"")+' style="'+(myR==="not_relevant"?"background:#FEF0EF;color:#C8352A;border-color:#C8352A":"")+'" >✗ Not relevant <span style="font-weight:700;margin-left:3px">'+notrel+'</span></button>';
-    html += '<button class="notes-btn" onclick="toggleNotes('rnnotes-'+item.id+'')">Notes'+(notes.length>0?" ("+notes.length+")":"")+" ✎"+'</button>';
+    html += '<button class="vbtn'+(myR==="relevant"?" voted":"")+(myR?" disabled":"")+' data-action="rateItem" data-path="'+dbPath+'" data-id="'+item.id+'" data-rating="relevant">✓ Relevant <span style="font-weight:700;margin-left:3px">'+rel+'</span></button>';
+    html += '<button class="vbtn"'+(myR==="not_relevant"?' style="background:#FEF0EF;color:#C8352A;border-color:#C8352A"':"")+''+(myR?" disabled":"")+' data-action="rateItem" data-path="'+dbPath+'" data-id="'+item.id+'" data-rating="not_relevant">✗ Not relevant <span style="font-weight:700;margin-left:3px">'+notrel+'</span></button>';
+    html += '<button class="notes-btn" data-action="toggleNotes" data-target="rnnotes-'+item.id+'">Notes'+(notes.length>0?' ('+notes.length+')':'')+' ✎</button>';
     html += '</div>';
     html += '<div class="notes-area" id="rnnotes-'+item.id+'">';
     if(notes.length>0){
@@ -1433,10 +1439,68 @@ function buildRatingHtml(items, liveData, myRatings, dbPath){
     }
     html += '<div style="font-size:12px;font-weight:600;color:var(--ink-m);margin-bottom:4px">Other considerations</div>';
     html += '<div style="display:flex;gap:8px"><textarea id="rn-'+item.id+'" placeholder="Add any other considerations..." style="flex:1;min-height:55px;resize:vertical"></textarea>';
-    html += '<button class="submit-btn" style="padding:7px 14px;font-size:12px;align-self:flex-end;white-space:nowrap" onclick="submitRatingNote(''+dbPath+'',''+item.id+'')">Add</button></div>';
+    html += '<button class="submit-btn" style="padding:7px 14px;font-size:12px;align-self:flex-end;white-space:nowrap" data-action="submitRatingNote" data-path="'+dbPath+'" data-id="'+item.id+'">Add</button></div>';
     html += '</div></div>';
   });
+  // ── Open text: add your own item ──
+  var customKey = dbPath+"_custom";
+  var customItems = liveCustomItems[customKey] || [];
+  html += '<div style="border-top:1px solid var(--border);margin-top:16px;padding-top:16px">';
+  html += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px">Add your own item</div>';
+  html += '<div style="font-size:13px;color:var(--ink-m);margin-bottom:10px">Suggest any additional requirements or considerations not listed above.</div>';
+  if(customItems.length > 0){
+    customItems.forEach(function(item){
+      html += '<div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px">';
+      html += '<div style="font-size:14px;font-weight:500;color:var(--ink)">'+esc(item.name)+'</div>';
+      if(item.note) html += '<div style="font-size:12px;color:var(--ink-m);margin-top:3px">'+esc(item.note)+'</div>';
+      html += '<div style="font-size:11px;color:var(--ink-l);margin-top:3px">'+esc(item.time||"")+'</div>';
+      html += '</div>';
+    });
+  }
+  html += '<div style="display:flex;gap:8px;margin-bottom:6px">';
+  html += '<input type="text" id="custom-name-'+dbPath+'" placeholder="Item name e.g. Consumer co-design process..." style="flex:1">';
+  html += '</div>';
+  html += '<div style="display:flex;gap:8px">';
+  html += '<textarea id="custom-note-'+dbPath+'" placeholder="Any additional detail or context (optional)..." style="flex:1;min-height:55px;resize:vertical"></textarea>';
+  html += '<button class="submit-btn" style="padding:8px 16px;font-size:13px;align-self:flex-end;white-space:nowrap" data-action="submitCustomItem" data-path="'+dbPath+'">Add item</button>';
+  html += '</div>';
+  html += '</div>';
+
   return html;
+}
+
+// Custom item state
+var liveCustomItems = {};
+
+function listenCustomItems(){
+  ["orgRatings","localRatings"].forEach(function(dbPath){
+    var key = dbPath+"_custom";
+    var fbRef = ref(db, "customItems/"+key);
+    onValue(fbRef, function(snap){
+      var data = snap.val()||{};
+      liveCustomItems[key] = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+      // Re-render the relevant list
+      if(dbPath==="orgRatings") renderOrgList();
+      if(dbPath==="localRatings") renderLocalList();
+    });
+  });
+}
+
+function submitCustomItem(dbPath){
+  var nameEl = el("custom-name-"+dbPath);
+  var noteEl = el("custom-note-"+dbPath);
+  if(!nameEl) return;
+  var name = nameEl.value.trim();
+  if(!name){ showToast("Please enter an item name first."); return; }
+  var note = noteEl ? noteEl.value.trim() : "";
+  var key = dbPath+"_custom";
+  push(ref(db,"customItems/"+key), {name:name, note:note, time:now(), ts:Date.now(), session:SESSION_ID})
+    .then(function(){ 
+      nameEl.value=""; 
+      if(noteEl) noteEl.value="";
+      showToast("Item added!"); 
+    })
+    .catch(function(){ showToast("Error — please try again."); });
 }
 
 function renderOrgList(){
@@ -1446,6 +1510,116 @@ function renderOrgList(){
 function renderLocalList(){
   var listEl = el("local-list"); if(!listEl) return;
   listEl.innerHTML = buildRatingHtml(localItems, liveLocalRatings, myLocalRatings, "localRatings");
+}
+
+// ── SCOPE CONFIRMATION VOTE ────────────────────────────────────────────
+var liveScopeVotes = {yes:0, no:0};
+var liveScopeChanges = [];   // [{session, item, reason, time}]
+var myScopeVote = null;
+
+function listenScopeVotes(){
+  onValue(ref(db,"scopeVote"), function(snap){
+    var data = snap.val()||{};
+    liveScopeVotes = {yes:0, no:0};
+    Object.values(data).forEach(function(v){
+      if(v.vote==="yes") liveScopeVotes.yes++;
+      else if(v.vote==="no") liveScopeVotes.no++;
+      if(v.session===SESSION_ID) myScopeVote = v.vote;
+    });
+    renderScopeVote();
+    updateScopeProgress();
+    renderAdmin();
+  });
+  onValue(ref(db,"scopeChanges"), function(snap){
+    var data = snap.val()||{};
+    liveScopeChanges = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+    renderScopeVote();
+    renderAdmin();
+  });
+}
+
+function castScopeVote(vote){
+  if(myScopeVote){ showToast("You have already voted on scope."); return; }
+  push(ref(db,"scopeVote"),{vote:vote, session:SESSION_ID, time:now(), ts:Date.now()})
+    .then(function(){
+      showToast("Vote recorded!");
+      // If No — show branching follow-up
+      if(vote==="no"){
+        var s1=el("scope-step1"); if(s1) s1.style.display="none";
+        var s2=el("scope-step2"); if(s2) s2.style.display="block";
+      } else {
+        var s1=el("scope-step1"); if(s1) s1.style.display="none";
+        var s3=el("scope-step3"); if(s3){ s3.style.display="block"; }
+        var msg=el("scope-confirmed-msg"); if(msg) msg.textContent="✓ You confirmed the scope. Thank you!";
+      }
+    })
+    .catch(function(){ showToast("Error — please try again."); });
+}
+
+function submitScopeChange(){
+  var itemEl   = el("scope-change-item");
+  var reasonEl = el("scope-change-reason");
+  var item   = itemEl   ? itemEl.value.trim()   : "";
+  var reason = reasonEl ? reasonEl.value.trim() : "";
+  if(!item)  { showToast("Please select which item needs to change."); return; }
+  if(!reason){ showToast("Please describe the change needed."); return; }
+  push(ref(db,"scopeChanges"),{item:item, reason:reason, session:SESSION_ID, time:now(), ts:Date.now()})
+    .then(function(){
+      var s2=el("scope-step2"); if(s2) s2.style.display="none";
+      var s3=el("scope-step3"); if(s3) s3.style.display="block";
+      var msg=el("scope-confirmed-msg"); if(msg) msg.textContent="✓ Your feedback has been recorded. Thank you — this will be reviewed.";
+      showToast("Feedback submitted!");
+    })
+    .catch(function(){ showToast("Error — please try again."); });
+}
+
+function renderScopeVote(){
+  var total  = liveScopeVotes.yes + liveScopeVotes.no;
+  var yesPct = total>0 ? Math.round((liveScopeVotes.yes/total)*100) : 0;
+  var tallyEl = el("scope-tally");
+
+  // Restore UI state for returning visitors who already voted
+  if(myScopeVote){
+    var s1=el("scope-step1"); if(s1) s1.style.display="none";
+    var s3=el("scope-step3"); if(s3) s3.style.display="block";
+    var msg=el("scope-confirmed-msg");
+    if(msg && !msg.textContent) msg.textContent = myScopeVote==="yes"
+      ? "✓ You confirmed the scope."
+      : "✓ Your feedback (needs changes) was recorded.";
+  }
+
+  if(tallyEl){
+    if(total===0){
+      tallyEl.innerHTML = '<span style="color:var(--ink-l)">No votes yet.</span>';
+    } else {
+      tallyEl.innerHTML =
+        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:'+(liveScopeChanges.length?'10':'0')+'px">'
+        +'<span style="font-size:13px;font-weight:600;color:var(--qg)">'+liveScopeVotes.yes+' confirm</span>'
+        +'<span style="font-size:13px;font-weight:600;color:var(--hi)">'+liveScopeVotes.no+' changes needed</span>'
+        +'<span style="font-size:12px;color:var(--ink-l)">'+total+' vote'+(total!==1?'s':'')+' · '+yesPct+'% confirm</span>'
+        +(yesPct>=50?'<span style="background:var(--qg-l);color:var(--qg);font-size:12px;padding:2px 9px;border-radius:6px;font-weight:600">Majority confirmed ✓</span>':'')
+        +'</div>'
+        // Show change requests inline
+        +(liveScopeChanges.length>0
+          ? '<div style="font-size:12px;font-weight:600;color:var(--hi);margin-bottom:5px">Change requests ('+liveScopeChanges.length+'):</div>'
+            + liveScopeChanges.map(function(c){
+                return '<div style="background:var(--hi-b);border-left:3px solid var(--hi);padding:7px 10px;border-radius:0 var(--rs) var(--rs) 0;margin-bottom:5px">'
+                  +'<div style="font-size:13px;font-weight:500;color:var(--ink)">'+esc(c.item)+'</div>'
+                  +'<div style="font-size:12px;color:var(--ink-m);margin-top:2px">'+esc(c.reason)+'</div>'
+                  +'<div style="font-size:11px;color:var(--ink-l);margin-top:2px">'+esc(c.time||"")+'</div>'
+                  +'</div>';
+              }).join("")
+          : "");
+    }
+  }
+}
+
+function updateScopeProgress(){
+  var total = liveScopeVotes.yes + liveScopeVotes.no;
+  var progress = total===0 ? 80 : Math.min(100, 80 + Math.round((liveScopeVotes.yes/Math.max(total,1))*20));
+  var bar=el("scope-bar"); var pct=el("scope-pct");
+  if(bar) bar.style.width=progress+"%";
+  if(pct) pct.textContent=progress+"%";
 }
 
 // ── IDEAS ──────────────────────────────────────────────────────────────
@@ -1463,7 +1637,7 @@ function listenIdeas(){
   });
 }
 
-window.submitIdea = function(){
+function submitIdea(){
   var text = el("i-text").value.trim();
   if(!text){ showToast("Please enter your idea first."); return; }
   var cat = el("i-cat").value;
@@ -1472,7 +1646,7 @@ window.submitIdea = function(){
     .catch(function(){ showToast("Error — please try again."); });
 };
 
-window.submitIdea2 = function(cat, placeholder){
+function submitIdea2(cat, placeholder){
   showPanel("ideas", document.querySelector(".ni[onclick*=\"'ideas'\"]"));
   el("i-cat").value = cat;
   el("i-text").placeholder = placeholder;
@@ -1512,12 +1686,12 @@ function renderTimeline(){
   renderGantt();
 }
 
-window.deleteTask = function(idx){
+function deleteTask(idx){
   tasks.splice(idx,1);
   renderTimeline();
 };
 
-window.addTask = function(){
+function addTask(){
   var task = el("tl-task").value.trim(); if(!task) return;
   var start = el("tl-start").value;
   var due = el("tl-due").value;
@@ -1547,70 +1721,122 @@ function renderGantt(){
   ganttEl.innerHTML = html;
 }
 
-window.togglePhase = function(id){
+function togglePhase(id){
   var b = el(id); if(b) b.classList.toggle("open");
 };
 
 // ── ADMIN ──────────────────────────────────────────────────────────────
-function renderAdmin(){
-  // Deliverable votes
-  // Deliverables ratings — aggregated across all settings
-  var vhtml = "";
-  deliverables.forEach(function(d){
-    var totalRel=0, totalNotRel=0;
-    careSettings.forEach(function(s){
-      var v = liveSections[s.id+"_del_"+d.id]||{};
-      totalRel += (v.relevant||0);
-      totalNotRel += (v.not_relevant||0);
-    });
-    var total = totalRel+totalNotRel;
-    var pct = total>0?Math.round((totalRel/total)*100):0;
-    vhtml += '<div style="margin-bottom:10px"><div style="font-size:13px;color:var(--ink);margin-bottom:3px">'+esc(d.text)+'</div>';
-    vhtml += '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">';
-    vhtml += '<span style="font-size:12px;background:var(--qg-l);color:var(--qg);padding:1px 7px;border-radius:6px;font-weight:600">'+totalRel+' relevant</span>';
-    vhtml += '<span style="font-size:12px;background:var(--hi-b);color:var(--hi);padding:1px 7px;border-radius:6px;font-weight:600">'+totalNotRel+' not relevant</span>';
-    if(total>0) vhtml += '<span style="font-size:11px;color:var(--ink-l)">'+pct+'% relevant</span>';
-    vhtml += '</div></div>';
-  });
-  var avEl = el("admin-votes"); if(avEl) avEl.innerHTML = vhtml;
+function ratingBadges(rel, notrel, notsure){
+  return '<span style="font-size:12px;background:#e8f5ee;color:#0F6E56;padding:1px 7px;border-radius:6px;font-weight:600;margin-right:4px">'+rel+' relevant</span>'
+       + '<span style="font-size:12px;background:#FEF0EF;color:#C8352A;padding:1px 7px;border-radius:6px;font-weight:600;margin-right:4px">'+notrel+' not relevant</span>'
+       + '<span style="font-size:12px;background:#FEF6E0;color:#854F0B;padding:1px 7px;border-radius:6px;font-weight:600">'+notsure+' not sure</span>';
+}
 
-  // Org requirements summary
+function renderAdmin(){
+  // ── 1. Care Settings ──
+  var shtml = "";
+  careSettings.forEach(function(s){
+    var secs = settingSectionsData[s.id]||[];
+    shtml += '<div style="margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:14px">';
+    shtml += '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px">'+s.icon+' '+esc(s.name)+'</div>';
+    shtml += '<div style="font-size:11px;font-weight:600;color:var(--ink-m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Sections</div>';
+    secs.forEach(function(name,i){
+      var v = liveSections[sectionKey(s.id,i)]||{};
+      var rel=v.relevant||0,notrel=v.not_relevant||0,notsure=v.not_sure||0;
+      var notes = v.notes ? Object.values(v.notes) : [];
+      shtml += '<div style="padding:5px 0;border-bottom:1px solid var(--border)">';
+      shtml += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
+      shtml += '<span style="flex:1;font-size:13px;color:var(--ink)">'+esc(name)+'</span>';
+      shtml += ratingBadges(rel,notrel,notsure);
+      shtml += '</div>';
+      if(notes.length>0) notes.forEach(function(n){
+        shtml += '<div style="font-size:12px;background:#e8f5ee;border-left:3px solid #00843D;padding:3px 7px;margin-top:3px;border-radius:0 3px 3px 0">'+esc(n.text)+'<span style="font-size:11px;color:#888;margin-left:5px">'+esc(n.time||"")+'</span></div>';
+      });
+      shtml += '</div>';
+    });
+    shtml += '<div style="font-size:11px;font-weight:600;color:var(--ink-m);margin-top:8px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Deliverables</div>';
+    deliverables.forEach(function(d){
+      var v = liveSections[s.id+"_del_"+d.id]||{};
+      shtml += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 0;border-bottom:1px solid var(--border)">';
+      shtml += '<span style="flex:1;font-size:13px;color:var(--ink)">'+esc(d.text)+'</span>';
+      shtml += ratingBadges(v.relevant||0,v.not_relevant||0,v.not_sure||0);
+      shtml += '</div>';
+    });
+    var otherIdeas = liveResources[s.id+"_delother"]||[];
+    if(otherIdeas.length>0){
+      shtml += '<div style="font-size:11px;font-weight:600;color:var(--ink-m);margin-top:6px">Other ideas:</div>';
+      otherIdeas.forEach(function(r){ shtml += '<div style="font-size:12px;background:#e8f5ee;border-left:3px solid #00843D;padding:3px 7px;margin-top:2px;border-radius:0 3px 3px 0">'+esc(r.text)+'</div>'; });
+    }
+    shtml += '</div>';
+  });
+  var asEl = el("admin-settings-summary"); if(asEl) asEl.innerHTML = shtml||'<div class="empty">No votes yet.</div>';
+
+  // ── 2. Org Requirements ──
   var ohtml = "";
   orgItems.forEach(function(item){
-    var v = liveOrgRatings[item.id]||{relevant:0,not_relevant:0};
-    ohtml += '<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)">';
-    ohtml += '<div style="flex:1;font-size:13px;color:var(--ink)">'+esc(item.name)+'</div>';
-    ohtml += '<span style="font-size:12px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:6px;font-weight:600">'+( v.relevant||0)+' relevant</span>';
-    ohtml += '<span style="font-size:12px;background:var(--hi-b);color:var(--hi);padding:2px 8px;border-radius:6px;font-weight:600">'+(v.not_relevant||0)+' not relevant</span>';
+    var v = liveOrgRatings[item.id]||{};
+    var notes = v.notes ? Object.values(v.notes) : [];
+    ohtml += '<div style="padding:7px 0;border-bottom:1px solid var(--border)">';
+    ohtml += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:'+(notes.length?5:0)+'px">';
+    ohtml += '<span style="flex:1;font-size:13px;font-weight:500;color:var(--ink)">'+esc(item.name)+'</span>';
+    ohtml += ratingBadges(v.relevant||0,v.not_relevant||0,v.not_sure||0);
+    ohtml += '</div>';
+    notes.forEach(function(n){ ohtml += '<div style="font-size:12px;background:#e8f5ee;border-left:3px solid #00843D;padding:3px 7px;margin-bottom:2px;border-radius:0 3px 3px 0">'+esc(n.text)+'</div>'; });
     ohtml += '</div>';
   });
-  var oEl = el("admin-org"); if(oEl) oEl.innerHTML = ohtml;
+  var orgCustom = liveCustomItems["orgRatings_custom"]||[];
+  if(orgCustom.length>0){
+    ohtml += '<div style="font-size:11px;font-weight:600;color:var(--ink-m);margin-top:8px">Participant-added:</div>';
+    orgCustom.forEach(function(item){ ohtml += '<div style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)">'+esc(item.name)+(item.note?'<div style="font-size:12px;color:var(--ink-m)">'+esc(item.note)+'</div>':'')+'</div>'; });
+  }
+  var oEl = el("admin-org"); if(oEl) oEl.innerHTML = ohtml||'<div class="empty">No ratings yet.</div>';
 
-  // Local adaptation summary
+  // ── 3. Local Adaptation ──
   var lahtml = "";
   localItems.forEach(function(item){
-    var v = liveLocalRatings[item.id]||{relevant:0,not_relevant:0};
-    lahtml += '<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)">';
-    lahtml += '<div style="flex:1;font-size:13px;color:var(--ink)">'+esc(item.name)+'</div>';
-    lahtml += '<span style="font-size:12px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:6px;font-weight:600">'+(v.relevant||0)+' relevant</span>';
-    lahtml += '<span style="font-size:12px;background:var(--hi-b);color:var(--hi);padding:2px 8px;border-radius:6px;font-weight:600">'+(v.not_relevant||0)+' not relevant</span>';
+    var v = liveLocalRatings[item.id]||{};
+    var notes = v.notes ? Object.values(v.notes) : [];
+    lahtml += '<div style="padding:7px 0;border-bottom:1px solid var(--border)">';
+    lahtml += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:'+(notes.length?5:0)+'px">';
+    lahtml += '<span style="flex:1;font-size:13px;font-weight:500;color:var(--ink)">'+esc(item.name)+'</span>';
+    lahtml += ratingBadges(v.relevant||0,v.not_relevant||0,v.not_sure||0);
+    lahtml += '</div>';
+    notes.forEach(function(n){ lahtml += '<div style="font-size:12px;background:#e8f5ee;border-left:3px solid #00843D;padding:3px 7px;margin-bottom:2px;border-radius:0 3px 3px 0">'+esc(n.text)+'</div>'; });
     lahtml += '</div>';
   });
-  var laEl = el("admin-la"); if(laEl) laEl.innerHTML = lahtml;
+  var localCustom = liveCustomItems["localRatings_custom"]||[];
+  if(localCustom.length>0){
+    lahtml += '<div style="font-size:11px;font-weight:600;color:var(--ink-m);margin-top:8px">Participant-added:</div>';
+    localCustom.forEach(function(item){ lahtml += '<div style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)">'+esc(item.name)+(item.note?'<div style="font-size:12px;color:var(--ink-m)">'+esc(item.note)+'</div>':'')+'</div>'; });
+  }
+  var laEl = el("admin-la"); if(laEl) laEl.innerHTML = lahtml||'<div class="empty">No ratings yet.</div>';
 
-  // Settings summary
-  var shtml = careSettings.map(function(s){
-    var secs = settingSectionsData[s.id]||[];
-    var included = [];
-    secs.forEach(function(name,i){
-      var v = liveSections[sectionKey(s.id,i)];
-      if(v && v.count>0) included.push(name+" ("+v.count+")");
-    });
-    return '<div style="margin-bottom:10px"><div style="font-size:13px;font-weight:500;color:var(--ink)">'+s.icon+' '+esc(s.name)+' <span style="color:var(--qg)">('+included.length+' section'+(included.length!==1?"s":"")+')</span></div>'+(included.length>0?'<div style="font-size:12px;color:var(--ink-m);margin-top:2px">'+included.map(esc).join(" · ")+'</div>':'')+'</div>';
-  }).join("");
-  var asEl = el("admin-settings-summary"); if(asEl) asEl.innerHTML = shtml;
+  // ── Scope vote ──
+  var svEl = el("admin-scope-vote");
+  if(svEl){
+    var stotal = liveScopeVotes.yes + liveScopeVotes.no;
+    var spct = stotal>0?Math.round((liveScopeVotes.yes/stotal)*100):0;
+    var svhtml = stotal===0 ? '<div class="empty">No votes yet.</div>'
+      : '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:'+(liveScopeChanges.length?'12':'0')+'px">'
+        +'<span style="font-size:18px;font-weight:600;color:var(--qg)">'+liveScopeVotes.yes+' confirm</span>'
+        +'<span style="font-size:18px;font-weight:600;color:var(--hi)">'+liveScopeVotes.no+' changes needed</span>'
+        +'<span style="font-size:13px;color:var(--ink-l)">'+stotal+' total · '+spct+'% confirm</span>'
+        +(spct>=50?'<span style="background:var(--qg-l);color:var(--qg);padding:3px 10px;border-radius:6px;font-weight:600">Majority confirmed ✓</span>':'')
+        +'</div>';
+    if(liveScopeChanges.length>0){
+      svhtml += '<div style="font-size:13px;font-weight:600;color:var(--hi);margin-bottom:8px">Change requests ('+liveScopeChanges.length+')</div>';
+      liveScopeChanges.forEach(function(c){
+        svhtml += '<div style="background:var(--hi-b);border-left:3px solid var(--hi);padding:8px 12px;border-radius:0 var(--rs) var(--rs) 0;margin-bottom:7px">';
+        svhtml += '<div style="font-size:13px;font-weight:600;color:var(--ink)">'+esc(c.item)+'</div>';
+        svhtml += '<div style="font-size:13px;color:var(--ink-m);margin-top:3px">'+esc(c.reason)+'</div>';
+        svhtml += '<div style="font-size:11px;color:var(--ink-l);margin-top:3px">'+esc(c.time||"")+'</div>';
+        svhtml += '</div>';
+      });
+    }
+    svEl.innerHTML = svhtml;
+  }
 
-  // Ideas
+  // ── 4. Ideas & Gaps ──
   var ihtml = liveIdeas.map(function(i){
     return '<div class="idea-item"><div class="idea-cat">'+esc(i.cat)+'</div><div class="idea-txt">'+esc(i.text)+'</div><div class="idea-meta">'+esc(i.time||"")+'</div></div>';
   }).join("");
@@ -1618,100 +1844,153 @@ function renderAdmin(){
 }
 
 // ── PDF EXPORT ─────────────────────────────────────────────────────────
-window.exportPDF = function(){
+function exportPDF(){
   var w = window.open("","_blank");
-  var sortedVotes = deliverables.slice().sort(function(a,b){ // kept for PDF structure
-    return ((liveVotes[b.id]||{}).count||0)-((liveVotes[a.id]||{}).count||0);
-  });
 
-  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QLD Rehab MOC — Session Export</title>';
-  html += '<style>body{font-family:Arial,sans-serif;font-size:13px;color:#1A1A2E;padding:32px;max-width:800px;margin:0 auto}';
-  html += 'h1{font-size:22px;color:#00843D;margin-bottom:4px}h2{font-size:16px;color:#00843D;margin:24px 0 8px;border-bottom:2px solid #00843D;padding-bottom:4px}';
-  html += 'h3{font-size:14px;color:#1A1A2E;margin:14px 0 4px}.meta{font-size:12px;color:#888;margin-bottom:24px}';
-  html += 'table{width:100%;border-collapse:collapse;margin-bottom:16px}td,th{border:1px solid #ddd;padding:7px 10px;text-align:left;font-size:12px}th{background:#f0f7f4;font-weight:600}';
-  html += '.vote-bar{height:10px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:3px}.vote-fill{height:100%;background:#00843D;border-radius:4px}';
-  html += '.idea-box{background:#f0f7f4;border-left:3px solid #00843D;padding:8px 10px;margin-bottom:6px;border-radius:0 4px 4px 0}';
-  html += '.note-box{background:#e8f5ee;border:1px solid #9FE1CB;padding:7px 9px;margin-bottom:5px;border-radius:4px;font-size:12px}';
-  html += '.res-box{background:#fff;border:1px solid #9FE1CB;padding:6px 9px;margin-bottom:4px;border-radius:4px;font-size:12px}';
-  html += '@media print{button{display:none}}</style></head><body>';
+  var css = 'body{font-family:Arial,sans-serif;font-size:13px;color:#1A1A2E;padding:32px;max-width:850px;margin:0 auto}'
+    + 'h1{font-size:22px;color:#00843D;margin-bottom:4px}'
+    + 'h2{font-size:17px;color:#00843D;margin:28px 0 6px;border-bottom:2px solid #00843D;padding-bottom:5px}'
+    + 'h3{font-size:14px;color:#1A1A2E;margin:16px 0 5px;padding:6px 10px;background:#f0f7f4;border-left:3px solid #00843D;border-radius:0 4px 4px 0}'
+    + 'h4{font-size:13px;color:#4A4A6A;margin:12px 0 4px;text-transform:uppercase;letter-spacing:.5px;font-size:11px}'
+    + 'table{width:100%;border-collapse:collapse;margin-bottom:14px}'
+    + 'td,th{border:1px solid #ddd;padding:7px 10px;text-align:left;font-size:12px}'
+    + 'th{background:#f0f7f4;font-weight:600}'
+    + '.note{background:#e8f5ee;border-left:3px solid #00843D;padding:5px 9px;margin:3px 0;border-radius:0 4px 4px 0;font-size:12px}'
+    + '.idea{background:#f0f7f4;border-left:3px solid #00843D;padding:7px 10px;margin-bottom:5px;border-radius:0 4px 4px 0}'
+    + '.custom{background:#fffbe6;border-left:3px solid #F2A900;padding:5px 9px;margin:3px 0;border-radius:0 4px 4px 0;font-size:12px}'
+    + '.meta{font-size:12px;color:#888;margin-bottom:20px}'
+    + '@media print{button{display:none}}';
 
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QLD Rehab MOC — Session Export</title><style>'+css+'</style></head><body>';
   html += '<h1>Queensland Rehabilitation Clinical Network</h1>';
   html += '<h1 style="font-size:18px;color:#1A1A2E;margin-top:2px">Model of Care — Stakeholder Planning Session Export</h1>';
-  html += '<div class="meta">Exported: '+new Date().toLocaleString()+'&nbsp;&nbsp;|&nbsp;&nbsp;Participants: '+liveParticipants+'&nbsp;&nbsp;|&nbsp;&nbsp;Session data from Firebase</div>';
-  html += '<button onclick="window.print()" style="background:#00843D;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-bottom:24px">⬇ Print / Save as PDF</button>';
+  html += '<div class="meta">Exported: '+new Date().toLocaleString()+' &nbsp;|&nbsp; Participants: '+liveParticipants+' &nbsp;|&nbsp; Data from Firebase</div>';
+  html += '<button onclick="window.print()" style="background:#00843D;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-bottom:28px">⬇ Print / Save as PDF</button>';
 
-  // Deliverables per care setting
-  html += '<h2>Deliverables — Ratings per Care Setting</h2>';
+  function rBadge(r,nr,ns){
+    return '<span style="background:#e8f5ee;color:#0F6E56;padding:1px 7px;border-radius:5px;font-weight:600;font-size:12px;margin-right:4px">'+r+' relevant</span>'
+         + '<span style="background:#FEF0EF;color:#C8352A;padding:1px 7px;border-radius:5px;font-weight:600;font-size:12px;margin-right:4px">'+nr+' not relevant</span>'
+         + '<span style="background:#FEF6E0;color:#854F0B;padding:1px 7px;border-radius:5px;font-weight:600;font-size:12px">'+ns+' not sure</span>';
+  }
+
+  // ── SECTION 1: Care Settings ──
+  html += '<h2>1 · Care settings</h2>';
   careSettings.forEach(function(s){
     html += '<h3>'+s.icon+' '+esc(s.name)+'</h3>';
-    html += '<table><tr><th>Deliverable</th><th style="text-align:center;width:80px">Relevant</th><th style="text-align:center;width:100px">Not relevant</th></tr>';
-    deliverables.forEach(function(d){
-      var v = liveSections[s.id+"_del_"+d.id]||{relevant:0,not_relevant:0};
-      html += '<tr><td>'+esc(d.text)+'</td><td style="text-align:center;color:#00843D;font-weight:600">'+(v.relevant||0)+'</td><td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td></tr>';
-    });
-    html += '</table>';
-    // Other ideas for this setting
-    var otherRes = liveResources[s.id+"_delother"]||[];
-    if(otherRes.length>0){
-      html += '<div style="margin-bottom:8px"><strong style="font-size:12px">Other deliverable ideas:</strong><br>';
-      otherRes.forEach(function(r){ html += '<div class="idea-box">'+esc(r.text)+'</div>'; });
-      html += '</div>';
-    }
-  });
 
-  // Org requirements
-  html += '<h2>Organisational Requirements — Ratings & Notes</h2>';
-  html += '<table><tr><th>Item</th><th style="text-align:center">Relevant</th><th style="text-align:center">Not relevant</th><th>Notes / other considerations</th></tr>';
-  orgItems.forEach(function(item){
-    var v = liveOrgRatings[item.id]||{relevant:0,not_relevant:0};
-    var notes = v.notes ? Object.values(v.notes) : [];
-    var notesHtml = notes.map(function(n){ return '<div class="note-box">'+esc(n.text)+'</div>'; }).join("") || '<span style="color:#aaa">—</span>';
-    html += '<tr><td>'+esc(item.name)+'</td><td style="text-align:center;color:#00843D;font-weight:600">'+(v.relevant||0)+'</td><td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td><td>'+notesHtml+'</td></tr>';
-  });
-  html += '</table>';
-
-  // Local adaptation
-  html += '<h2>Local Adaptation — Ratings & Notes</h2>';
-  html += '<table><tr><th>Item</th><th style="text-align:center">Relevant</th><th style="text-align:center">Not relevant</th><th>Notes / other considerations</th></tr>';
-  localItems.forEach(function(item){
-    var v = liveLocalRatings[item.id]||{relevant:0,not_relevant:0};
-    var notes = v.notes ? Object.values(v.notes) : [];
-    var notesHtml = notes.map(function(n){ return '<div class="note-box">'+esc(n.text)+'</div>'; }).join("") || '<span style="color:#aaa">—</span>';
-    html += '<tr><td>'+esc(item.name)+'</td><td style="text-align:center;color:#00843D;font-weight:600">'+(v.relevant||0)+'</td><td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td><td>'+notesHtml+'</td></tr>';
-  });
-  html += '</table>';
-
-  // Care settings sections
-  html += '<h2>Care Settings — Section Votes & Notes</h2>';
-  careSettings.forEach(function(s){
+    // Sections
+    html += '<h4>Sections</h4>';
+    html += '<table><tr><th>Section</th><th style="text-align:center;width:70px">Relevant</th><th style="text-align:center;width:80px">Not relevant</th><th style="text-align:center;width:70px">Not sure</th><th>Notes</th></tr>';
     var secs = settingSectionsData[s.id]||[];
-    var anyVotes = secs.some(function(_,i){ var v=liveSections[sectionKey(s.id,i)]; return v&&v.count>0; });
-    var res = liveResources[s.id]||[];
-    html += '<h3>'+s.icon+' '+esc(s.name)+'</h3>';
-    html += '<table><tr><th>Section</th><th style="width:60px;text-align:center">Votes to include</th><th>Notes</th></tr>';
     secs.forEach(function(name,i){
-      var v = liveSections[sectionKey(s.id,i)]||{count:0};
+      var v = liveSections[sectionKey(s.id,i)]||{};
       var notes = v.notes ? Object.values(v.notes) : [];
-      var notesHtml = notes.map(function(n){ return '<div class="note-box">'+esc(n.text)+'</div>'; }).join("");
-      html += '<tr><td>'+esc(name)+'</td><td style="text-align:center;font-weight:600">'+(v.count||0)+'</td><td>'+(notesHtml||'<span style="color:#aaa">—</span>')+'</td></tr>';
+      var notesHtml = notes.map(function(n){ return '<div class="note">'+esc(n.text)+(n.time?'<span style="color:#888;margin-left:5px;font-size:11px">'+n.time+'</span>':'')+'</div>'; }).join("");
+      html += '<tr><td>'+esc(name)+'</td>'
+        +'<td style="text-align:center;color:#0F6E56;font-weight:600">'+(v.relevant||0)+'</td>'
+        +'<td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td>'
+        +'<td style="text-align:center;color:#854F0B;font-weight:600">'+(v.not_sure||0)+'</td>'
+        +'<td>'+(notesHtml||'<span style="color:#aaa">—</span>')+'</td></tr>';
     });
     html += '</table>';
-    if(res.length>0){
-      html += '<div style="margin-bottom:12px"><strong style="font-size:12px">Suggested resources:</strong><br>';
-      res.forEach(function(r){ html += '<div class="res-box">'+esc(r.text)+'</div>'; });
-      html += '</div>';
+
+    // Deliverables
+    html += '<h4>Deliverables</h4>';
+    html += '<table><tr><th>Deliverable</th><th style="text-align:center;width:70px">Relevant</th><th style="text-align:center;width:80px">Not relevant</th><th style="text-align:center;width:70px">Not sure</th></tr>';
+    deliverables.forEach(function(d){
+      var v = liveSections[s.id+"_del_"+d.id]||{};
+      html += '<tr><td>'+esc(d.text)+'</td>'
+        +'<td style="text-align:center;color:#0F6E56;font-weight:600">'+(v.relevant||0)+'</td>'
+        +'<td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td>'
+        +'<td style="text-align:center;color:#854F0B;font-weight:600">'+(v.not_sure||0)+'</td></tr>';
+    });
+    html += '</table>';
+
+  // Other deliverable ideas — always shown so PDF is complete
+    var otherRes = liveResources[s.id+"_delother"]||[];
+    html += '<h4>Other deliverable ideas</h4>';
+    if(otherRes.length>0){
+      otherRes.forEach(function(r){ html += '<div class="idea">'+esc(r.text)+(r.time?'<span style="color:#888;margin-left:6px;font-size:11px">'+r.time+'</span>':'')+'</div>'; });
+    } else {
+      html += '<p style="color:#aaa;font-size:12px;margin:4px 0 8px">No additional ideas submitted for this setting.</p>';
     }
   });
 
-  // Ideas
-  html += '<h2>Ideas & Gaps Submitted ('+liveIdeas.length+')</h2>';
-  if(liveIdeas.length > 0){
+  // ── SCOPE VOTE SUMMARY ──
+  html += '<h2>Scope confirmation vote</h2>';
+  var sv_total = liveScopeVotes.yes + liveScopeVotes.no;
+  var sv_pct = sv_total>0?Math.round((liveScopeVotes.yes/sv_total)*100):0;
+  if(sv_total===0){
+    html += '<p style="color:#aaa">No scope votes recorded.</p>';
+  } else {
+    html += '<table><tr><th>Outcome</th><th style="text-align:center;width:80px">Votes</th><th style="text-align:center;width:60px">%</th></tr>';
+    html += '<tr><td style="color:#0F6E56;font-weight:600">✓ Confirm scope</td><td style="text-align:center;font-weight:600;color:#0F6E56">'+liveScopeVotes.yes+'</td><td style="text-align:center">'+(sv_total>0?Math.round((liveScopeVotes.yes/sv_total)*100):0)+'%</td></tr>';
+    html += '<tr><td style="color:#C8352A;font-weight:600">✗ Needs changes</td><td style="text-align:center;font-weight:600;color:#C8352A">'+liveScopeVotes.no+'</td><td style="text-align:center">'+(sv_total>0?Math.round((liveScopeVotes.no/sv_total)*100):0)+'%</td></tr>';
+    html += '<tr style="background:#f0f7f4"><td><strong>Total</strong></td><td style="text-align:center;font-weight:600">'+sv_total+'</td><td style="text-align:center;font-weight:600">'+(sv_pct>=50?'<span style="color:#0F6E56">Majority confirmed ✓</span>':'<span style="color:#C8352A">Not yet confirmed</span>')+'</td></tr>';
+    html += '</table>';
+    if(liveScopeChanges.length>0){
+      html += '<h4 style="color:#C8352A;margin:14px 0 8px">Change requests ('+liveScopeChanges.length+')</h4>';
+      html += '<table><tr><th>Item to change</th><th>Reason / suggested change</th><th style="width:70px">Time</th></tr>';
+      liveScopeChanges.forEach(function(c){
+        html += '<tr><td style="font-weight:600;color:#C8352A">'+esc(c.item)+'</td><td>'+esc(c.reason)+'</td><td style="font-size:11px;color:#888">'+esc(c.time||"")+'</td></tr>';
+      });
+      html += '</table>';
+    }
+  }
+
+  // ── SECTION 2: Organisational Requirements ──
+  html += '<h2>2 · Organisational requirements</h2>';
+  html += '<table><tr><th>Item</th><th style="text-align:center;width:70px">Relevant</th><th style="text-align:center;width:80px">Not relevant</th><th style="text-align:center;width:70px">Not sure</th><th>Notes / considerations</th></tr>';
+  orgItems.forEach(function(item){
+    var v = liveOrgRatings[item.id]||{};
+    var notes = v.notes ? Object.values(v.notes) : [];
+    var notesHtml = notes.map(function(n){ return '<div class="note">'+esc(n.text)+'</div>'; }).join("") || '<span style="color:#aaa">—</span>';
+    html += '<tr><td><strong>'+esc(item.name)+'</strong><div style="font-size:11px;color:#888">'+esc(item.desc)+'</div></td>'
+      +'<td style="text-align:center;color:#0F6E56;font-weight:600">'+(v.relevant||0)+'</td>'
+      +'<td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td>'
+      +'<td style="text-align:center;color:#854F0B;font-weight:600">'+(v.not_sure||0)+'</td>'
+      +'<td>'+notesHtml+'</td></tr>';
+  });
+  html += '</table>';
+  var orgCustom = liveCustomItems["orgRatings_custom"]||[];
+  if(orgCustom.length>0){
+    html += '<h4>Participant-added items</h4>';
+    orgCustom.forEach(function(item){
+      html += '<div class="custom">'+esc(item.name)+(item.note?'<div style="color:#7A5000;margin-top:2px">'+esc(item.note)+'</div>':'')+'</div>';
+    });
+  }
+
+  // ── SECTION 3: Local Adaptation ──
+  html += '<h2>3 · Local adaptation</h2>';
+  html += '<table><tr><th>Item</th><th style="text-align:center;width:70px">Relevant</th><th style="text-align:center;width:80px">Not relevant</th><th style="text-align:center;width:70px">Not sure</th><th>Notes / considerations</th></tr>';
+  localItems.forEach(function(item){
+    var v = liveLocalRatings[item.id]||{};
+    var notes = v.notes ? Object.values(v.notes) : [];
+    var notesHtml = notes.map(function(n){ return '<div class="note">'+esc(n.text)+'</div>'; }).join("") || '<span style="color:#aaa">—</span>';
+    html += '<tr><td><strong>'+esc(item.name)+'</strong><div style="font-size:11px;color:#888">'+esc(item.desc)+'</div></td>'
+      +'<td style="text-align:center;color:#0F6E56;font-weight:600">'+(v.relevant||0)+'</td>'
+      +'<td style="text-align:center;color:#C8352A;font-weight:600">'+(v.not_relevant||0)+'</td>'
+      +'<td style="text-align:center;color:#854F0B;font-weight:600">'+(v.not_sure||0)+'</td>'
+      +'<td>'+notesHtml+'</td></tr>';
+  });
+  html += '</table>';
+  var localCustom = liveCustomItems["localRatings_custom"]||[];
+  if(localCustom.length>0){
+    html += '<h4>Participant-added items</h4>';
+    localCustom.forEach(function(item){
+      html += '<div class="custom">'+esc(item.name)+(item.note?'<div style="color:#7A5000;margin-top:2px">'+esc(item.note)+'</div>':'')+'</div>';
+    });
+  }
+
+  // ── SECTION 4: Ideas & Gaps ──
+  html += '<h2>4 · Ideas & gaps ('+liveIdeas.length+' submissions)</h2>';
+  if(liveIdeas.length>0){
     var byCat = {};
     liveIdeas.forEach(function(i){ (byCat[i.cat]=byCat[i.cat]||[]).push(i); });
     Object.keys(byCat).forEach(function(cat){
-      html += '<h3>'+esc(cat)+'</h3>';
+      html += '<h4>'+esc(cat)+'</h4>';
       byCat[cat].forEach(function(i){
-        html += '<div class="idea-box">'+esc(i.text)+'<span style="font-size:11px;color:#888;margin-left:8px">'+esc(i.time||"")+'</span></div>';
+        html += '<div class="idea">'+esc(i.text)+(i.time?'<span style="color:#888;margin-left:8px;font-size:11px">'+i.time+'</span>':'')+'</div>';
       });
     });
   } else {
@@ -1734,6 +2013,23 @@ function drawQR(){
 }
 window.drawQR = drawQR;
 
+
+// ── DELEGATED CLICK HANDLER (avoids onclick quoting issues) ───────────
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('[data-action]');
+  if(!btn) return;
+  var action = btn.dataset.action;
+  var id     = btn.dataset.id;
+  var path   = btn.dataset.path;
+  var rating = btn.dataset.rating;
+  var target = btn.dataset.target;
+  if(action==='castVote')        castVote(id, rating);
+  if(action==='rateItem')        rateItem(path, id, rating);
+  if(action==='toggleNotes')     toggleNotes(target);
+  if(action==='submitRatingNote')submitRatingNote(path, id);
+  if(action==='submitCustomItem') submitCustomItem(path);
+});
+
 // ── INIT ───────────────────────────────────────────────────────────────
 registerPresence();
 listenVotes();
@@ -1742,6 +2038,8 @@ listenResources();
 listenIdeas();
 listenOrgRatings();
 listenLocalRatings();
+listenCustomItems();
+listenScopeVotes();
 renderTimeline();
 renderOrgList();
 renderLocalList();
