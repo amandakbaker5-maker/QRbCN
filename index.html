@@ -1221,15 +1221,20 @@ function renderSettings(){
     var included = 0;
     secs.forEach(function(_,i){ var v=liveSections[sectionKey(s.id,i)]; if(v&&v.count>0) included++; });
     var resCount = 0; // resources section removed
-    html += '<div class="setting-card" id="sc-'+s.id+'">';
-    html += '<div class="setting-header" onclick="toggleSetting(\''+s.id+'\')">';
+    var isInreach = (s.id === "cs1");
+    html += '<div class="setting-card" id="sc-'+s.id+'"'+(isInreach?' style="opacity:.55;pointer-events:none"':'')+' >';
+    html += '<div class="setting-header"'+(isInreach?'':' onclick="toggleSetting(\''+s.id+'\')"')+'>';
     html += '<div class="setting-icon" style="background:'+s.color+'22">'+s.icon+'</div>';
-    html += '<div style="flex:1"><div class="setting-name">'+esc(s.name)+'</div></div>';
+    html += '<div style="flex:1"><div class="setting-name">'+esc(s.name)+'</div>'+(isInreach?'<div style="font-size:12px;color:var(--ink-l);margin-top:2px">Completed by another group — view only</div>':'')+'</div>';
     html += '<div style="display:flex;gap:8px;align-items:center;flex-shrink:0">';
-    html += '<span id="badge-inc-'+s.id+'" style="font-size:11px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:8px;font-weight:600">'+included+"/"+secs.length+' included</span>';
-    if(resCount>0) html+='<span id="badge-res-'+s.id+'" style="font-size:11px;background:var(--bl-b);color:var(--bl);padding:2px 8px;border-radius:8px;font-weight:600">'+resCount+' resource'+(resCount!==1?"s":"")+'</span>';
-    else html+='<span id="badge-res-'+s.id+'" style="display:none"></span>';
-    html += '<span style="font-size:12px;color:var(--ink-l)">▾</span>';
+    if(isInreach){
+      html += '<span style="font-size:11px;background:#f0f0f8;color:var(--ink-l);padding:2px 8px;border-radius:8px;font-weight:600">🔒 Locked</span>';
+    } else {
+      html += '<span id="badge-inc-'+s.id+'" style="font-size:11px;background:var(--qg-l);color:var(--qg);padding:2px 8px;border-radius:8px;font-weight:600">'+included+"/"+secs.length+' included</span>';
+      if(resCount>0) html+='<span id="badge-res-'+s.id+'" style="font-size:11px;background:var(--bl-b);color:var(--bl);padding:2px 8px;border-radius:8px;font-weight:600">'+resCount+' resource'+(resCount!==1?"s":"")+'</span>';
+      else html+='<span id="badge-res-'+s.id+'" style="display:none"></span>';
+      html += '<span style="font-size:12px;color:var(--ink-l)">▾</span>';
+    }
     html += '</div></div>';
     html += '<div class="setting-body" id="sb-'+s.id+'"></div>';
     html += '</div>';
