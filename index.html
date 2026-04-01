@@ -271,8 +271,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .export-btn{padding:9px 20px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
 .export-btn:hover{background:#2d2d4a}
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<!-- Static demo version — no Firebase connection -->
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -789,6 +788,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"><path d="M3 5h14M3 10h10M3 15h6"/></svg>
     <div><div style="font-weight:600;font-size:14px">Admin — Live Results</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Show on screen during the Teams call to discuss vote outcomes</div></div><button class="export-btn" onclick="exportPDF()" style="margin-left:auto">⬇ Export PDF</button>
   </div>
+  <!-- Scope confirmation — TOP -->
+  <div class="card" style="margin-bottom:18px;border:2px solid var(--qg)">
+    <div class="card-title">Scope confirmation vote</div>
+    <div class="card-sub">Live tally — confirm or request changes</div>
+    <div id="admin-scope-vote"><div class="empty">No votes yet.</div></div>
+  </div>
   <!-- 1. Care Settings -->
   <div class="card" style="margin-bottom:18px">
     <div class="card-title">1 · Care settings</div>
@@ -807,12 +812,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div class="card-sub">Relevant / Not relevant / Not sure · participant notes · updates live</div>
     <div id="admin-la"></div>
   </div>
-  <!-- Scope confirmation -->
-  <div class="card" style="margin-bottom:18px;border:1px solid #9FE1CB">
-    <div class="card-title">Scope confirmation vote</div>
-    <div class="card-sub">Live tally — confirm or request changes</div>
-    <div id="admin-scope-vote"><div class="empty">No votes yet.</div></div>
-  </div>
   <!-- 4. Ideas & Gaps -->
   <div class="card">
     <div class="card-title">4 · Ideas & gaps</div>
@@ -826,6 +825,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 </div><!-- /content -->
 </div><!-- /main -->
 <div id="toast"></div>
+<div style="position:fixed;bottom:0;left:0;right:0;background:#854F0B;color:#fff;font-size:13px;text-align:center;padding:8px;z-index:9999;font-family:'DM Sans',sans-serif">📋 Demo mode — responses are not saved or shared. Use the live version at <strong>amandakbaker5-maker.github.io/QRbCN</strong> for the real meeting.</div>
 </div><!-- /shell -->
 
 <script>
@@ -856,15 +856,7 @@ function runTransaction(refObj, updateFn) { return refObj.transaction(updateFn);
 
 
 // ── SESSION ID (one per browser — prevents duplicate votes) ────────────
-function getSessionId() {
-  var k = "qld_moc_session";
-  var id = localStorage.getItem(k);
-  if (!id) {
-    id = "u_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
-    localStorage.setItem(k, id);
-  }
-  return id;
-}
+function getSessionId() { return "demo_user"; }
 var SESSION_ID = getSessionId();
 
 // ── STATIC DATA ────────────────────────────────────────────────────────
@@ -954,22 +946,9 @@ function showPanel(name, navEl) {
 
 // ── REGISTER PRESENCE ──────────────────────────────────────────────────
 function registerPresence(){
-  var presRef = ref(db, "presence/"+SESSION_ID);
-  // Write presence immediately on join
-  set(presRef, {t: Date.now(), joined: Date.now()});
-  // Refresh every 2 minutes so count stays accurate during long sessions
-  setInterval(function(){
-    set(presRef, {t: Date.now(), joined: Date.now()});
-  }, 120000);
-  // Listen for all presence records and count active (joined in last 4 hours)
-  onValue(ref(db,"presence"), function(snap){
-    var data = snap.val() || {};
-    var cutoff = Date.now() - (4 * 3600000);
-    var count = Object.values(data).filter(function(v){ return v.t > cutoff; }).length;
-    liveParticipants = count;
-    var pEl = el("s-participants"); if(pEl) pEl.textContent = count;
-    var chip = el("pchip"); if(chip) chip.textContent = count+" participant"+(count!==1?"s":"");
-  });
+  liveParticipants = 0;
+  var pEl = el("s-participants"); if(pEl) pEl.textContent = "0";
+  var chip = el("pchip"); if(chip) chip.textContent = "0 participants";
 }
 
 // ── DELIVERABLES VOTE (Relevant / Not relevant) ────────────────────────
@@ -986,18 +965,7 @@ var deliverables = [
 ];
 
 function listenVotes(){
-  onValue(ref(db,"votes"), function(snap){
-    liveVotes = snap.val() || {};
-    myVotes = {};
-    deliverables.forEach(function(d){
-      var v = liveVotes[d.id];
-      if(v && v.voters && v.voters[SESSION_ID]) myVotes[d.id] = v.voters[SESSION_ID]; // stores "relevant" or "not_relevant"
-    });
-    renderVote();
-    renderAdmin();
-    // listen for other ideas
-    listenDelOther();
-  });
+  renderVote();
 }
 
 function castVote(did, rating){
@@ -1088,33 +1056,19 @@ function submitDelOtherSetting(sid){
   var text = inp.value.trim();
   if(!text){ showToast("Please enter an idea first."); return; }
   var key = sid+"_delother";
-  push(ref(db,"resources/"+key), {text:text, time:now(), ts:Date.now(), session:SESSION_ID})
-    .then(function(){ inp.value=""; showToast("Idea added!"); })
-    .catch(function(){ showToast("Error — please try again."); });
+  liveResources[key] = liveResources[key] || [];
+  liveResources[key].unshift({text:text, time:now(), ts:Date.now()});
+  inp.value="";
+  var body = el("sb-"+sid);
+  if(body && body.classList.contains("open")) renderSettingBody(sid);
+  showToast("Idea added!");
 };
 
 // ── CARE SETTINGS — SECTION VOTES ─────────────────────────────────────
 function sectionKey(sid, idx){ return sid+"_"+idx; }
 
 function listenSections(){
-  onValue(ref(db,"sections"), function(snap){
-    liveSections = snap.val() || {};
-    mySectionVotes = {};
-    careSettings.forEach(function(s){
-      (settingSectionsData[s.id]||[]).forEach(function(_, i){
-        var k = sectionKey(s.id, i);
-        var v = liveSections[k];
-        if(v && v.voters && v.voters[SESSION_ID]) mySectionVotes[k] = v.voters[SESSION_ID];
-      });
-    });
-    updateSettingBadges();
-    // refresh open setting body if any
-    careSettings.forEach(function(s){
-      var body = el("sb-"+s.id);
-      if(body && body.classList.contains("open")) renderSettingBody(s.id);
-    });
-    renderAdmin();
-  });
+  // no-op
 }
 
 function voteSection(sid, idx, rating){
@@ -1140,10 +1094,16 @@ function submitSectionNote(sid, idx){
   if(!inp) return;
   var text = inp.value.trim();
   if(!text){ showToast("Please enter a note first."); return; }
-  var noteRef = ref(db,"sections/"+sectionKey(sid,idx)+"/notes");
-  push(noteRef, {text:text, time:now(), session:SESSION_ID})
-    .then(function(){ inp.value=""; showToast("Note saved!"); })
-    .catch(function(){ showToast("Error saving note."); });
+  var k = sectionKey(sid,idx);
+  liveSections[k] = liveSections[k] || {relevant:0,not_relevant:0,not_sure:0,voters:{},notes:{}};
+  liveSections[k].notes = liveSections[k].notes || {};
+  var noteId = "n"+Date.now();
+  liveSections[k].notes[noteId] = {text:text, time:now(), session:SESSION_ID};
+  inp.value="";
+  var body = el("sb-"+sid);
+  if(body && body.classList.contains("open")) renderSettingBody(sid);
+  renderAdmin();
+  showToast("Note saved!");
 };
 
 function listenSectionNotes(){
@@ -1181,20 +1141,7 @@ function updateSettingBadges(){
 
 // ── CARE SETTINGS — RESOURCES ──────────────────────────────────────────
 function listenResources(){
-  onValue(ref(db,"resources"), function(snap){
-    var data = snap.val() || {};
-    liveResources = {};
-    Object.keys(data).forEach(function(sid){
-      liveResources[sid] = Object.keys(data[sid]).map(function(k){
-        return Object.assign({fbid:k}, data[sid][k]);
-      }).sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
-    });
-    updateSettingBadges();
-    careSettings.forEach(function(s){
-      var body = el("sb-"+s.id);
-      if(body && body.classList.contains("open")) renderSettingBody(s.id);
-    });
-  });
+  // no-op
 }
 
 function addResource(sid){
@@ -1348,20 +1295,11 @@ function addCustomSection(sid){
   if(!inp) return;
   var name = inp.value.trim();
   if(!name){ showToast("Please enter a section name."); return; }
-  push(ref(db,"customSections/"+sid), {name:name, time:now(), session:SESSION_ID})
-    .then(function(){ inp.value=""; showToast("Section suggestion saved!"); })
-    .catch(function(){ showToast("Error — please try again."); });
+  inp.value="";
+  showToast("Section suggestion saved! (demo mode — not persisted)");
 };
 
-// Listen for custom sections and append to settings
-onValue(ref(db,"customSections"), function(snap){
-  var data = snap.val()||{};
-  careSettings.forEach(function(s){
-    var customs = data[s.id] ? Object.values(data[s.id]) : [];
-    var body = el("sb-"+s.id);
-    if(body && body.classList.contains("open")) renderSettingBody(s.id);
-  });
-});
+// Custom sections listener removed in demo mode
 
 // ── ORGANISATIONAL REQUIREMENTS ────────────────────────────────────────
 var orgItems = [
@@ -1383,30 +1321,10 @@ var myOrgRatings   = {};
 var myLocalRatings = {};
 
 function listenOrgRatings(){
-  onValue(ref(db,"orgRatings"), function(snap){
-    liveOrgRatings = snap.val()||{};
-    myOrgRatings = {};
-    orgItems.forEach(function(item){
-      var v = liveOrgRatings[item.id];
-      if(v && v.voters && v.voters[SESSION_ID]) myOrgRatings[item.id] = v.voters[SESSION_ID];
-    });
-    renderOrgList();
-    renderAdmin();
-    updateOrgBadge();
-  });
+  renderOrgList();
 }
 function listenLocalRatings(){
-  onValue(ref(db,"localRatings"), function(snap){
-    liveLocalRatings = snap.val()||{};
-    myLocalRatings = {};
-    localItems.forEach(function(item){
-      var v = liveLocalRatings[item.id];
-      if(v && v.voters && v.voters[SESSION_ID]) myLocalRatings[item.id] = v.voters[SESSION_ID];
-    });
-    renderLocalList();
-    renderAdmin();
-    updateLocalBadge();
-  });
+  renderLocalList();
 }
 
 function updateOrgBadge(){
@@ -1419,17 +1337,15 @@ function updateLocalBadge(){
 }
 
 function rateItem(dbPath, itemId, rating){
-  var rRef = ref(db, dbPath+"/"+itemId);
-  runTransaction(rRef, function(current){
-    current = current||{relevant:0,not_relevant:0,voters:{},notes:{}};
-    if(current.voters && current.voters[SESSION_ID]) return;
-    if(rating==="relevant") current.relevant=(current.relevant||0)+1;
-    else current.not_relevant=(current.not_relevant||0)+1;
-    current.voters=current.voters||{};
-    current.voters[SESSION_ID]=rating;
-    return current;
-  }).then(function(){ showToast("Rating saved!"); })
-    .catch(function(){ showToast("Error — please try again."); });
+  var store = dbPath==="orgRatings" ? liveOrgRatings : liveLocalRatings;
+  if(store[itemId] && store[itemId].voters && store[itemId].voters[SESSION_ID]){ showToast("Already rated."); return; }
+  store[itemId] = store[itemId] || {relevant:0, not_relevant:0, not_sure:0, voters:{}, notes:{}};
+  store[itemId][rating] = (store[itemId][rating]||0)+1;
+  store[itemId].voters[SESSION_ID] = rating;
+  if(dbPath==="orgRatings"){ myOrgRatings[itemId]=rating; renderOrgList(); }
+  else { myLocalRatings[itemId]=rating; renderLocalList(); }
+  renderAdmin();
+  showToast("Rating saved!");
 };
 
 function submitRatingNote(dbPath, itemId, btnEl){
@@ -1497,17 +1413,7 @@ function buildRatingHtml(items, liveData, myRatings, dbPath){
 var liveCustomItems = {};
 
 function listenCustomItems(){
-  ["orgRatings","localRatings"].forEach(function(dbPath){
-    var key = dbPath+"_custom";
-    var fbRef = ref(db, "customItems/"+key);
-    onValue(fbRef, function(snap){
-      var data = snap.val()||{};
-      liveCustomItems[key] = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
-      // Re-render the relevant list
-      if(dbPath==="orgRatings") renderOrgList();
-      if(dbPath==="localRatings") renderLocalList();
-    });
-  });
+  // no-op
 }
 
 function submitCustomItem(dbPath){
@@ -1518,13 +1424,14 @@ function submitCustomItem(dbPath){
   if(!name){ showToast("Please enter an item name first."); return; }
   var note = noteEl ? noteEl.value.trim() : "";
   var key = dbPath+"_custom";
-  push(ref(db,"customItems/"+key), {name:name, note:note, time:now(), ts:Date.now(), session:SESSION_ID})
-    .then(function(){ 
-      nameEl.value=""; 
-      if(noteEl) noteEl.value="";
-      showToast("Item added!"); 
-    })
-    .catch(function(){ showToast("Error — please try again."); });
+  liveCustomItems[key] = liveCustomItems[key] || [];
+  liveCustomItems[key].push({name:name, note:note, time:now(), ts:Date.now()});
+  nameEl.value="";
+  if(noteEl) noteEl.value="";
+  if(dbPath==="orgRatings") renderOrgList();
+  else renderLocalList();
+  renderAdmin();
+  showToast("Item added!");
 }
 
 function renderOrgList(){
@@ -1542,42 +1449,23 @@ var liveScopeChanges = [];   // [{session, item, reason, time}]
 var myScopeVote = null;
 
 function listenScopeVotes(){
-  onValue(ref(db,"scopeVote"), function(snap){
-    var data = snap.val()||{};
-    liveScopeVotes = {yes:0, no:0};
-    Object.values(data).forEach(function(v){
-      if(v.vote==="yes") liveScopeVotes.yes++;
-      else if(v.vote==="no") liveScopeVotes.no++;
-      if(v.session===SESSION_ID) myScopeVote = v.vote;
-    });
-    renderScopeVote();
-    updateScopeProgress();
-    renderAdmin();
-  });
-  onValue(ref(db,"scopeChanges"), function(snap){
-    var data = snap.val()||{};
-    liveScopeChanges = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
-    renderScopeVote();
-    renderAdmin();
-  });
+  renderScopeVote(); updateScopeProgress();
 }
 
 function castScopeVote(vote){
-  if(myScopeVote){ showToast("You have already voted on scope."); return; }
-  push(ref(db,"scopeVote"),{vote:vote, session:SESSION_ID, time:now(), ts:Date.now()})
-    .then(function(){
-      showToast("Vote recorded!");
-      // If No — show branching follow-up
-      if(vote==="no"){
-        var s1=el("scope-step1"); if(s1) s1.style.display="none";
-        var s2=el("scope-step2"); if(s2) s2.style.display="block";
-      } else {
-        var s1=el("scope-step1"); if(s1) s1.style.display="none";
-        var s3=el("scope-step3"); if(s3){ s3.style.display="block"; }
-        var msg=el("scope-confirmed-msg"); if(msg) msg.textContent="✓ You confirmed the scope. Thank you!";
-      }
-    })
-    .catch(function(){ showToast("Error — please try again."); });
+  if(myScopeVote){ showToast("Already voted."); return; }
+  myScopeVote = vote;
+  liveScopeVotes[vote] = (liveScopeVotes[vote]||0)+1;
+  showToast("Vote recorded!");
+  if(vote==="no"){
+    var s1=el("scope-step1"); if(s1) s1.style.display="none";
+    var s2=el("scope-step2"); if(s2) s2.style.display="block";
+  } else {
+    var s1=el("scope-step1"); if(s1) s1.style.display="none";
+    var s3=el("scope-step3"); if(s3) s3.style.display="block";
+    var msg=el("scope-confirmed-msg"); if(msg) msg.textContent="✓ You confirmed the scope. Thank you!";
+  }
+  renderScopeVote(); updateScopeProgress(); renderAdmin();
 }
 
 function submitScopeChange(){
@@ -1587,14 +1475,12 @@ function submitScopeChange(){
   var reason = reasonEl ? reasonEl.value.trim() : "";
   if(!item)  { showToast("Please select which item needs to change."); return; }
   if(!reason){ showToast("Please describe the change needed."); return; }
-  push(ref(db,"scopeChanges"),{item:item, reason:reason, session:SESSION_ID, time:now(), ts:Date.now()})
-    .then(function(){
-      var s2=el("scope-step2"); if(s2) s2.style.display="none";
-      var s3=el("scope-step3"); if(s3) s3.style.display="block";
-      var msg=el("scope-confirmed-msg"); if(msg) msg.textContent="✓ Your feedback has been recorded. Thank you — this will be reviewed.";
-      showToast("Feedback submitted!");
-    })
-    .catch(function(){ showToast("Error — please try again."); });
+  liveScopeChanges.push({item:item, reason:reason, session:SESSION_ID, time:now(), ts:Date.now()});
+  var s2=el("scope-step2"); if(s2) s2.style.display="none";
+  var s3=el("scope-step3"); if(s3) s3.style.display="block";
+  var msg=el("scope-confirmed-msg"); if(msg) msg.textContent="✓ Your feedback has been recorded. Thank you.";
+  renderScopeVote(); renderAdmin();
+  showToast("Feedback submitted!");
 }
 
 function renderScopeVote(){
@@ -1648,26 +1534,20 @@ function updateScopeProgress(){
 
 // ── IDEAS ──────────────────────────────────────────────────────────────
 function listenIdeas(){
-  onValue(ref(db,"ideas"), function(snap){
-    var data = snap.val()||{};
-    liveIdeas = Object.keys(data).map(function(k){
-      return Object.assign({fbid:k}, data[k]);
-    }).sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
-    renderIdeas();
-    renderAdmin();
-    var ib = el("ibadge"); if(ib) ib.textContent = liveIdeas.length;
-    var si = el("s-ideas"); if(si) si.textContent = liveIdeas.length;
-    var ic = el("i-count-lbl"); if(ic) ic.textContent="("+liveIdeas.length+")";
-  });
+  renderIdeas();
 }
 
 function submitIdea(){
   var text = el("i-text").value.trim();
   if(!text){ showToast("Please enter your idea first."); return; }
   var cat = el("i-cat").value;
-  push(ref(db,"ideas"), {text:text, cat:cat, time:now(), ts:Date.now(), session:SESSION_ID})
-    .then(function(){ el("i-text").value=""; showToast("Idea submitted!"); })
-    .catch(function(){ showToast("Error — please try again."); });
+  liveIdeas.unshift({text:text, cat:cat, time:now(), ts:Date.now(), session:SESSION_ID});
+  el("i-text").value="";
+  renderIdeas(); renderAdmin();
+  var ib=el("ibadge"); if(ib) ib.textContent=liveIdeas.length;
+  var si=el("s-ideas"); if(si) si.textContent=liveIdeas.length;
+  var ic=el("i-count-lbl"); if(ic) ic.textContent="("+liveIdeas.length+")";
+  showToast("Idea submitted!");
 };
 
 function submitIdea2(cat, placeholder){
@@ -2069,17 +1949,9 @@ renderOrgList();
 renderLocalList();
 setTimeout(drawQR, 300);
 
-// Connection status indicator
-onValue(ref(db,".info/connected"), function(snap){
-  var connected = snap.val();
-  var dot = el("conn-dot");
-  var label = el("conn-label");
-  if(dot){
-    dot.style.background = connected ? "#00843D" : "#C8352A";
-    dot.title = connected ? "Connected to Firebase" : "Reconnecting...";
-  }
-  if(label) label.textContent = connected ? "Live" : "Reconnecting...";
-});
+// Demo mode — show as connected
+var dot=el("conn-dot"); if(dot){ dot.style.background="#00843D"; }
+var label=el("conn-label"); if(label) label.textContent="Demo";
 
 </script>
 </body>
